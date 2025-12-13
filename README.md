@@ -1,30 +1,66 @@
-# DocEasy app build
+# Doceasy
 
-*Automatically synced with your [v0.app](https://v0.app) deployments*
+Doceasy is a document management platform designed to simplify organizing, storing, and accessing files efficiently. It focuses on improving productivity through a clean workflow and easy document retrieval for individuals and teams.
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/tiwarirachit-2107s-projects/v0-docu-ease-app-build)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/fXUvtzEcMyt)
+---
 
-## Overview
+## 🚀 Features
+- Upload and store documents securely
+- Organize files with a structured system
+- Quick and easy document access
+- Simple and user-friendly interface
+- Scalable for personal or team use
 
-This repository will stay in sync with your deployed chats on [v0.app](https://v0.app).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.app](https://v0.app).
+---
 
-## Deployment
+## 🛠 Tech Stack
+- **Backend:** Python
+- **Frontend:** HTML, CSS
+- **Storage:** Local / Cloud-based (configurable)
+- **Tools:** Flask / Django (if applicable)
 
-Your project is live at:
+---
 
-**[https://vercel.com/tiwarirachit-2107s-projects/v0-docu-ease-app-build](https://vercel.com/tiwarirachit-2107s-projects/v0-docu-ease-app-build)**
+## ⚙️ Installation & Setup
+1. Clone the repository:
+```bash
+git clone https://github.com/rachts/DocEasy.git
+Navigate to the project directory:
 
-## Build your app
+bash
+Copy code
+cd Doceasy
+Install dependencies:
 
-Continue building your app on:
+bash
+Copy code
+pip install -r requirements.txt
+Run the application:
 
-**[https://v0.app/chat/fXUvtzEcMyt](https://v0.app/chat/fXUvtzEcMyt)**
+bash
+Copy code
+python app.py
+📌 Use Cases
+Personal document organization
 
-## How It Works
+Academic file management
 
-1. Create and modify your project using [v0.app](https://v0.app)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+Small team or project documentation
+
+Lightweight alternative to complex DMS tools
+
+🔮 Future Enhancements
+Advanced search and filtering
+
+User authentication and access control
+
+Cloud storage integration
+
+Version control for documents
+
+📫 Contact
+For queries or collaboration:
+
+Email: tiwari.rachit@gmail.com
+
+LinkedIn: https://www.linkedin.com/in/rachitkrtiwari/
