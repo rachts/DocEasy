@@ -4,10 +4,15 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { FileUploader } from "@/components/file-uploader"
-import { extractDataFromPDF, type ExtractedData } from "@/lib/pdf-extractor-utils"
 import { getFileSize } from "@/lib/storage-utils"
 import { Download, FileText, ImageIcon, Copy, Check } from "lucide-react"
 import { FooterCredit } from "@/components/footer-credit"
+
+interface ExtractedData {
+  text?: string
+  images?: string[]
+  pageCount: number
+}
 
 export default function PDFExtractorPage() {
   const [file, setFile] = useState<File | null>(null)
@@ -32,8 +37,25 @@ export default function PDFExtractorPage() {
     setExtracting(true)
 
     try {
-      const extracted = await extractDataFromPDF(file, extractText, extractImages)
-      setResult(extracted)
+      const formData = new FormData()
+      formData.append("file", file)
+
+      const response = await fetch("/api/pdf-extract", {
+        method: "POST",
+        body: formData,
+      })
+
+      if (!response.ok) {
+        throw new Error("Extraction failed")
+      }
+
+      const data = await response.json()
+
+      setResult({
+        text: extractText ? data.text : undefined,
+        images: extractImages ? [] : undefined,
+        pageCount: data.pageCount,
+      })
 
       // Track action
       const token = localStorage.getItem("auth_token")
