@@ -1,4 +1,5 @@
 import { PDFDocument } from "pdf-lib"
+import pdf from "pdf-parse"
 
 export interface ExtractedData {
   text?: string
@@ -7,12 +8,10 @@ export interface ExtractedData {
 }
 
 export async function extractTextFromPDF(file: File): Promise<string> {
-  // Use pdf-parse for text extraction
-  const pdfParse = await import("pdf-parse/lib/pdf-parse")
   const arrayBuffer = await file.arrayBuffer()
   const buffer = Buffer.from(arrayBuffer)
 
-  const data = await pdfParse.default(buffer)
+  const data = await pdf(buffer)
   return data.text
 }
 
