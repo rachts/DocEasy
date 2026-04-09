@@ -6,8 +6,9 @@ import { Card } from "@/components/ui/card"
 import { FileUploader } from "@/components/file-uploader"
 import { extractDataFromPDF, type ExtractedData } from "@/lib/pdf-extractor-utils"
 import { getFileSize } from "@/lib/storage-utils"
-import { Download, FileText, ImageIcon, Copy, Check } from "lucide-react"
-import { FooterCredit } from "@/components/footer-credit"
+import { Download, FileText, ImageIcon, Copy, Check, Loader2 } from "lucide-react"
+import { Footer } from "@/components/footer"
+import { trackEvent, addToRecentFiles } from "@/lib/supabase/helpers"
 
 export default function PDFExtractorPage() {
   const [file, setFile] = useState<File | null>(null)
@@ -35,22 +36,16 @@ export default function PDFExtractorPage() {
       const extracted = await extractDataFromPDF(file, extractText, extractImages)
       setResult(extracted)
 
-      // Track action
-      const token = localStorage.getItem("auth_token")
-      if (token) {
-        await fetch("/api/tool-actions", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            fileName: file.name,
-            fileType: file.type,
-            action: "extract",
-          }),
-        })
-      }
+      // Track action with Supabase
+      await trackEvent("upload", "pdf-extractor")
+
+      // Add to recent files (using local URL for now as we don't upload the source PDF)
+      addToRecentFiles({
+        name: file.name,
+        url: URL.createObjectURL(file),
+        tool: "pdf-extractor",
+        timestamp: Date.now()
+      })
     } catch (error) {
       console.error("Extraction failed:", error)
       alert("Failed to extract data from PDF. Please try again.")
@@ -67,8 +62,10 @@ export default function PDFExtractorPage() {
     }
   }
 
-  const handleDownloadText = () => {
+  const handleDownloadText = async () => {
     if (!result?.text) return
+
+    await trackEvent("download", "pdf-extractor")
 
     const blob = new Blob([result.text], { type: "text/plain" })
     const url = URL.createObjectURL(blob)
@@ -79,7 +76,9 @@ export default function PDFExtractorPage() {
     URL.revokeObjectURL(url)
   }
 
-  const handleDownloadImage = (imageData: string, index: number) => {
+  const handleDownloadImage = async (imageData: string, index: number) => {
+    await trackEvent("download", "pdf-extractor")
+    
     const link = document.createElement("a")
     link.href = imageData
     link.download = `${file?.name.replace(".pdf", "")}-image-${index + 1}.png`
@@ -215,7 +214,7 @@ export default function PDFExtractorPage() {
         )}
       </div>
 
-      <FooterCredit />
+      <Footer />
     </main>
   )
 }

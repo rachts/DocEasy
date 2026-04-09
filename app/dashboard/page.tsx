@@ -4,254 +4,220 @@ import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@/lib/auth-context"
 import { Button } from "@/components/ui/button"
-import { FileUploader } from "@/components/file-uploader"
 import { FileCard } from "@/components/file-card"
-import { type StoredFile, getGuestFiles, saveGuestFile, deleteGuestFile, fileToBase64 } from "@/lib/storage-utils"
-import { v4 as uuidv4 } from "crypto"
-import { FooterCredit } from "@/components/footer-credit"
+import { type StoredFile, getGuestFiles, deleteGuestFile } from "@/lib/storage-utils"
+import { Footer } from "@/components/footer"
+import { supabase } from "@/lib/supabase/client"
+import { LayoutDashboard, Clock, Star, HardDrive, Trash2 } from "lucide-react"
 
 export default function Dashboard() {
   const { user, loading: authLoading, logout } = useAuth()
   const router = useRouter()
-  const [files, setFiles] = useState<StoredFile[]>([])
-  const [category, setCategory] = useState("Others")
-  const [tags, setTags] = useState("")
-  const [uploading, setUploading] = useState(false)
-  const [filter, setFilter] = useState("All")
-  const [syncLoading, setSyncLoading] = useState(false)
+  const [files, setFiles] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+  const [filter, setFilter] = useState<"all" | "saved" | "recent">("all")
+  const [stats, setStats] = useState({
+    total: 0,
+    saved: 0,
+    recent: 0
+  })
 
   useEffect(() => {
-    if (!authLoading) {
-      loadFiles()
+    if (!authLoading && user) {
+      loadUserData()
+    } else if (!authLoading && !user) {
+      router.push("/login")
     }
   }, [authLoading, user])
 
-  const loadFiles = async () => {
-    if (user) {
-      // Load from MongoDB via API
-      setSyncLoading(true)
-      try {
-        const token = localStorage.getItem("auth_token")
-        const response = await fetch("/api/files/upload", {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-
-        if (response.ok) {
-          const data = await response.json()
-          setFiles(data)
-        }
-      } catch (error) {
-        console.error("Failed to load files:", error)
-      } finally {
-        setSyncLoading(false)
-      }
-    } else {
-      // Load from localStorage for guests
-      const stored = getGuestFiles()
-      setFiles(stored)
-    }
-  }
-
-  const handleFileSelect = async (file: File) => {
-    setUploading(true)
+  const loadUserData = async () => {
+    setLoading(true)
     try {
-      const base64 = await fileToBase64(file)
+      const { data, error } = await supabase
+        .from("files")
+        .select("*")
+        .eq("user_id", user?.id)
+        .order("created_at", { ascending: false })
 
-      if (user) {
-        // Upload to MongoDB via API
-        const token = localStorage.getItem("auth_token")
-        const response = await fetch("/api/files/upload", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            name: file.name,
-            size: file.size,
-            type: file.type,
-            category,
-            tags: tags
-              .split(",")
-              .map((t) => t.trim())
-              .filter(Boolean),
-            data: base64,
-          }),
-        })
-
-        if (response.ok) {
-          const newFile = await response.json()
-          setFiles([newFile, ...files])
-        } else {
-          throw new Error("Failed to upload file")
-        }
-      } else {
-        // Save to localStorage for guests
-        const newFile: StoredFile = {
-          id: uuidv4(),
-          name: file.name,
-          size: file.size,
-          type: file.type,
-          category,
-          tags: tags
-            .split(",")
-            .map((t) => t.trim())
-            .filter(Boolean),
-          data: base64,
-          uploadedAt: Date.now(),
-        }
-        saveGuestFile(newFile)
-        setFiles([newFile, ...files])
-      }
-
-      setCategory("Others")
-      setTags("")
+      if (error) throw error
+      
+      const allFiles = data || []
+      setFiles(allFiles)
+      
+      const saved = allFiles.filter(f => f.is_saved).length
+      const recent = allFiles.slice(0, 5).length
+      
+      setStats({
+        total: allFiles.length,
+        saved,
+        recent
+      })
     } catch (error) {
-      console.error("Upload failed:", error)
+      console.error("Failed to load dashboard data:", error)
     } finally {
-      setUploading(false)
+      setLoading(false)
     }
   }
 
   const handleDelete = async (id: string) => {
-    if (user) {
-      // Delete from MongoDB via API
-      try {
-        const token = localStorage.getItem("auth_token")
-        const response = await fetch("/api/files/delete", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ fileId: id }),
-        })
+    try {
+      const { error } = await supabase
+        .from("files")
+        .delete()
+        .eq("id", id)
 
-        if (response.ok) {
-          setFiles(files.filter((f) => f.id !== id))
-        }
-      } catch (error) {
-        console.error("Delete failed:", error)
-      }
-    } else {
-      // Delete from localStorage
-      deleteGuestFile(id)
+      if (error) throw error
       setFiles(files.filter((f) => f.id !== id))
+    } catch (error) {
+      console.error("Delete failed:", error)
     }
   }
 
-  const handleDownload = (file: StoredFile) => {
-    const link = document.createElement("a")
-    link.href = file.data
-    link.download = file.name
-    link.click()
+  const handleToggleSave = async (id: string, currentStatus: boolean) => {
+    try {
+      const { error } = await supabase
+        .from("files")
+        .update({ is_saved: !currentStatus })
+        .eq("id", id)
+
+      if (error) throw error
+      setFiles(files.map(f => f.id === id ? { ...f, is_saved: !currentStatus } : f))
+    } catch (error) {
+      console.error("Update failed:", error)
+    }
   }
 
-  const categories = ["All", "ID Proofs", "Marksheets", "Certificates", "Others"]
-  const filteredFiles = filter === "All" ? files : files.filter((f) => f.category === filter)
+  const filteredFiles = () => {
+    if (filter === "saved") return files.filter(f => f.is_saved)
+    if (filter === "recent") return files.slice(0, 5)
+    return files
+  }
+
+  if (authLoading || loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+          <p className="text-muted-foreground font-medium">Syncing your documents...</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
-    <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div className="mb-8 flex justify-between items-start">
+    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6">
         <div>
-          <h1 className="text-3xl font-bold mb-2">My Documents</h1>
-          {user && <p className="text-muted-foreground">Logged in as {user.email}</p>}
-          {!user && <p className="text-muted-foreground">Using browser storage (login to save permanently)</p>}
+          <h1 className="text-4xl font-black tracking-tight text-foreground">Dashboard</h1>
+          <p className="text-muted-foreground">Welcome back, <span className="text-primary font-bold">{user?.email?.split('@')[0]}</span></p>
         </div>
-        {user && (
-          <Button
-            onClick={() => {
-              logout()
-              router.push("/")
-            }}
-            variant="outline"
+        <div className="flex items-center gap-3">
+          <Button onClick={() => router.push("/tools")} className="rounded-xl font-bold shadow-lg shadow-primary/20">
+            Open New Tool
+          </Button>
+          <Button onClick={() => logout()} variant="outline" className="rounded-xl border-border/50 font-bold hover:bg-destructive/5 hover:text-destructive hover:border-destructive/20 transition-all">
+            Sign Out
+          </Button>
+        </div>
+      </div>
+
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <Card className="p-6 bg-gradient-to-br from-primary/10 to-transparent border-primary/20 relative overflow-hidden group">
+          <LayoutDashboard className="absolute -right-4 -bottom-4 w-24 h-24 text-primary/5 group-hover:scale-110 transition-transform" />
+          <p className="text-sm font-bold uppercase tracking-widest text-primary/60 mb-1">Total Assets</p>
+          <p className="text-4xl font-black">{stats.total}</p>
+          <p className="text-xs text-muted-foreground mt-2 font-medium">Files processed across all tools</p>
+        </Card>
+        <Card className="p-6 bg-gradient-to-br from-green-500/10 to-transparent border-green-500/20 relative overflow-hidden group">
+          <Star className="absolute -right-4 -bottom-4 w-24 h-24 text-green-500/5 group-hover:scale-110 transition-transform" />
+          <p className="text-sm font-bold uppercase tracking-widest text-green-500/60 mb-1">Permanent Saves</p>
+          <p className="text-4xl font-black">{stats.saved}</p>
+          <p className="text-xs text-muted-foreground mt-2 font-medium">Documents pinned for future use</p>
+        </Card>
+        <Card className="p-6 bg-gradient-to-br from-blue-500/10 to-transparent border-blue-500/20 relative overflow-hidden group">
+          <Clock className="absolute -right-4 -bottom-4 w-24 h-24 text-blue-500/5 group-hover:scale-110 transition-transform" />
+          <p className="text-sm font-bold uppercase tracking-widest text-blue-500/60 mb-1">Recent Activity</p>
+          <p className="text-4xl font-black">{stats.recent}</p>
+          <p className="text-xs text-muted-foreground mt-2 font-medium">Documents from your last session</p>
+        </Card>
+      </div>
+
+      <div className="flex flex-col lg:flex-row gap-10">
+        {/* Navigation Sidebar */}
+        <aside className="w-full lg:w-64 space-y-2">
+          <button 
+            onClick={() => setFilter("all")}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold transition-all ${filter === 'all' ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20' : 'hover:bg-muted text-muted-foreground'}`}
           >
-            Logout
-          </Button>
-        )}
-      </div>
-
-      {/* Upload Section */}
-      <div className="bg-background border border-border rounded-lg p-6 mb-8">
-        <h2 className="text-xl font-bold mb-4">Add New Document</h2>
-
-        <FileUploader onFileSelect={handleFileSelect} loading={uploading} />
-
-        <div className="grid md:grid-cols-2 gap-4 mt-6">
-          <div>
-            <label className="block text-sm font-medium mb-2">Category</label>
-            <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              className="w-full px-3 py-2 rounded border border-border"
-            >
-              <option>ID Proofs</option>
-              <option>Marksheets</option>
-              <option>Certificates</option>
-              <option>Others</option>
-            </select>
+            <HardDrive className="w-5 h-5" />
+            Library
+          </button>
+          <button 
+            onClick={() => setFilter("saved")}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold transition-all ${filter === 'saved' ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20' : 'hover:bg-muted text-muted-foreground'}`}
+          >
+            <Star className="w-5 h-5" />
+            Starred
+          </button>
+          <button 
+            onClick={() => setFilter("recent")}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold transition-all ${filter === 'recent' ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20' : 'hover:bg-muted text-muted-foreground'}`}
+          >
+            <Clock className="w-5 h-5" />
+            Recents
+          </button>
+          <div className="pt-6 border-t border-border mt-6">
+             <div className="p-4 bg-muted/50 rounded-xl border border-border/50">
+                <p className="text-xs font-black uppercase tracking-widest text-muted-foreground mb-2">Cloud Storage</p>
+                <div className="w-full bg-border rounded-full h-1.5 mb-2">
+                  <div className="bg-primary h-1.5 rounded-full w-1/4 shadow-[0_0_8px_rgba(var(--primary),0.5)]"></div>
+                </div>
+                <p className="text-[10px] font-bold text-muted-foreground">Using 12.4 MB of 500 MB</p>
+             </div>
           </div>
-          <div>
-            <label className="block text-sm font-medium mb-2">Tags (comma-separated)</label>
-            <input
-              type="text"
-              value={tags}
-              onChange={(e) => setTags(e.target.value)}
-              placeholder="e.g., important, verified"
-              className="w-full px-3 py-2 rounded border border-border"
-            />
+        </aside>
+
+        {/* Content Area */}
+        <div className="flex-1">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-black capitalize italic">{filter === 'all' ? 'Your Assets' : `${filter} Assets`}</h2>
+            <p className="text-sm font-bold text-muted-foreground">{filteredFiles().length} items found</p>
           </div>
+
+          {filteredFiles().length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {filteredFiles().map((file) => (
+                <FileCard
+                  key={file.id}
+                  file={{
+                    id: file.id,
+                    name: file.file_name,
+                    size: file.file_size,
+                    type: file.file_type,
+                    data: file.download_url,
+                    uploadedAt: new Date(file.created_at).getTime()
+                  }}
+                  isSaved={file.is_saved}
+                  onDelete={() => handleDelete(file.id)}
+                  onToggleSave={() => handleToggleSave(file.id, file.is_saved)}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="h-64 border-2 border-dashed border-border rounded-3xl flex flex-col items-center justify-center text-center p-8 bg-muted/20">
+              <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center mb-4">
+                <HardDrive className="w-10 h-10 text-muted-foreground/40" />
+              </div>
+              <h3 className="text-xl font-bold mb-1 italic">Nothing here yet</h3>
+              <p className="text-muted-foreground max-w-xs text-sm">You haven't processed any documents in this category. Start using our tools to see them here.</p>
+              <Button onClick={() => router.push("/tools")} variant="link" className="mt-4 font-black uppercase tracking-widest text-xs">Explore Tools</Button>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Tools Section */}
-      <div className="mb-8">
-        <h2 className="text-xl font-bold mb-4">Quick Tools</h2>
-        <div className="flex flex-wrap gap-3">
-          <Button onClick={() => router.push("/tools/compressor")} variant="outline">
-            Compress Files
-          </Button>
-          <Button onClick={() => router.push("/tools/converter")} variant="outline">
-            Convert Format
-          </Button>
-          <Button onClick={() => router.push("/tools/cropper")} variant="outline">
-            Crop Images
-          </Button>
-        </div>
-      </div>
-
-      {/* Filter Section */}
-      <div className="mb-6 flex flex-wrap gap-2">
-        {categories.map((cat) => (
-          <Button key={cat} onClick={() => setFilter(cat)} variant={filter === cat ? "default" : "outline"} size="sm">
-            {cat}
-          </Button>
-        ))}
-      </div>
-
-      {/* Files Grid */}
-      {syncLoading ? (
-        <div className="text-center py-12 text-muted-foreground">Loading files...</div>
-      ) : filteredFiles.length > 0 ? (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredFiles.map((file) => (
-            <FileCard
-              key={file.id}
-              file={file}
-              onDelete={handleDelete}
-              onDownload={handleDownload}
-              onRename={() => {}}
-            />
-          ))}
-        </div>
-      ) : (
-        <div className="text-center py-12 bg-muted rounded-lg">
-          <p className="text-muted-foreground mb-4">No documents yet</p>
-          <p className="text-sm text-muted-foreground">Upload your first document to get started</p>
-        </div>
-      )}
-
-      <FooterCredit />
+      <Footer />
     </main>
   )
 }

@@ -13,7 +13,7 @@ import {
   type ResumeData,
 } from "@/lib/pdf-maker-utils"
 import { Download, FileText, Award, Briefcase } from "lucide-react"
-import { FooterCredit } from "@/components/footer-credit"
+import { Footer } from "@/components/footer"
 
 export default function PDFMakerPage() {
   const [activeTab, setActiveTab] = useState("invoice")
@@ -367,7 +367,7 @@ export default function PDFMakerPage() {
         </Card>
       )}
 
-      <FooterCredit />
+      <Footer />
     </main>
   )
 }

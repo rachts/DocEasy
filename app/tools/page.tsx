@@ -14,7 +14,7 @@ import {
   User,
   Merge,
 } from "lucide-react"
-import { FooterCredit } from "@/components/footer-credit"
+import { Footer } from "@/components/footer"
 
 export default function ToolsPage() {
   const tools = [
@@ -135,7 +135,7 @@ export default function ToolsPage() {
         </div>
       ))}
 
-      <FooterCredit />
+      <Footer />
     </main>
   )
 }

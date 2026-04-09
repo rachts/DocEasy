@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card"
 import { FileUploader } from "@/components/file-uploader"
 import { processPassportPhoto, PASSPORT_SIZES } from "@/lib/passport-photo-utils"
 import { Download } from "lucide-react"
-import { FooterCredit } from "@/components/footer-credit"
+import { Footer } from "@/components/footer"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Slider } from "@/components/ui/slider"
@@ -194,7 +194,7 @@ export default function PassportPhotoPage() {
         </div>
       </div>
 
-      <FooterCredit />
+      <Footer />
     </main>
   )
 }

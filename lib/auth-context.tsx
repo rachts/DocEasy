@@ -2,18 +2,16 @@
 
 import type React from "react"
 import { createContext, useContext, useEffect, useState } from "react"
-
-interface User {
-  userId: string
-  email: string
-}
+import { supabase } from "./supabase/client"
+import type { User } from "@supabase/supabase-js"
 
 interface AuthContextType {
   user: User | null
   loading: boolean
   login: (email: string, password: string) => Promise<void>
   signup: (email: string, password: string) => Promise<void>
-  logout: () => void
+  loginWithGoogle: () => Promise<void>
+  logout: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -23,58 +21,66 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const token = localStorage.getItem("auth_token")
-    if (token) {
-      try {
-        const payload = JSON.parse(atob(token.split(".")[1]))
-        setUser({ userId: payload.userId, email: payload.email })
-      } catch {
-        localStorage.removeItem("auth_token")
-      }
+    if (!supabase) {
+      setLoading(false)
+      return
     }
-    setLoading(false)
+
+    // Get initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null)
+      setLoading(false)
+    })
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+      setLoading(false)
+    })
+
+    return () => subscription.unsubscribe()
   }, [])
 
   const login = async (email: string, password: string) => {
-    const res = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    })
-
-    if (!res.ok) {
-      const error = await res.json()
-      throw new Error(error.message)
-    }
-
-    const data = await res.json()
-    localStorage.setItem("auth_token", data.token)
-    setUser({ userId: data.userId, email: data.email })
+    if (!supabase) throw new Error("Supabase is not initialized")
+    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    if (error) throw error
   }
 
   const signup = async (email: string, password: string) => {
-    const res = await fetch("/api/auth/signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
+    if (!supabase) throw new Error("Supabase is not initialized")
+    const { error } = await supabase.auth.signUp({ 
+      email, 
+      password,
+      options: {
+        emailRedirectTo: `${window.location.origin}/auth/callback`,
+      }
     })
-
-    if (!res.ok) {
-      const error = await res.json()
-      throw new Error(error.message)
-    }
-
-    const data = await res.json()
-    localStorage.setItem("auth_token", data.token)
-    setUser({ userId: data.userId, email: data.email })
+    if (error) throw error
   }
 
-  const logout = () => {
-    localStorage.removeItem("auth_token")
+  const loginWithGoogle = async () => {
+    if (!supabase) throw new Error("Supabase is not initialized")
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      }
+    })
+    if (error) throw error
+  }
+
+  const logout = async () => {
+    if (!supabase) return
+    await supabase.auth.signOut()
     setUser(null)
   }
 
-  return <AuthContext.Provider value={{ user, loading, login, signup, logout }}>{children}</AuthContext.Provider>
+  return (
+    <AuthContext.Provider value={{ user, loading, login, signup, loginWithGoogle, logout }}>
+      {children}
+    </AuthContext.Provider>
+  )
 }
 
 export function useAuth() {

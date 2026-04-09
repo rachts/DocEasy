@@ -1,11 +1,48 @@
-export async function compressPDFWithRendering(file: File, quality = 0.7): Promise<Blob> {
+export type CompressionLevel = "extreme" | "recommended" | "less"
+
+/**
+ * Advanced PDF compression using a hybrid approach
+ * @param file The original PDF file
+ * @param level Compression intensity (less = structural, extreme = rasterization)
+ */
+export async function compressPDFWithRendering(file: File, level: CompressionLevel = "recommended"): Promise<Blob> {
   try {
     const arrayBuffer = await file.arrayBuffer()
     const { PDFDocument } = await import("pdf-lib")
+    
+    // "Less" Compression: Purely structural (lossless visual quality, metadata stripped)
+    if (level === "less") {
+      const pdfDoc = await PDFDocument.load(arrayBuffer)
+      
+      // Strip metadata
+      pdfDoc.setTitle("")
+      pdfDoc.setAuthor("")
+      pdfDoc.setSubject("")
+      pdfDoc.setProducer("")
+      pdfDoc.setCreator("")
+      pdfDoc.setKeywords([])
+
+      // Save with object stream compression
+      const compressedBytes = await pdfDoc.save({ useObjectStreams: true })
+      const compressedBlob = new Blob([compressedBytes], { type: "application/pdf" })
+      
+      console.log(`PDF Compressed (less): ${(file.size / 1024).toFixed(1)}KB -> ${(compressedBlob.size / 1024).toFixed(1)}KB`)
+      return compressedBlob
+    }
+
+    // "Recommended" & "Extreme" Compression: Rendering-based squashing
     const pdfjsLib = await import("pdfjs-dist")
 
-    // Set worker path
-    pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`
+    // Set worker path (pdfjs-dist v4+ uses .mjs instead of .js)
+    pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`
+
+    // Define quality settings based on level
+    const settings = {
+      recommended: { scale: 1.5, quality: 0.8 }, // Good Quality, Good Compression
+      extreme: { scale: 0.8, quality: 0.5 },     // Lower Quality, High Compression
+    }[level]
+
+    if (!settings) throw new Error("Invalid compression level")
 
     // Load the PDF with pdf.js
     const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer })
@@ -13,12 +50,11 @@ export async function compressPDFWithRendering(file: File, quality = 0.7): Promi
 
     // Create new PDF with pdf-lib
     const newPdfDoc = await PDFDocument.create()
-
     const numPages = pdfJsDoc.numPages
 
     for (let pageNum = 1; pageNum <= numPages; pageNum++) {
       const page = await pdfJsDoc.getPage(pageNum)
-      const viewport = page.getViewport({ scale: quality > 0.8 ? 2.0 : quality > 0.5 ? 1.5 : 1.0 })
+      const viewport = page.getViewport({ scale: settings.scale })
 
       // Create canvas
       const canvas = document.createElement("canvas")
@@ -42,7 +78,7 @@ export async function compressPDFWithRendering(file: File, quality = 0.7): Promi
             else reject(new Error("Failed to create blob"))
           },
           "image/jpeg",
-          quality,
+          settings.quality,
         )
       })
 
@@ -50,12 +86,15 @@ export async function compressPDFWithRendering(file: File, quality = 0.7): Promi
       const imageBytes = await blob.arrayBuffer()
       const image = await newPdfDoc.embedJpg(imageBytes)
 
-      const newPage = newPdfDoc.addPage([viewport.width, viewport.height])
+      // Use original dimensions for the new page but draw the scaled image onto it
+      const originalViewport = page.getViewport({ scale: 1.0 })
+      const newPage = newPdfDoc.addPage([originalViewport.width, originalViewport.height])
+      
       newPage.drawImage(image, {
         x: 0,
         y: 0,
-        width: viewport.width,
-        height: viewport.height,
+        width: originalViewport.width,
+        height: originalViewport.height,
       })
     }
 
@@ -67,8 +106,9 @@ export async function compressPDFWithRendering(file: File, quality = 0.7): Promi
 
     const compressedBlob = new Blob([compressedBytes], { type: "application/pdf" })
 
-    // Return compressed if smaller, otherwise original
-    return compressedBlob.size < file.size ? compressedBlob : file
+    // Return compressed version
+    console.log(`PDF Compressed (${level}): ${(file.size / 1024).toFixed(1)}KB -> ${(compressedBlob.size / 1024).toFixed(1)}KB`)
+    return compressedBlob
   } catch (error) {
     console.error("Advanced PDF compression error:", error)
     throw error

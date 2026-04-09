@@ -6,18 +6,23 @@ import { Card } from "@/components/ui/card"
 import { FileUploader } from "@/components/file-uploader"
 import { convertImage } from "@/lib/converter-utils"
 import { getFileSize } from "@/lib/storage-utils"
-import { Download } from "lucide-react"
-import { FooterCredit } from "@/components/footer-credit"
+import { Download, ArrowLeft, Loader2 } from "lucide-react"
+import { uploadFileToSupabase, saveFileMetadata, trackEvent, addToRecentFiles } from "@/lib/supabase/helpers"
+import { Footer } from "@/components/footer"
 
 export default function ConverterPage() {
   const [file, setFile] = useState<File | null>(null)
   const [targetFormat, setTargetFormat] = useState<"jpg" | "png">("png")
   const [converting, setConverting] = useState(false)
   const [result, setResult] = useState<Blob | null>(null)
+  const [supabaseUrl, setSupabaseUrl] = useState<string | null>(null)
+  const [progress, setProgress] = useState(0)
 
   const handleFileSelect = (selectedFile: File) => {
     setFile(selectedFile)
     setResult(null)
+    setSupabaseUrl(null)
+    setProgress(0)
   }
 
   const handleConvert = async () => {
@@ -27,27 +32,58 @@ export default function ConverterPage() {
     }
 
     setConverting(true)
+    setProgress(10)
     try {
       const converted = await convertImage(file, targetFormat)
+      setProgress(50)
+      
+      const fileName = `${file.name.split(".")[0]}.${targetFormat}`
+      
+      // Upload to Supabase
+      const { filePath, publicUrl } = await uploadFileToSupabase(converted, fileName, "converter")
+      setProgress(80)
+
+      await saveFileMetadata({
+        file_name: fileName,
+        file_type: `image/${targetFormat === "jpg" ? "jpeg" : "png"}`,
+        file_size: converted.size,
+        tool_used: "converter",
+        storage_path: filePath
+      })
+      setProgress(90)
+
+      await trackEvent("upload", "converter")
+
+      // Bonus: Add to recent files
+      addToRecentFiles({
+        name: fileName,
+        url: publicUrl,
+        tool: "converter",
+        timestamp: Date.now()
+      })
+
       setResult(converted)
+      setSupabaseUrl(publicUrl)
+      setProgress(100)
     } catch (error) {
-      console.error("Conversion failed:", error)
-      alert("Conversion failed")
+      console.error("Conversion or Supabase Upload failed:", error)
+      alert("Something went wrong. Please try again.")
     } finally {
       setConverting(false)
     }
   }
 
-  const handleDownload = () => {
-    if (!result || !file) return
+  const handleDownload = async () => {
+    if (!supabaseUrl || !file) return
 
-    const url = URL.createObjectURL(result)
+    // Track download event
+    await trackEvent("download", "converter")
+
     const link = document.createElement("a")
-    link.href = url
+    link.href = supabaseUrl
     const name = file.name.split(".")[0]
     link.download = `${name}.${targetFormat}`
     link.click()
-    URL.revokeObjectURL(url)
   }
 
   return (
@@ -132,7 +168,7 @@ export default function ConverterPage() {
         )}
       </div>
 
-      <FooterCredit />
+      <Footer />
     </main>
   )
 }

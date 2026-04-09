@@ -5,13 +5,16 @@ import type React from "react"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { Download, X, FilePlus } from "lucide-react"
-import { FooterCredit } from "@/components/footer-credit"
+import { Download, X, FilePlus, Loader2 } from "lucide-react"
+import { Footer } from "@/components/footer"
+import { uploadFileToSupabase, saveFileMetadata, trackEvent, addToRecentFiles } from "@/lib/supabase/helpers"
 
 export default function PDFMergerPage() {
   const [files, setFiles] = useState<File[]>([])
   const [merging, setMerging] = useState(false)
   const [mergedPDF, setMergedPDF] = useState<Blob | null>(null)
+  const [supabaseUrl, setSupabaseUrl] = useState<string | null>(null)
+  const [progress, setProgress] = useState(0)
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = Array.from(e.target.files || [])
@@ -49,20 +52,51 @@ export default function PDFMergerPage() {
     }
 
     setMerging(true)
+    setProgress(10)
     try {
       const { PDFDocument } = await import("pdf-lib")
       const mergedPdf = await PDFDocument.create()
 
-      for (const file of files) {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i]
         const arrayBuffer = await file.arrayBuffer()
         const pdf = await PDFDocument.load(arrayBuffer)
         const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices())
         copiedPages.forEach((page) => mergedPdf.addPage(page))
+        setProgress(10 + ((i + 1) / files.length) * 50)
       }
 
       const mergedPdfBytes = await mergedPdf.save()
       const blob = new Blob([mergedPdfBytes], { type: "application/pdf" })
+      
+      const fileName = "merged-document.pdf"
+      
+      // Upload to Supabase
+      const { filePath, publicUrl } = await uploadFileToSupabase(blob, fileName, "pdf-merger")
+      setProgress(80)
+
+      await saveFileMetadata({
+        file_name: fileName,
+        file_type: "application/pdf",
+        file_size: blob.size,
+        tool_used: "pdf-merger",
+        storage_path: filePath
+      })
+      setProgress(90)
+
+      await trackEvent("upload", "pdf-merger")
+
+      // Add to recent files
+      addToRecentFiles({
+        name: fileName,
+        url: publicUrl,
+        tool: "pdf-merger",
+        timestamp: Date.now()
+      })
+
       setMergedPDF(blob)
+      setSupabaseUrl(publicUrl)
+      setProgress(100)
     } catch (error) {
       console.error("Merge error:", error)
       alert("Failed to merge PDFs. Please try again.")
@@ -71,14 +105,15 @@ export default function PDFMergerPage() {
     }
   }
 
-  const handleDownload = () => {
-    if (!mergedPDF) return
-    const url = URL.createObjectURL(mergedPDF)
+  const handleDownload = async () => {
+    if (!supabaseUrl) return
+    
+    await trackEvent("download", "pdf-merger")
+    
     const link = document.createElement("a")
-    link.href = url
+    link.href = supabaseUrl
     link.download = "merged-document.pdf"
     link.click()
-    URL.revokeObjectURL(url)
   }
 
   return (
@@ -157,7 +192,7 @@ export default function PDFMergerPage() {
         )}
       </div>
 
-      <FooterCredit />
+      <Footer />
     </main>
   )
 }

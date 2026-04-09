@@ -6,8 +6,9 @@ import { Card } from "@/components/ui/card"
 import { FileUploader } from "@/components/file-uploader"
 import { compressImageWithQuality, calculateCompressionRatio } from "@/lib/image-compressor-utils"
 import { getFileSize } from "@/lib/storage-utils"
-import { Download } from "lucide-react"
-import { FooterCredit } from "@/components/footer-credit"
+import { Download, Loader2 } from "lucide-react"
+import { Footer } from "@/components/footer"
+import { uploadFileToSupabase, saveFileMetadata, trackEvent, addToRecentFiles } from "@/lib/supabase/helpers"
 
 export default function ImageCompressorPage() {
   const [file, setFile] = useState<File | null>(null)
@@ -15,6 +16,8 @@ export default function ImageCompressorPage() {
   const [compressing, setCompressing] = useState(false)
   const [result, setResult] = useState<Blob | null>(null)
   const [quality, setQuality] = useState(80)
+  const [supabaseUrl, setSupabaseUrl] = useState<string | null>(null)
+  const [progress, setProgress] = useState(0)
 
   const handleFileSelect = (selectedFile: File) => {
     if (!selectedFile.type.startsWith("image/")) {
@@ -37,27 +40,39 @@ export default function ImageCompressorPage() {
     if (!file) return
 
     setCompressing(true)
-
+    setProgress(10)
     try {
       const compressed = await compressImageWithQuality(file, quality)
-      setResult(compressed)
+      setProgress(50)
+      
+      const fileName = `${file.name.split(".")[0]}-compressed.${file.name.split(".").pop()}`
 
-      // Track action
-      const token = localStorage.getItem("auth_token")
-      if (token) {
-        await fetch("/api/tool-actions", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            fileName: file.name,
-            fileType: file.type,
-            action: "compress",
-          }),
-        })
-      }
+      // Upload to Supabase
+      const { filePath, publicUrl } = await uploadFileToSupabase(compressed, fileName, "image-compressor")
+      setProgress(80)
+
+      await saveFileMetadata({
+        file_name: fileName,
+        file_type: file.type,
+        file_size: compressed.size,
+        tool_used: "image-compressor",
+        storage_path: filePath
+      })
+      setProgress(90)
+
+      await trackEvent("upload", "image-compressor")
+
+      // Add to recent files
+      addToRecentFiles({
+        name: fileName,
+        url: publicUrl,
+        tool: "image-compressor",
+        timestamp: Date.now()
+      })
+
+      setResult(compressed)
+      setSupabaseUrl(publicUrl)
+      setProgress(100)
     } catch (error) {
       console.error("Compression failed:", error)
       alert("Failed to compress image. Please try again.")
@@ -66,17 +81,15 @@ export default function ImageCompressorPage() {
     }
   }
 
-  const handleDownload = () => {
-    if (!result || !file) return
+  const handleDownload = async () => {
+    if (!supabaseUrl) return
 
-    const url = URL.createObjectURL(result)
+    await trackEvent("download", "image-compressor")
+
     const link = document.createElement("a")
-    link.href = url
-    const baseName = file.name.split(".")[0]
-    const extension = file.name.split(".").pop()
-    link.download = `${baseName}-compressed.${extension}`
+    link.href = supabaseUrl
+    link.download = `compressed-${file?.name}`
     link.click()
-    URL.revokeObjectURL(url)
   }
 
   const compressionRatio = file && result ? calculateCompressionRatio(file.size, result.size) : 0
@@ -196,7 +209,7 @@ export default function ImageCompressorPage() {
         )}
       </div>
 
-      <FooterCredit />
+      <Footer />
     </main>
   )
 }

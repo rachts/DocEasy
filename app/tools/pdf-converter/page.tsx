@@ -8,7 +8,7 @@ import { FileUploader } from "@/components/file-uploader"
 import { convertImageToPDF, convertWordToPDF, convertExcelToPDF } from "@/lib/pdf-converter-utils"
 import { getFileSize } from "@/lib/storage-utils"
 import { Download, FileText, Table, ImageIcon } from "lucide-react"
-import { FooterCredit } from "@/components/footer-credit"
+import { Footer } from "@/components/footer"
 
 export default function PDFConverterPage() {
   const [file, setFile] = useState<File | null>(null)
@@ -202,7 +202,7 @@ export default function PDFConverterPage() {
         </Card>
       )}
 
-      <FooterCredit />
+      <Footer />
     </main>
   )
 }

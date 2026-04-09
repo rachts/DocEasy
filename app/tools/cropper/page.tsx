@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card"
 import { FileUploader } from "@/components/file-uploader"
 import { getFileSize } from "@/lib/storage-utils"
 import { Download } from "lucide-react"
-import { FooterCredit } from "@/components/footer-credit"
+import { Footer } from "@/components/footer"
 
 export default function CropperPage() {
   const [file, setFile] = useState<File | null>(null)
@@ -123,7 +123,7 @@ export default function CropperPage() {
         )}
       </div>
 
-      <FooterCredit />
+      <Footer />
     </main>
   )
 }

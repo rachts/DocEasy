@@ -6,8 +6,9 @@ import { Card } from "@/components/ui/card"
 import { FileUploader } from "@/components/file-uploader"
 import { convertImageFormat, getFormatExtension, type ImageFormat } from "@/lib/image-converter-utils"
 import { getFileSize } from "@/lib/storage-utils"
-import { Download, ArrowRight } from "lucide-react"
-import { FooterCredit } from "@/components/footer-credit"
+import { Download, ArrowRight, Loader2 } from "lucide-react"
+import { Footer } from "@/components/footer"
+import { uploadFileToSupabase, saveFileMetadata, trackEvent, addToRecentFiles } from "@/lib/supabase/helpers"
 
 export default function ImageConverterPage() {
   const [file, setFile] = useState<File | null>(null)
@@ -15,6 +16,8 @@ export default function ImageConverterPage() {
   const [converting, setConverting] = useState(false)
   const [result, setResult] = useState<Blob | null>(null)
   const [targetFormat, setTargetFormat] = useState<ImageFormat>("png")
+  const [supabaseUrl, setSupabaseUrl] = useState<string | null>(null)
+  const [progress, setProgress] = useState(0)
 
   const formats: Array<{ value: ImageFormat; label: string; description: string }> = [
     { value: "png", label: "PNG", description: "Lossless, supports transparency" },
@@ -44,27 +47,39 @@ export default function ImageConverterPage() {
     if (!file) return
 
     setConverting(true)
-
+    setProgress(10)
     try {
       const converted = await convertImageFormat(file, targetFormat)
-      setResult(converted)
+      setProgress(50)
+      
+      const fileName = `${file.name.split(".")[0]}.${getFormatExtension(targetFormat)}`
 
-      // Track action
-      const token = localStorage.getItem("auth_token")
-      if (token) {
-        await fetch("/api/tool-actions", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            fileName: file.name,
-            fileType: file.type,
-            action: "convert",
-          }),
-        })
-      }
+      // Upload to Supabase
+      const { filePath, publicUrl } = await uploadFileToSupabase(converted, fileName, "image-converter")
+      setProgress(80)
+
+      await saveFileMetadata({
+        file_name: fileName,
+        file_type: `image/${targetFormat}`,
+        file_size: converted.size,
+        tool_used: "image-converter",
+        storage_path: filePath
+      })
+      setProgress(90)
+
+      await trackEvent("upload", "image-converter")
+
+      // Add to recent files
+      addToRecentFiles({
+        name: fileName,
+        url: publicUrl,
+        tool: "image-converter",
+        timestamp: Date.now()
+      })
+
+      setResult(converted)
+      setSupabaseUrl(publicUrl)
+      setProgress(100)
     } catch (error) {
       console.error("Conversion failed:", error)
       alert("Failed to convert image. Please try again.")
@@ -73,17 +88,15 @@ export default function ImageConverterPage() {
     }
   }
 
-  const handleDownload = () => {
-    if (!result || !file) return
+  const handleDownload = async () => {
+    if (!supabaseUrl) return
 
-    const url = URL.createObjectURL(result)
+    await trackEvent("download", "image-converter")
+
     const link = document.createElement("a")
-    link.href = url
-    const baseName = file.name.split(".")[0]
-    const extension = getFormatExtension(targetFormat)
-    link.download = `${baseName}.${extension}`
+    link.href = supabaseUrl
+    link.download = `converted-${file?.name.split(".")[0]}.${getFormatExtension(targetFormat)}`
     link.click()
-    URL.revokeObjectURL(url)
   }
 
   const getSourceFormat = () => {
@@ -220,7 +233,7 @@ export default function ImageConverterPage() {
         )}
       </div>
 
-      <FooterCredit />
+      <Footer />
     </main>
   )
 }

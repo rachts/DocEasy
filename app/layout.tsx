@@ -9,9 +9,16 @@ import { ThemeProvider } from "@/lib/theme-provider"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "DocEasy - Document & Image Toolkit",
-  description: "Compress, convert, and edit documents and images effortlessly",
-  generator: "v0.app",
+  title: {
+    default: "DocEasy | Fast & Private Document Tools",
+    template: "%s | DocEasy"
+  },
+  description: "The ultimate privacy-first document toolkit. Compress, convert, merge, and edit PDFs and images with lightning speed. No login, no watermarks.",
+  keywords: ["PDF compressor", "image converter", "merge PDF", "free document tools", "private document processing", "passport photo generator"],
+  authors: [{ name: "Rachit, Akhtar, Pranav" }],
+  creator: "Rachit, Akhtar, Pranav",
+  publisher: "DocEasy",
+  robots: "index, follow",
 }
 
 export default function RootLayout({
