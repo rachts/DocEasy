@@ -1,4 +1,5 @@
 import { PDFDocument } from "pdf-lib"
+import pdf from "pdf-parse"
 
 export interface ExtractedData {
   text?: string
