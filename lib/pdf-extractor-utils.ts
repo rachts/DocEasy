@@ -1,5 +1,4 @@
 import { PDFDocument } from "pdf-lib"
-import pdf from "pdf-parse"
 
 export interface ExtractedData {
   text?: string
@@ -11,7 +10,7 @@ export async function extractTextFromPDF(file: File): Promise<string> {
   const pdfjs = await import("pdfjs-dist")
   
   // Set worker source
-  pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`
+  pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.mjs`
 
   const arrayBuffer = await file.arrayBuffer()
   const loadingTask = pdfjs.getDocument({ data: arrayBuffer })

@@ -1,5 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server"
-import pdf from "pdf-parse"
+import * as pdfParseLib from "pdf-parse"
+
+const pdf = ('default' in pdfParseLib) ? (pdfParseLib as any).default : pdfParseLib
 
 export const runtime = "nodejs"
 
