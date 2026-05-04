@@ -82,9 +82,10 @@ export default function CompressorPage() {
       setProgress(100)
       setResult(compressed)
       setSupabaseUrl(publicUrl)
-    } catch (error) {
+    } catch (error: any) {
       console.error("Compression failed:", error)
-      alert("Something went wrong during compression. Please try again.")
+      const errorMessage = error?.message || "Something went wrong during compression."
+      alert(`Compression failed: ${errorMessage}. Please check if the file is a valid PDF/Image and try again.`)
     } finally {
       setCompressing(false)
     }

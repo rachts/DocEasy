@@ -1,5 +1,15 @@
 # DocEasy Changelog
 
+## Version 1.0.1 (Hotfix)
+
+### Bug Fixes
+- ✅ Fixed critical bug in PDF compression engine (worker setup and rendering)
+- ✅ Replaced placeholder dummy functions in compression utility library
+- ✅ Corrected invalid `pdf-lib` save options causing runtime failures
+- ✅ Improved error reporting for failed compression attempts
+
+---
+
 ## Version 1.0.0 (Final Release)
 
 ### Major Changes

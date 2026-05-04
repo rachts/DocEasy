@@ -71,7 +71,7 @@ export async function compressPDF(file: File, quality = 0.7): Promise<Blob> {
     for (let i = 0; i < pageCount; i++) {
       try {
         // Render page to canvas
-        const canvas = await renderPDFPageToCanvas(pdfDoc, i, quality)
+        const canvas = await renderPDFPageToCanvas(arrayBuffer, i, quality)
 
         // Convert canvas to JPEG blob
         const blob = await new Promise<Blob>((resolve, reject) => {
@@ -129,29 +129,36 @@ export async function compressPDF(file: File, quality = 0.7): Promise<Blob> {
 }
 
 // Helper function to render a PDF page to canvas
-async function renderPDFPageToCanvas(pdfDoc: any, pageIndex: number, quality: number): Promise<HTMLCanvasElement> {
-  const page = pdfDoc.getPage(pageIndex)
-  const { width, height } = page.getSize()
+async function renderPDFPageToCanvas(pdfData: ArrayBuffer, pageIndex: number, quality: number): Promise<HTMLCanvasElement> {
+  const pdfjsLib = await import("pdfjs-dist")
+  const pdfjsVersion = pdfjsLib.version || "4.10.38"
+  pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsVersion}/pdf.worker.min.mjs`
+
+  const loadingTask = pdfjsLib.getDocument({ data: pdfData })
+  const pdfJsDoc = await loadingTask.promise
+  const page = await pdfJsDoc.getPage(pageIndex + 1) // pdf.js uses 1-based indexing
 
   // Scale down for compression (adjust scale based on quality)
   const scale = quality > 0.8 ? 1.5 : quality > 0.5 ? 1.2 : 1.0
+  const viewport = page.getViewport({ scale })
 
   const canvas = document.createElement("canvas")
-  canvas.width = width * scale
-  canvas.height = height * scale
+  canvas.width = viewport.width
+  canvas.height = viewport.height
 
   const ctx = canvas.getContext("2d")
   if (!ctx) {
     throw new Error("Could not get canvas context")
   }
 
-  // Fill with white background
+  // Fill with white background (important for PDFs with transparency)
   ctx.fillStyle = "white"
   ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-  // Note: Actual PDF rendering would require pdf.js or similar
-  // For now, we'll create a simplified version
-  // In production, you'd use pdf.js to properly render the page
+  await page.render({
+    canvasContext: ctx,
+    viewport: viewport,
+  }).promise
 
   return canvas
 }

@@ -34,7 +34,8 @@ export async function compressPDFWithRendering(file: File, level: CompressionLev
     const pdfjsLib = await import("pdfjs-dist")
 
     // Set worker path (pdfjs-dist v4+ uses .mjs instead of .js)
-    pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`
+    const pdfjsVersion = pdfjsLib.version || "4.10.38"
+    pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsVersion}/pdf.worker.min.mjs`
 
     // Define quality settings based on level
     const settings = {
@@ -101,7 +102,6 @@ export async function compressPDFWithRendering(file: File, level: CompressionLev
     // Save compressed PDF
     const compressedBytes = await newPdfDoc.save({
       useObjectStreams: true,
-      addDefaultPage: false,
     })
 
     const compressedBlob = new Blob([compressedBytes], { type: "application/pdf" })
