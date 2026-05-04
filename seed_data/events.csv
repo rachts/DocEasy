@@ -1,0 +1,6 @@
+id,event_type,tool_used,created_at
+f47ac10b-58cc-4372-a567-0e02b2c3d479,upload,pdf-compressor,2026-04-09 10:00:00
+c9bf9e57-1685-4c89-bafb-ff5af830be8a,download,pdf-compressor,2026-04-09 10:05:00
+3e8f8f2b-9e45-4c6e-8d2a-4a5f8b9c7d1e,upload,image-compressor,2026-04-09 10:30:00
+7d2a5b1c-3e8f-4a6c-9b4d-1e5f8c7b9a2d,download,image-compressor,2026-04-09 10:35:00
+1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d,conversion_success,pdf-maker,2026-04-09 11:00:00

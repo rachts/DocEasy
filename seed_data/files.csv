@@ -1,0 +1,5 @@
+id,file_name,file_type,file_size,tool_used,storage_path,user_id,download_url,is_saved,created_at
+d290f1ee-6c54-4b01-90e6-d701748f0851,annual_report.pdf,application/pdf,2450000,pdf-compressor,processed/annual_report.pdf,,https://example.com/downloads/annual_report.pdf,TRUE,2026-04-09 10:00:00
+7a48d8a7-7a55-4b21-b0db-6a75f0a6d592,marketing_assets.zip,application/zip,15000000,file-converter,processed/marketing_assets.zip,,https://example.com/downloads/marketing_assets.zip,FALSE,2026-04-09 10:15:00
+b19c8f25-83c9-4b46-a8c4-c89b25a3c613,profile_photo.jpg,image/jpeg,850000,image-compressor,processed/profile_photo.jpg,,https://example.com/downloads/profile_photo.jpg,TRUE,2026-04-09 10:30:00
+9c3e4b7a-1f8d-4a92-b3e1-5e8c1b9f7d24,invoice_march.pdf,application/pdf,420000,pdf-maker,processed/invoice_march.pdf,,https://example.com/downloads/invoice_march.pdf,FALSE,2026-04-09 11:00:00
