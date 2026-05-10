@@ -9,6 +9,7 @@ import { type StoredFile, getGuestFiles, deleteGuestFile } from "@/lib/storage-u
 import { Footer } from "@/components/footer"
 import { supabase } from "@/lib/supabase/client"
 import { LayoutDashboard, Clock, Star, HardDrive, Trash2 } from "lucide-react"
+import { Card } from "@/components/ui/card"
 
 export default function Dashboard() {
   const { user, loading: authLoading, logout } = useAuth()
@@ -44,7 +45,7 @@ export default function Dashboard() {
       const allFiles = data || []
       setFiles(allFiles)
       
-      const saved = allFiles.filter(f => f.is_saved).length
+      const saved = allFiles.filter((f: any) => f.is_saved).length
       const recent = allFiles.slice(0, 5).length
       
       setStats({

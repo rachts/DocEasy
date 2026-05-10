@@ -88,7 +88,7 @@ export async function generateInvoicePDF(data: InvoiceData): Promise<Blob> {
   page.drawText(`$${data.total.toFixed(2)}`, { x: 480, y: yPosition, size: 14, font: boldFont })
 
   const pdfBytes = await pdfDoc.save()
-  return new Blob([pdfBytes], { type: "application/pdf" })
+  return new Blob([pdfBytes as any], { type: "application/pdf" })
 }
 
 export async function generateCertificatePDF(data: CertificateData): Promise<Blob> {
@@ -165,7 +165,7 @@ export async function generateCertificatePDF(data: CertificateData): Promise<Blo
   })
 
   const pdfBytes = await pdfDoc.save()
-  return new Blob([pdfBytes], { type: "application/pdf" })
+  return new Blob([pdfBytes as any], { type: "application/pdf" })
 }
 
 export async function generateResumePDF(data: ResumeData): Promise<Blob> {
@@ -268,7 +268,7 @@ export async function generateResumePDF(data: ResumeData): Promise<Blob> {
   }
 
   const pdfBytes = await pdfDoc.save()
-  return new Blob([pdfBytes], { type: "application/pdf" })
+  return new Blob([pdfBytes as any], { type: "application/pdf" })
 }
 
 function wrapText(text: string, maxLength: number): string[] {

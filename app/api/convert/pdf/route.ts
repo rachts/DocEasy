@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Unsupported file type" }, { status: 400 })
     }
 
-    return new NextResponse(pdfBytes, {
+    return new NextResponse(pdfBytes as any, {
       headers: {
         "Content-Type": "application/pdf",
         "Content-Disposition": `attachment; filename="converted.pdf"`,

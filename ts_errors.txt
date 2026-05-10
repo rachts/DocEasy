@@ -1,0 +1,86 @@
+app/api/convert/pdf/route.ts(50,29): error TS2345: Argument of type 'Uint8Array<ArrayBufferLike>' is not assignable to parameter of type 'BodyInit | null | undefined'.
+  Type 'Uint8Array<ArrayBufferLike>' is missing the following properties from type 'URLSearchParams': size, append, delete, get, and 2 more.
+app/dashboard/page.tsx(47,37): error TS7006: Parameter 'f' implicitly has an 'any' type.
+app/dashboard/page.tsx(126,10): error TS2304: Cannot find name 'Card'.
+app/dashboard/page.tsx(131,11): error TS2304: Cannot find name 'Card'.
+app/dashboard/page.tsx(132,10): error TS2304: Cannot find name 'Card'.
+app/dashboard/page.tsx(137,11): error TS2304: Cannot find name 'Card'.
+app/dashboard/page.tsx(138,10): error TS2304: Cannot find name 'Card'.
+app/dashboard/page.tsx(143,11): error TS2304: Cannot find name 'Card'.
+app/tools/image-compressor/page.tsx(106,79): error TS2322: Type '{ onFileSelect: (selectedFile: File) => void; loading: boolean; accept: string; }' is not assignable to type 'IntrinsicAttributes & FileUploaderProps'.
+  Property 'accept' does not exist on type 'IntrinsicAttributes & FileUploaderProps'.
+app/tools/image-converter/page.tsx(117,78): error TS2322: Type '{ onFileSelect: (selectedFile: File) => void; loading: boolean; accept: string; }' is not assignable to type 'IntrinsicAttributes & FileUploaderProps'.
+  Property 'accept' does not exist on type 'IntrinsicAttributes & FileUploaderProps'.
+app/tools/passport-photo/page.tsx(85,80): error TS2322: Type '{ onFileSelect: (selectedFile: File) => void; loading: boolean; accept: string; }' is not assignable to type 'IntrinsicAttributes & FileUploaderProps'.
+  Property 'accept' does not exist on type 'IntrinsicAttributes & FileUploaderProps'.
+app/tools/pdf-converter/page.tsx(125,80): error TS2322: Type '{ onFileSelect: (selectedFile: File) => void; loading: boolean; accept: string; }' is not assignable to type 'IntrinsicAttributes & FileUploaderProps'.
+  Property 'accept' does not exist on type 'IntrinsicAttributes & FileUploaderProps'.
+app/tools/pdf-converter/page.tsx(144,80): error TS2322: Type '{ onFileSelect: (selectedFile: File) => void; loading: boolean; accept: string; }' is not assignable to type 'IntrinsicAttributes & FileUploaderProps'.
+  Property 'accept' does not exist on type 'IntrinsicAttributes & FileUploaderProps'.
+app/tools/pdf-converter/page.tsx(163,80): error TS2322: Type '{ onFileSelect: (selectedFile: File) => void; loading: boolean; accept: string; }' is not assignable to type 'IntrinsicAttributes & FileUploaderProps'.
+  Property 'accept' does not exist on type 'IntrinsicAttributes & FileUploaderProps'.
+app/tools/pdf-extractor/page.tsx(118,78): error TS2322: Type '{ onFileSelect: (selectedFile: File) => void; loading: boolean; accept: string; }' is not assignable to type 'IntrinsicAttributes & FileUploaderProps'.
+  Property 'accept' does not exist on type 'IntrinsicAttributes & FileUploaderProps'.
+app/tools/pdf-merger/page.tsx(70,30): error TS2322: Type 'Uint8Array<ArrayBufferLike>' is not assignable to type 'BlobPart'.
+  Type 'Uint8Array<ArrayBufferLike>' is not assignable to type 'ArrayBufferView<ArrayBuffer>'.
+    Types of property 'buffer' are incompatible.
+      Type 'ArrayBufferLike' is not assignable to type 'ArrayBuffer'.
+        Type 'SharedArrayBuffer' is missing the following properties from type 'ArrayBuffer': resizable, resize, detached, transfer, transferToFixedLength
+lib/auth-context.tsx(30,48): error TS7031: Binding element 'session' implicitly has an 'any' type.
+lib/auth-context.tsx(36,73): error TS7006: Parameter '_event' implicitly has an 'any' type.
+lib/auth-context.tsx(36,81): error TS7006: Parameter 'session' implicitly has an 'any' type.
+lib/compression-utils.ts(116,38): error TS2322: Type 'Uint8Array<ArrayBufferLike>' is not assignable to type 'BlobPart'.
+  Type 'Uint8Array<ArrayBufferLike>' is not assignable to type 'ArrayBufferView<ArrayBuffer>'.
+    Types of property 'buffer' are incompatible.
+      Type 'ArrayBufferLike' is not assignable to type 'ArrayBuffer'.
+        Type 'SharedArrayBuffer' is missing the following properties from type 'ArrayBuffer': resizable, resize, detached, transfer, transferToFixedLength
+lib/compression-utils.ts(158,21): error TS2345: Argument of type '{ canvasContext: CanvasRenderingContext2D; viewport: PageViewport; }' is not assignable to parameter of type 'RenderParameters'.
+  Property 'canvas' is missing in type '{ canvasContext: CanvasRenderingContext2D; viewport: PageViewport; }' but required in type 'RenderParameters'.
+lib/compression-utils.ts(191,28): error TS2322: Type 'Uint8Array<ArrayBufferLike>' is not assignable to type 'BlobPart'.
+  Type 'Uint8Array<ArrayBufferLike>' is not assignable to type 'ArrayBufferView<ArrayBuffer>'.
+    Types of property 'buffer' are incompatible.
+      Type 'ArrayBufferLike' is not assignable to type 'ArrayBuffer'.
+        Type 'SharedArrayBuffer' is missing the following properties from type 'ArrayBuffer': resizable, resize, detached, transfer, transferToFixedLength
+lib/file-utils.ts(42,17): error TS2740: Type '{ _id: string; }' is missing the following properties from type 'StoredFile': userId, name, size, type, and 4 more.
+lib/pdf-compression-advanced.ts(27,40): error TS2322: Type 'Uint8Array<ArrayBufferLike>' is not assignable to type 'BlobPart'.
+  Type 'Uint8Array<ArrayBufferLike>' is not assignable to type 'ArrayBufferView<ArrayBuffer>'.
+    Types of property 'buffer' are incompatible.
+      Type 'ArrayBufferLike' is not assignable to type 'ArrayBuffer'.
+        Type 'SharedArrayBuffer' is missing the following properties from type 'ArrayBuffer': resizable, resize, detached, transfer, transferToFixedLength
+lib/pdf-compression-advanced.ts(69,25): error TS2345: Argument of type '{ canvasContext: CanvasRenderingContext2D; viewport: PageViewport; }' is not assignable to parameter of type 'RenderParameters'.
+  Property 'canvas' is missing in type '{ canvasContext: CanvasRenderingContext2D; viewport: PageViewport; }' but required in type 'RenderParameters'.
+lib/pdf-compression-advanced.ts(107,38): error TS2322: Type 'Uint8Array<ArrayBufferLike>' is not assignable to type 'BlobPart'.
+  Type 'Uint8Array<ArrayBufferLike>' is not assignable to type 'ArrayBufferView<ArrayBuffer>'.
+    Types of property 'buffer' are incompatible.
+      Type 'ArrayBufferLike' is not assignable to type 'ArrayBuffer'.
+        Type 'SharedArrayBuffer' is missing the following properties from type 'ArrayBuffer': resizable, resize, detached, transfer, transferToFixedLength
+lib/pdf-converter-utils.ts(27,20): error TS2322: Type 'Uint8Array<ArrayBufferLike>' is not assignable to type 'BlobPart'.
+  Type 'Uint8Array<ArrayBufferLike>' is not assignable to type 'ArrayBufferView<ArrayBuffer>'.
+    Types of property 'buffer' are incompatible.
+      Type 'ArrayBufferLike' is not assignable to type 'ArrayBuffer'.
+        Type 'SharedArrayBuffer' is missing the following properties from type 'ArrayBuffer': resizable, resize, detached, transfer, transferToFixedLength
+lib/pdf-converter-utils.ts(92,20): error TS2322: Type 'Uint8Array<ArrayBufferLike>' is not assignable to type 'BlobPart'.
+  Type 'Uint8Array<ArrayBufferLike>' is not assignable to type 'ArrayBufferView<ArrayBuffer>'.
+    Types of property 'buffer' are incompatible.
+      Type 'ArrayBufferLike' is not assignable to type 'ArrayBuffer'.
+        Type 'SharedArrayBuffer' is missing the following properties from type 'ArrayBuffer': resizable, resize, detached, transfer, transferToFixedLength
+lib/pdf-converter-utils.ts(141,20): error TS2322: Type 'Uint8Array<ArrayBufferLike>' is not assignable to type 'BlobPart'.
+  Type 'Uint8Array<ArrayBufferLike>' is not assignable to type 'ArrayBufferView<ArrayBuffer>'.
+    Types of property 'buffer' are incompatible.
+      Type 'ArrayBufferLike' is not assignable to type 'ArrayBuffer'.
+        Type 'SharedArrayBuffer' is missing the following properties from type 'ArrayBuffer': resizable, resize, detached, transfer, transferToFixedLength
+lib/pdf-maker-utils.ts(91,20): error TS2322: Type 'Uint8Array<ArrayBufferLike>' is not assignable to type 'BlobPart'.
+  Type 'Uint8Array<ArrayBufferLike>' is not assignable to type 'ArrayBufferView<ArrayBuffer>'.
+    Types of property 'buffer' are incompatible.
+      Type 'ArrayBufferLike' is not assignable to type 'ArrayBuffer'.
+        Type 'SharedArrayBuffer' is missing the following properties from type 'ArrayBuffer': resizable, resize, detached, transfer, transferToFixedLength
+lib/pdf-maker-utils.ts(168,20): error TS2322: Type 'Uint8Array<ArrayBufferLike>' is not assignable to type 'BlobPart'.
+  Type 'Uint8Array<ArrayBufferLike>' is not assignable to type 'ArrayBufferView<ArrayBuffer>'.
+    Types of property 'buffer' are incompatible.
+      Type 'ArrayBufferLike' is not assignable to type 'ArrayBuffer'.
+        Type 'SharedArrayBuffer' is missing the following properties from type 'ArrayBuffer': resizable, resize, detached, transfer, transferToFixedLength
+lib/pdf-maker-utils.ts(271,20): error TS2322: Type 'Uint8Array<ArrayBufferLike>' is not assignable to type 'BlobPart'.
+  Type 'Uint8Array<ArrayBufferLike>' is not assignable to type 'ArrayBufferView<ArrayBuffer>'.
+    Types of property 'buffer' are incompatible.
+      Type 'ArrayBufferLike' is not assignable to type 'ArrayBuffer'.
+        Type 'SharedArrayBuffer' is missing the following properties from type 'ArrayBuffer': resizable, resize, detached, transfer, transferToFixedLength

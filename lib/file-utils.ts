@@ -39,5 +39,5 @@ export async function getFile(fileId: string, userId: string): Promise<StoredFil
     userId,
   })
 
-  return file ? { ...file, _id: file._id.toString() } : null
+  return file ? ({ ...(file as any), _id: file._id.toString() } as StoredFile) : null
 }

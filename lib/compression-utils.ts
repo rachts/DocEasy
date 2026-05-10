@@ -113,7 +113,7 @@ export async function compressPDF(file: File, quality = 0.7): Promise<Blob> {
       addDefaultPage: false,
     })
 
-    const compressedBlob = new Blob([compressedPdfBytes], { type: "application/pdf" })
+    const compressedBlob = new Blob([compressedPdfBytes as any], { type: "application/pdf" })
 
     console.log(
       `[v0] PDF compression complete. Original: ${(file.size / 1024).toFixed(2)}KB, Compressed: ${(compressedBlob.size / 1024).toFixed(2)}KB`,
@@ -158,7 +158,7 @@ async function renderPDFPageToCanvas(pdfData: ArrayBuffer, pageIndex: number, qu
   await page.render({
     canvasContext: ctx,
     viewport: viewport,
-  }).promise
+  } as any).promise
 
   return canvas
 }
@@ -188,7 +188,7 @@ export async function compressPDFSimple(file: File): Promise<Blob> {
       objectsPerTick: 50,
     })
 
-    const blob = new Blob([compressedBytes], { type: "application/pdf" })
+    const blob = new Blob([compressedBytes as any], { type: "application/pdf" })
 
     const originalSize = (file.size / 1024).toFixed(2)
     const compressedSize = (blob.size / 1024).toFixed(2)

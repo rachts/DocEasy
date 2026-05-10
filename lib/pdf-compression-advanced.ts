@@ -24,7 +24,7 @@ export async function compressPDFWithRendering(file: File, level: CompressionLev
 
       // Save with object stream compression
       const compressedBytes = await pdfDoc.save({ useObjectStreams: true })
-      const compressedBlob = new Blob([compressedBytes], { type: "application/pdf" })
+      const compressedBlob = new Blob([compressedBytes as any], { type: "application/pdf" })
       
       console.log(`PDF Compressed (less): ${(file.size / 1024).toFixed(1)}KB -> ${(compressedBlob.size / 1024).toFixed(1)}KB`)
       return compressedBlob
@@ -69,7 +69,7 @@ export async function compressPDFWithRendering(file: File, level: CompressionLev
       await page.render({
         canvasContext: context,
         viewport: viewport,
-      }).promise
+      } as any).promise
 
       // Convert canvas to JPEG blob
       const blob = await new Promise<Blob>((resolve, reject) => {
@@ -104,7 +104,7 @@ export async function compressPDFWithRendering(file: File, level: CompressionLev
       useObjectStreams: true,
     })
 
-    const compressedBlob = new Blob([compressedBytes], { type: "application/pdf" })
+    const compressedBlob = new Blob([compressedBytes as any], { type: "application/pdf" })
 
     // Return compressed version
     console.log(`PDF Compressed (${level}): ${(file.size / 1024).toFixed(1)}KB -> ${(compressedBlob.size / 1024).toFixed(1)}KB`)

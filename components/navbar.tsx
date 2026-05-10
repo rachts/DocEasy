@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@/lib/auth-context"
 import { Button } from "@/components/ui/button"
@@ -33,7 +34,8 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-6">
-            <Link href="/" className="font-bold text-xl text-primary hover:opacity-80 transition-opacity">
+            <Link href="/" className="font-bold text-xl text-primary hover:opacity-80 transition-opacity flex items-center gap-2">
+              <Image src="/logo.jpg" alt="DocEasy Logo" width={32} height={32} className="rounded-xl shadow-sm" />
               DocEasy
             </Link>
 

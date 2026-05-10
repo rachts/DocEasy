@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { Github, Linkedin, Twitter, Mail, FileText, Shield, Heart } from "lucide-react"
 import { motion } from "motion/react"
 
@@ -13,10 +14,8 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           {/* Brand Section */}
           <div className="md:col-span-1">
-            <Link href="/" className="flex items-center gap-2 mb-6">
-              <div className="bg-primary p-1.5 rounded-lg">
-                <FileText className="w-6 h-6 text-primary-foreground" />
-              </div>
+            <Link href="/" className="flex items-center gap-3 mb-6">
+              <Image src="/logo.jpg" alt="DocEasy Logo" width={36} height={36} className="rounded-xl shadow-sm" />
               <span className="text-2xl font-bold tracking-tight text-foreground">
                 DocEasy
               </span>

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { FileUploader } from "@/components/file-uploader"
 import { compressImage } from "@/lib/compression-utils"
-import { compressPDFWithRendering, type CompressionLevel } from "@/lib/pdf-compression-advanced"
+import { type CompressionLevel } from "@/lib/services/compression.service"
 import { getFileSize } from "@/lib/storage-utils"
 import { Download, Info, Loader2, Save, CheckCircle } from "lucide-react"
 import { Footer } from "@/components/footer"
@@ -37,51 +37,115 @@ export default function CompressorPage() {
     setCompressing(true)
     setProgress(10)
     try {
-      let compressed: Blob
-
       if (file.type.startsWith("image/")) {
         setProgress(30)
-        compressed = await compressImage(file, imageQuality / 100)
+        const compressed = await compressImage(file, imageQuality / 100)
         setProgress(60)
+
+        // Upload image to Supabase
+        setProgress(70)
+        const { filePath, publicUrl } = await uploadFileToSupabase(compressed, file.name, "compressor")
+        
+        setProgress(85)
+        await saveFileMetadata({
+          file_name: file.name,
+          file_type: file.type,
+          file_size: compressed.size,
+          tool_used: "compressor",
+          storage_path: filePath,
+          download_url: publicUrl,
+          is_saved: false
+        })
+
+        setProgress(95)
+        await trackEvent("upload", "compressor")
+
+        addToRecentFiles({
+          name: file.name,
+          url: publicUrl,
+          tool: "compressor",
+          timestamp: Date.now()
+        })
+
+        setProgress(100)
+        setResult(compressed)
+        setSupabaseUrl(publicUrl)
       } else if (file.type === "application/pdf") {
         setProgress(20)
-        compressed = await compressPDFWithRendering(file, pdfLevel)
-        setProgress(60)
+        
+        const formData = new FormData()
+        formData.append('file', file)
+        formData.append('level', pdfLevel)
+
+        const response = await fetch('/api/compression', {
+          method: 'POST',
+          body: formData,
+        })
+        
+        if (!response.ok) {
+          const errorData = await response.json()
+          throw new Error(errorData.error || 'Failed to start compression')
+        }
+        
+        const { jobId } = await response.json()
+        
+        let jobStatus = 'waiting'
+        let jobResult = null
+        
+        // Poll for status
+        while (jobStatus === 'waiting' || jobStatus === 'active') {
+          await new Promise(resolve => setTimeout(resolve, 1500))
+          const statusRes = await fetch(`/api/compression/status/${jobId}`)
+          if (!statusRes.ok) throw new Error('Failed to check status')
+          
+          const statusData = await statusRes.json()
+          setProgress(statusData.progress || 20)
+          
+          if (statusData.state === 'completed') {
+            jobStatus = 'completed'
+            jobResult = statusData.result
+          } else if (statusData.state === 'failed') {
+            throw new Error(statusData.error || 'Compression failed')
+          } else {
+            jobStatus = statusData.state
+          }
+        }
+        
+        if (!jobResult) throw new Error('No result returned')
+
+        // Mock a blob with the correct size for the UI to read
+        const compressed = new Blob([''], { type: 'application/pdf' })
+        Object.defineProperty(compressed, 'size', { value: jobResult.compressedSize })
+        
+        setProgress(85)
+        await saveFileMetadata({
+          file_name: file.name,
+          file_type: file.type,
+          file_size: jobResult.compressedSize,
+          tool_used: "compressor",
+          storage_path: jobResult.storagePath,
+          download_url: jobResult.url,
+          is_saved: false
+        })
+
+        setProgress(95)
+        await trackEvent("upload", "compressor")
+
+        addToRecentFiles({
+          name: file.name,
+          url: jobResult.url,
+          tool: "compressor",
+          timestamp: Date.now()
+        })
+
+        setProgress(100)
+        setResult(compressed)
+        setSupabaseUrl(jobResult.url)
       } else {
         alert("Unsupported file type. Please upload an image or PDF.")
         setCompressing(false)
         return
       }
-
-      // Automatically upload to Supabase for the session
-      setProgress(70)
-      const { filePath, publicUrl } = await uploadFileToSupabase(compressed, file.name, "compressor")
-      
-      setProgress(85)
-      await saveFileMetadata({
-        file_name: file.name,
-        file_type: file.type,
-        file_size: compressed.size,
-        tool_used: "compressor",
-        storage_path: filePath,
-        download_url: publicUrl,
-        is_saved: false // Not saved to user dashboard by default
-      })
-
-      setProgress(95)
-      await trackEvent("upload", "compressor")
-
-      // Add to session history
-      addToRecentFiles({
-        name: file.name,
-        url: publicUrl,
-        tool: "compressor",
-        timestamp: Date.now()
-      })
-
-      setProgress(100)
-      setResult(compressed)
-      setSupabaseUrl(publicUrl)
     } catch (error: any) {
       console.error("Compression failed:", error)
       const errorMessage = error?.message || "Something went wrong during compression."
@@ -168,7 +232,7 @@ export default function CompressorPage() {
             ) : file.type === "application/pdf" ? (
               <div className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {(["extreme", "recommended", "less"] as CompressionLevel[]).map((level) => (
+                  {(["extreme", "recommended", "low"] as CompressionLevel[]).map((level) => (
                     <button
                       key={level}
                       onClick={() => setPdfLevel(level)}
@@ -188,7 +252,7 @@ export default function CompressorPage() {
                 <div className="p-4 bg-primary/5 rounded-xl flex gap-3 text-sm italic">
                   <Info className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
                   <p>
-                    {pdfLevel === 'less' 
+                    {pdfLevel === 'low' 
                       ? "A purely structural optimization. Extracts hidden metadata and compresses objects without modifying image quality or text vectors." 
                       : "Our hybrid engine re-renders massive hidden images and drops pixel density to aggressively squash the file size."}
                   </p>

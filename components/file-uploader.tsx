@@ -9,9 +9,10 @@ interface FileUploaderProps {
   onFileSelect: (file: File) => void
   loading?: boolean
   success?: boolean
+  accept?: string
 }
 
-export function FileUploader({ onFileSelect, loading = false, success = false }: FileUploaderProps) {
+export function FileUploader({ onFileSelect, loading = false, success = false, accept }: FileUploaderProps) {
   const [isDragging, setIsDragging] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -60,7 +61,7 @@ export function FileUploader({ onFileSelect, loading = false, success = false }:
           type="file"
           onChange={handleFileChange}
           className="hidden"
-          accept="image/*,.pdf"
+          accept={accept || "image/*,.pdf"}
           disabled={loading || success}
         />
         <button 
