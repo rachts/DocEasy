@@ -1,40 +1,5 @@
 # DocEasy - Setup & Deployment Guide
 
-## Quick Start
-
-### 1. Install Dependencies
-\`\`\`bash
-npm install
-\`\`\`
-
-### 2. Configure Environment Variables
-
-Create or update `.env.local` with your credentials:
-
-\`\`\`env
-# MongoDB Configuration (Required for user authentication)
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/
-MONGODB_DB_NAME=doceasy
-
-# JWT Configuration (Required for authentication)
-JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
-\`\`\`
-
-**Note**: The app works in guest mode without these, but won't persist user data.
-
-### 3. Run Development Server
-\`\`\`bash
-npm run dev
-\`\`\`
-
-Visit [http://localhost:3000](http://localhost:3000)
-
-### 4. Build for Production
-\`\`\`bash
-npm run build
-npm start
-\`\`\`
-
 ## Features Implemented
 
 ### ✅ Fixed & Optimized Features
@@ -261,5 +226,3 @@ DocEasy is now a **fully functional, production-ready** document and image toolk
 - ✅ Clean, responsive UI
 - ✅ No errors or warnings
 - ✅ Ready for deployment
-
-Run `npm run dev` and start processing files! 🚀
