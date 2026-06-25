@@ -28,10 +28,10 @@ export function Footer() {
               <Link href="https://github.com/rachts" target="_blank" className="text-muted-foreground hover:text-primary transition-colors">
                 <Github className="w-5 h-5" />
               </Link>
-              <Link href="https://linkedin.com/in/rachitkumar" target="_blank" className="text-muted-foreground hover:text-primary transition-colors">
+              <Link href="https://www.linkedin.com/in/rachitkrtiwari/" target="_blank" className="text-muted-foreground hover:text-primary transition-colors">
                 <Linkedin className="w-5 h-5" />
               </Link>
-              <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
+              <Link href="https://x.com/rachtss" className="text-muted-foreground hover:text-primary transition-colors">
                 <Twitter className="w-5 h-5" />
               </Link>
             </div>
@@ -68,7 +68,7 @@ export function Footer() {
                 CSE student and full-stack builder focused on creating high-utility web products.
               </p>
               <Link 
-                href="mailto:contact@rachit.me" 
+                href="mailto:tiwari.rachit@gmail.com" 
                 className="inline-flex items-center mt-4 text-xs font-semibold text-primary hover:underline"
               >
                 <Mail className="w-3 h-3 mr-1" />

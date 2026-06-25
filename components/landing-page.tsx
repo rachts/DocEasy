@@ -129,8 +129,13 @@ export function LandingPage() {
                   <Link href="https://github.com/rachts" target="_blank" className="p-2 rounded-lg bg-card border border-border hover:bg-muted transition-colors">
                     <Github className="w-5 h-5" />
                   </Link>
-                  <Link href="https://linkedin.com/in/rachitkumar" target="_blank" className="p-2 rounded-lg bg-card border border-border hover:bg-muted transition-colors">
+                  <Link href="https://www.linkedin.com/in/rachitkrtiwari/" target="_blank" className="p-2 rounded-lg bg-card border border-border hover:bg-muted transition-colors">
                     <Linkedin className="w-5 h-5" />
+                  </Link>
+                  <Link href="https://x.com/rachtss" target="_blank" className="p-2 rounded-lg bg-card border border-border hover:bg-muted transition-colors">
+                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                    </svg>
                   </Link>
                 </div>
               </div>
@@ -188,7 +193,7 @@ export function LandingPage() {
                   Get Started for Free
                 </Button>
               </Link>
-              <Link href="mailto:contact@doceasy.app">
+              <Link href="mailto:tiwari.rachit@gmail.com">
                 <Button size="lg" variant="outline" className="w-full sm:w-auto h-14 px-10 rounded-2xl text-lg font-bold bg-transparent text-background border-background/20 hover:bg-background/10">
                   <Mail className="w-5 h-5 mr-2" />
                   Contact Us
