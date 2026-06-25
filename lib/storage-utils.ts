@@ -1,5 +1,5 @@
 import { createClient } from '@/utils/supabase/client'
-import { v4 as uuidv4 } from 'uuid'
+
 
 export interface StoredFile {
   id: string
@@ -20,7 +20,7 @@ export async function uploadFileToSupabase(file: File, bucket: 'uploads' | 'avat
   if (!user) throw new Error('User must be logged in to upload files')
 
   const fileExt = file.name.split('.').pop()
-  const fileName = `${uuidv4()}.${fileExt}`
+  const fileName = `${crypto.randomUUID()}.${fileExt}`
   const filePath = `${user.id}/${fileName}`
 
   const { error: uploadError } = await supabase.storage
