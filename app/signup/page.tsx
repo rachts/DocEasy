@@ -1,48 +1,45 @@
-"use client"
+'use client'
 
-import type React from "react"
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { useAuth } from "@/lib/auth-context"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import Link from "next/link"
-import { Eye, EyeOff, Lock, Mail, UserPlus } from "lucide-react"
-import { Footer } from "@/components/footer"
+import type React from 'react'
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import Link from 'next/link'
+import { Eye, EyeOff, Lock, Mail } from 'lucide-react'
+import { Footer } from '@/components/footer'
+import { signup } from '../login/actions'
+import { createClient } from '@/utils/supabase/client'
 
 export default function SignupPage() {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
-  const router = useRouter()
-  const { signup, loginWithGoogle } = useAuth()
+  const [error, setError] = useState('')
 
-  const handleSignup = async (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setError("")
+    setError('')
+
+    const formData = new FormData(e.currentTarget)
+    const password = formData.get('password') as string
+    const confirmPassword = formData.get('confirmPassword') as string
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match")
+      setError('Passwords do not match')
       return
     }
 
     if (password.length < 6) {
-      setError("Password must be at least 6 characters")
+      setError('Password must be at least 6 characters')
       return
     }
 
     setLoading(true)
 
-    try {
-      await signup(email, password)
-      router.push("/dashboard")
-    } catch (err: any) {
-      setError(err.message || "Signup failed")
-    } finally {
+    const result = await signup(formData)
+    
+    if (result?.error) {
+      setError(result.error)
       setLoading(false)
     }
   }
@@ -50,9 +47,16 @@ export default function SignupPage() {
   const handleGoogleSignup = async () => {
     try {
       setLoading(true)
-      await loginWithGoogle()
+      const supabase = createClient()
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/dashboard`
+        }
+      })
+      if (error) throw error
     } catch (err: any) {
-      setError(err.message || "Google registration failed")
+      setError(err.message || 'Google registration failed')
       setLoading(false)
     }
   }
@@ -80,8 +84,7 @@ export default function SignupPage() {
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <input
                   type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  name="email"
                   className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none"
                   placeholder="name@example.com"
                   required
@@ -94,9 +97,8 @@ export default function SignupPage() {
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <input
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  type={showPassword ? 'text' : 'password'}
+                  name="password"
                   className="w-full pl-10 pr-12 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none"
                   placeholder="Minimum 6 characters"
                   required
@@ -116,9 +118,8 @@ export default function SignupPage() {
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <input
-                  type={showConfirmPassword ? "text" : "password"}
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  type={showConfirmPassword ? 'text' : 'password'}
+                  name="confirmPassword"
                   className="w-full pl-10 pr-12 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none"
                   placeholder="Repeat your password"
                   required
@@ -134,7 +135,7 @@ export default function SignupPage() {
             </div>
 
             <Button type="submit" disabled={loading} className="w-full h-12 rounded-xl text-lg font-bold shadow-lg shadow-primary/20">
-              {loading ? "Creating account..." : "Sign Up"}
+              {loading ? 'Creating account...' : 'Sign Up'}
             </Button>
           </form>
 
@@ -176,7 +177,7 @@ export default function SignupPage() {
           </Button>
 
           <p className="text-center text-sm text-muted-foreground">
-            Already have an account?{" "}
+            Already have an account?{' '}
             <Link href="/login" className="text-primary font-semibold hover:underline">
               Sign In
             </Link>

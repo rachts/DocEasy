@@ -1,35 +1,30 @@
-"use client"
+'use client'
 
-import type React from "react"
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { useAuth } from "@/lib/auth-context"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import Link from "next/link"
-import { Eye, EyeOff, Lock, Mail } from "lucide-react"
-import { Footer } from "@/components/footer"
+import type React from 'react'
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import Link from 'next/link'
+import { Eye, EyeOff, Lock, Mail } from 'lucide-react'
+import { Footer } from '@/components/footer'
+import { login } from './actions'
+import { createClient } from '@/utils/supabase/client'
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
-  const router = useRouter()
-  const { login, loginWithGoogle } = useAuth()
+  const [error, setError] = useState('')
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setLoading(true)
-    setError("")
+    setError('')
 
-    try {
-      await login(email, password)
-      router.push("/dashboard")
-    } catch (err: any) {
-      setError(err.message || "Login failed")
-    } finally {
+    const formData = new FormData(e.currentTarget)
+    const result = await login(formData)
+    
+    if (result?.error) {
+      setError(result.error)
       setLoading(false)
     }
   }
@@ -37,9 +32,16 @@ export default function LoginPage() {
   const handleGoogleLogin = async () => {
     try {
       setLoading(true)
-      await loginWithGoogle()
+      const supabase = createClient()
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/dashboard`
+        }
+      })
+      if (error) throw error
     } catch (err: any) {
-      setError(err.message || "Google login failed")
+      setError(err.message || 'Google login failed')
       setLoading(false)
     }
   }
@@ -67,8 +69,7 @@ export default function LoginPage() {
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <input
                   type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  name="email"
                   className="w-full pl-10 pr-4 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none"
                   placeholder="name@example.com"
                   required
@@ -81,9 +82,8 @@ export default function LoginPage() {
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <input
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  type={showPassword ? 'text' : 'password'}
+                  name="password"
                   className="w-full pl-10 pr-12 py-3 rounded-xl border border-border bg-background focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none"
                   placeholder="••••••••"
                   required
@@ -99,7 +99,7 @@ export default function LoginPage() {
             </div>
 
             <Button type="submit" disabled={loading} className="w-full h-12 rounded-xl text-lg font-bold shadow-lg shadow-primary/20">
-              {loading ? "Signing in..." : "Sign In"}
+              {loading ? 'Signing in...' : 'Sign In'}
             </Button>
           </form>
 
@@ -141,7 +141,7 @@ export default function LoginPage() {
           </Button>
 
           <p className="text-center text-sm text-muted-foreground">
-            No account?{" "}
+            No account?{' '}
             <Link href="/signup" className="text-primary font-semibold hover:underline">
               Sign Up
             </Link>

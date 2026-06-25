@@ -1,80 +1,64 @@
 "use client"
 
 import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
+import { motion, AnimatePresence } from "motion/react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { FileUploader } from "@/components/file-uploader"
+import { ToolLayout } from "@/components/ui/tool-layout"
+import { UploadCard } from "@/components/ui/upload-card"
+import { ProcessingStatus, StatusType } from "@/components/ui/processing-status"
 import { convertImageToPDF, convertWordToPDF, convertExcelToPDF } from "@/lib/pdf-converter-utils"
-import { getFileSize } from "@/lib/storage-utils"
-import { Download, FileText, Table, ImageIcon } from "lucide-react"
-import { Footer } from "@/components/footer"
+import { FileText, Table, ImageIcon } from "lucide-react"
 
 export default function PDFConverterPage() {
   const [file, setFile] = useState<File | null>(null)
-  const [converting, setConverting] = useState(false)
-  const [result, setResult] = useState<Blob | null>(null)
   const [activeTab, setActiveTab] = useState("image")
+  const [status, setStatus] = useState<StatusType>("idle")
   const [progress, setProgress] = useState(0)
+  const [result, setResult] = useState<Blob | null>(null)
+  const [error, setError] = useState<string>("")
 
-  const handleFileSelect = (selectedFile: File) => {
+  const handleUpload = async (selectedFile: File) => {
     setFile(selectedFile)
-    setResult(null)
-    setProgress(0)
-  }
-
-  const handleConvert = async () => {
-    if (!file) return
-
-    setConverting(true)
+    setStatus("processing")
     setProgress(10)
 
     try {
       let pdfBlob: Blob
-
       setProgress(30)
 
       if (activeTab === "image") {
-        pdfBlob = await convertImageToPDF(file)
+        pdfBlob = await convertImageToPDF(selectedFile)
       } else if (activeTab === "word") {
-        pdfBlob = await convertWordToPDF(file)
+        pdfBlob = await convertWordToPDF(selectedFile)
       } else if (activeTab === "excel") {
-        pdfBlob = await convertExcelToPDF(file)
+        pdfBlob = await convertExcelToPDF(selectedFile)
       } else {
         throw new Error("Invalid conversion type")
       }
 
-      setProgress(90)
+      setProgress(80)
       setResult(pdfBlob)
-      setProgress(100)
 
       // Track action
       const token = localStorage.getItem("auth_token")
       if (token) {
-        await fetch("/api/tool-actions", {
+        fetch("/api/tool-actions", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            fileName: file.name,
-            fileType: file.type,
-            action: "convert",
-          }),
-        })
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+          body: JSON.stringify({ fileName: selectedFile.name, fileType: selectedFile.type, action: "convert" }),
+        }).catch(console.error)
       }
-    } catch (error) {
-      console.error("Conversion failed:", error)
-      alert("Conversion failed. Please try again.")
-    } finally {
-      setConverting(false)
+
+      setProgress(100)
+      setStatus("success")
+    } catch (e: any) {
+      setError(e.message || "Conversion failed. Please try again.")
+      setStatus("error")
     }
   }
 
   const handleDownload = () => {
     if (!result || !file) return
-
     const url = URL.createObjectURL(result)
     const link = document.createElement("a")
     link.href = url
@@ -84,125 +68,85 @@ export default function PDFConverterPage() {
     URL.revokeObjectURL(url)
   }
 
+  const handleReset = () => {
+    setFile(null)
+    setResult(null)
+    setStatus("idle")
+    setProgress(0)
+    setError("")
+  }
+
   const getAcceptedTypes = () => {
     switch (activeTab) {
-      case "image":
-        return "image/png,image/jpeg,image/jpg"
-      case "word":
-        return ".docx,.doc"
-      case "excel":
-        return ".xlsx,.xls"
-      default:
-        return "*"
+      case "image": return "image/png,image/jpeg,image/jpg"
+      case "word": return ".docx,.doc"
+      case "excel": return ".xlsx,.xls"
+      default: return "*"
     }
   }
 
   return (
-    <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <h1 className="text-3xl font-bold mb-2">PDF Converter</h1>
-      <p className="text-muted-foreground mb-8">Convert Word, Excel, or Images to PDF format</p>
+    <ToolLayout
+      title="PDF Converter"
+      description="Convert Word documents, Excel spreadsheets, or Images into high-quality PDF format instantly."
+    >
+      <div className="flex flex-col items-center justify-center min-h-[400px]">
+        <AnimatePresence mode="wait">
+          {status === "idle" && (
+            <motion.div 
+              key="idle"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="w-full max-w-2xl mx-auto"
+            >
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-8">
+                <TabsList className="grid w-full grid-cols-3 h-14 rounded-2xl bg-card/50 p-1 border border-border/50">
+                  <TabsTrigger value="image" className="rounded-xl text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all">
+                    <ImageIcon className="w-4 h-4 mr-2" />
+                    Image
+                  </TabsTrigger>
+                  <TabsTrigger value="word" className="rounded-xl text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all">
+                    <FileText className="w-4 h-4 mr-2" />
+                    Word
+                  </TabsTrigger>
+                  <TabsTrigger value="excel" className="rounded-xl text-sm data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md transition-all">
+                    <Table className="w-4 h-4 mr-2" />
+                    Excel
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
+              
+              <UploadCard 
+                onUpload={handleUpload} 
+                accept={getAcceptedTypes()}
+                title={`Upload ${activeTab === 'image' ? 'an Image' : activeTab === 'word' ? 'a Word Doc' : 'an Excel Sheet'}`}
+                icon={activeTab === 'image' ? <ImageIcon className="w-10 h-10" /> : activeTab === 'word' ? <FileText className="w-10 h-10" /> : <Table className="w-10 h-10" />}
+              />
+            </motion.div>
+          )}
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="image" className="flex items-center gap-2">
-            <ImageIcon className="w-4 h-4" />
-            Image → PDF
-          </TabsTrigger>
-          <TabsTrigger value="word" className="flex items-center gap-2">
-            <FileText className="w-4 h-4" />
-            Word → PDF
-          </TabsTrigger>
-          <TabsTrigger value="excel" className="flex items-center gap-2">
-            <Table className="w-4 h-4" />
-            Excel → PDF
-          </TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="image" className="space-y-6 mt-6">
-          <Card className="p-6">
-            <h2 className="text-lg font-bold mb-4">Select Image</h2>
-            <p className="text-sm text-muted-foreground mb-4">Supported formats: PNG, JPG, JPEG</p>
-            <FileUploader onFileSelect={handleFileSelect} loading={converting} accept={getAcceptedTypes()} />
-
-            {file && (
-              <div className="mt-4 p-3 bg-muted rounded">
-                <p className="text-sm">
-                  <strong>File:</strong> {file.name}
-                </p>
-                <p className="text-sm">
-                  <strong>Size:</strong> {getFileSize(file.size)}
-                </p>
-              </div>
-            )}
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="word" className="space-y-6 mt-6">
-          <Card className="p-6">
-            <h2 className="text-lg font-bold mb-4">Select Word Document</h2>
-            <p className="text-sm text-muted-foreground mb-4">Supported formats: DOCX, DOC</p>
-            <FileUploader onFileSelect={handleFileSelect} loading={converting} accept={getAcceptedTypes()} />
-
-            {file && (
-              <div className="mt-4 p-3 bg-muted rounded">
-                <p className="text-sm">
-                  <strong>File:</strong> {file.name}
-                </p>
-                <p className="text-sm">
-                  <strong>Size:</strong> {getFileSize(file.size)}
-                </p>
-              </div>
-            )}
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="excel" className="space-y-6 mt-6">
-          <Card className="p-6">
-            <h2 className="text-lg font-bold mb-4">Select Excel Spreadsheet</h2>
-            <p className="text-sm text-muted-foreground mb-4">Supported formats: XLSX, XLS</p>
-            <FileUploader onFileSelect={handleFileSelect} loading={converting} accept={getAcceptedTypes()} />
-
-            {file && (
-              <div className="mt-4 p-3 bg-muted rounded">
-                <p className="text-sm">
-                  <strong>File:</strong> {file.name}
-                </p>
-                <p className="text-sm">
-                  <strong>Size:</strong> {getFileSize(file.size)}
-                </p>
-              </div>
-            )}
-          </Card>
-        </TabsContent>
-      </Tabs>
-
-      {file && !result && (
-        <Card className="p-6">
-          <Button onClick={handleConvert} disabled={converting} className="w-full" size="lg">
-            {converting ? `Converting... ${progress}%` : "Convert to PDF"}
-          </Button>
-        </Card>
-      )}
-
-      {result && (
-        <Card className="p-6 bg-accent/5 border-accent">
-          <h2 className="text-lg font-bold mb-4 text-accent">Conversion Complete</h2>
-          <div className="space-y-3 mb-4">
-            <p className="text-sm">
-              <strong>Original:</strong> {file?.name} ({getFileSize(file?.size || 0)})
-            </p>
-            <p className="text-sm">
-              <strong>PDF Size:</strong> {getFileSize(result.size)}
-            </p>
-          </div>
-          <Button onClick={handleDownload} className="w-full" size="lg">
-            <Download className="w-5 h-5 mr-2" />
-            Download PDF
-          </Button>
-        </Card>
-      )}
-
-      <Footer />
-    </main>
+          {status !== "idle" && (
+            <motion.div
+              key="processing"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="w-full"
+            >
+              <ProcessingStatus
+                status={status}
+                progress={progress}
+                title={status === "processing" ? `Converting ${file?.name}...` : undefined}
+                description={status === "processing" ? "Translating document layout to PDF..." : undefined}
+                error={error}
+                onDownload={handleDownload}
+                onReset={handleReset}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </ToolLayout>
   )
 }

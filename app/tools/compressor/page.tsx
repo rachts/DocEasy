@@ -1,55 +1,38 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { FileUploader } from "@/components/file-uploader"
+import { useState } from "react"
+import { motion, AnimatePresence } from "motion/react"
+import { ToolLayout } from "@/components/ui/tool-layout"
+import { UploadCard } from "@/components/ui/upload-card"
+import { ProcessingStatus, StatusType } from "@/components/ui/processing-status"
 import { compressImage } from "@/lib/compression-utils"
-import { type CompressionLevel } from "@/lib/services/compression.service"
-import { getFileSize } from "@/lib/storage-utils"
-import { Download, Info, Loader2, Save, CheckCircle } from "lucide-react"
-import { Footer } from "@/components/footer"
 import { uploadFileToSupabase, saveFileMetadata, trackEvent, addToRecentFiles } from "@/lib/supabase/helpers"
-import { useAuth } from "@/lib/auth-context"
 
 export default function CompressorPage() {
-  const { user } = useAuth()
   const [file, setFile] = useState<File | null>(null)
-  const [imageQuality, setImageQuality] = useState(75)
-  const [pdfLevel, setPdfLevel] = useState<CompressionLevel>("recommended")
-  const [compressing, setCompressing] = useState(false)
-  const [result, setResult] = useState<Blob | null>(null)
-  const [supabaseUrl, setSupabaseUrl] = useState<string | null>(null)
+  const [status, setStatus] = useState<StatusType>("idle")
   const [progress, setProgress] = useState(0)
-  const [isSaved, setIsSaved] = useState(false)
+  const [error, setError] = useState<string>("")
+  const [downloadUrl, setDownloadUrl] = useState<string | null>(null)
+  const [resultFileName, setResultFileName] = useState("")
 
-  const handleFileSelect = (selectedFile: File) => {
+  const handleUpload = async (selectedFile: File) => {
     setFile(selectedFile)
-    setResult(null)
-    setSupabaseUrl(null)
-    setProgress(0)
-    setIsSaved(false)
-  }
-
-  const handleCompress = async () => {
-    if (!file) return
-
-    setCompressing(true)
+    setStatus("processing")
     setProgress(10)
+    
     try {
-      if (file.type.startsWith("image/")) {
+      if (selectedFile.type.startsWith("image/")) {
         setProgress(30)
-        const compressed = await compressImage(file, imageQuality / 100)
+        const compressed = await compressImage(selectedFile, 0.75) // default 75%
         setProgress(60)
 
-        // Upload image to Supabase
-        setProgress(70)
-        const { filePath, publicUrl } = await uploadFileToSupabase(compressed, file.name, "compressor")
+        const { filePath, publicUrl } = await uploadFileToSupabase(compressed, selectedFile.name, "compressor")
         
-        setProgress(85)
+        setProgress(80)
         await saveFileMetadata({
-          file_name: file.name,
-          file_type: file.type,
+          file_name: selectedFile.name,
+          file_type: selectedFile.type,
           file_size: compressed.size,
           tool_used: "compressor",
           storage_path: filePath,
@@ -57,44 +40,29 @@ export default function CompressorPage() {
           is_saved: false
         })
 
-        setProgress(95)
+        setProgress(90)
         await trackEvent("upload", "compressor")
-
-        addToRecentFiles({
-          name: file.name,
-          url: publicUrl,
-          tool: "compressor",
-          timestamp: Date.now()
-        })
+        addToRecentFiles({ name: selectedFile.name, url: publicUrl, tool: "compressor", timestamp: Date.now() })
 
         setProgress(100)
-        setResult(compressed)
-        setSupabaseUrl(publicUrl)
-      } else if (file.type === "application/pdf") {
+        setDownloadUrl(publicUrl)
+        setResultFileName(`compressed-${selectedFile.name}`)
+        setStatus("success")
+      } else if (selectedFile.type === "application/pdf") {
         setProgress(20)
-        
         const formData = new FormData()
-        formData.append('file', file)
-        formData.append('level', pdfLevel)
+        formData.append('file', selectedFile)
+        formData.append('level', "recommended")
 
-        const response = await fetch('/api/compression', {
-          method: 'POST',
-          body: formData,
-        })
-        
-        if (!response.ok) {
-          const errorData = await response.json()
-          throw new Error(errorData.error || 'Failed to start compression')
-        }
+        const response = await fetch('/api/compression', { method: 'POST', body: formData })
+        if (!response.ok) throw new Error("Failed to start compression")
         
         const { jobId } = await response.json()
-        
         let jobStatus = 'waiting'
         let jobResult = null
         
-        // Poll for status
         while (jobStatus === 'waiting' || jobStatus === 'active') {
-          await new Promise(resolve => setTimeout(resolve, 1500))
+          await new Promise(resolve => setTimeout(resolve, 1000))
           const statusRes = await fetch(`/api/compression/status/${jobId}`)
           if (!statusRes.ok) throw new Error('Failed to check status')
           
@@ -113,14 +81,10 @@ export default function CompressorPage() {
         
         if (!jobResult) throw new Error('No result returned')
 
-        // Mock a blob with the correct size for the UI to read
-        const compressed = new Blob([''], { type: 'application/pdf' })
-        Object.defineProperty(compressed, 'size', { value: jobResult.compressedSize })
-        
         setProgress(85)
         await saveFileMetadata({
-          file_name: file.name,
-          file_type: file.type,
+          file_name: selectedFile.name,
+          file_type: selectedFile.type,
           file_size: jobResult.compressedSize,
           tool_used: "compressor",
           storage_path: jobResult.storagePath,
@@ -130,209 +94,82 @@ export default function CompressorPage() {
 
         setProgress(95)
         await trackEvent("upload", "compressor")
-
-        addToRecentFiles({
-          name: file.name,
-          url: jobResult.url,
-          tool: "compressor",
-          timestamp: Date.now()
-        })
+        addToRecentFiles({ name: selectedFile.name, url: jobResult.url, tool: "compressor", timestamp: Date.now() })
 
         setProgress(100)
-        setResult(compressed)
-        setSupabaseUrl(jobResult.url)
+        setDownloadUrl(jobResult.url)
+        setResultFileName(`compressed-${selectedFile.name}`)
+        setStatus("success")
       } else {
-        alert("Unsupported file type. Please upload an image or PDF.")
-        setCompressing(false)
-        return
+        throw new Error("Unsupported file type. Please upload an image or PDF.")
       }
-    } catch (error: any) {
-      console.error("Compression failed:", error)
-      const errorMessage = error?.message || "Something went wrong during compression."
-      alert(`Compression failed: ${errorMessage}. Please check if the file is a valid PDF/Image and try again.`)
-    } finally {
-      setCompressing(false)
+    } catch (e: any) {
+      setError(e.message || "An error occurred during compression.")
+      setStatus("error")
     }
   }
 
-  const handleSaveToDashboard = async () => {
-    if (!supabaseUrl || !user) return
-    
-    try {
-      setIsSaved(true)
-      // The file is already uploaded, we just mark it as saved or keep it in metadata
-      // In a real app, this might update the file record with is_saved = true
-      await saveFileMetadata({
-        file_name: file!.name,
-        file_type: file!.type,
-        file_size: result!.size,
-        tool_used: "compressor",
-        storage_path: supabaseUrl,
-        download_url: supabaseUrl,
-        is_saved: true
-      })
-    } catch (error) {
-      console.error("Failed to save:", error)
-      setIsSaved(false)
+  const handleDownload = () => {
+    if (downloadUrl) {
+      const link = document.createElement("a")
+      link.href = downloadUrl
+      link.download = resultFileName
+      link.click()
     }
   }
 
-  const handleDownload = async () => {
-    if (!supabaseUrl || !file) return
-    await trackEvent("download", "compressor")
-    const link = document.createElement("a")
-    link.href = supabaseUrl
-    link.download = `compressed-${file.name}`
-    link.click()
+  const handleReset = () => {
+    setFile(null)
+    setStatus("idle")
+    setProgress(0)
+    setError("")
+    setDownloadUrl(null)
   }
 
   return (
-    <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <h1 className="text-4xl font-extrabold mb-2 tracking-tight">Industrial Compressor</h1>
-      <p className="text-lg text-muted-foreground mb-10">Professional-grade compression for images and documents.</p>
-
-      <div className="space-y-8">
-        <Card className="p-8 border-dashed border-2 bg-muted/30">
-          <h2 className="text-xl font-bold mb-6">1. Upload File</h2>
-          <FileUploader onFileSelect={handleFileSelect} loading={compressing} />
-
-          {file && (
-            <div className="mt-6 p-4 bg-background border border-border rounded-xl shadow-sm flex items-center justify-between">
-              <div>
-                <p className="font-semibold text-sm truncate max-w-[200px]">{file.name}</p>
-                <p className="text-xs text-muted-foreground">{getFileSize(file.size)} • {file.type}</p>
-              </div>
-              <CheckCircle className="w-5 h-5 text-green-500" />
-            </div>
-          )}
-        </Card>
-
-        {file && (
-          <Card className="p-8 shadow-xl">
-            <h2 className="text-xl font-bold mb-6">2. Configure Compression</h2>
-            
-            {file.type.startsWith("image/") ? (
-              <div className="space-y-6">
-                <div className="flex justify-between items-center">
-                  <label className="text-sm font-semibold">Image Quality: {imageQuality}%</label>
-                  <span className="text-xs font-medium px-2 py-1 bg-primary/10 text-primary rounded-full">
-                    {imageQuality < 50 ? "High Compression" : imageQuality < 80 ? "Balanced" : "Best Quality"}
-                  </span>
-                </div>
-                <input
-                  type="range"
-                  min="5"
-                  max="100"
-                  step="5"
-                  value={imageQuality}
-                  onChange={(e) => setImageQuality(Number(e.target.value))}
-                  className="w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer accent-primary"
-                />
-              </div>
-            ) : file.type === "application/pdf" ? (
-              <div className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {(["extreme", "recommended", "low"] as CompressionLevel[]).map((level) => (
-                    <button
-                      key={level}
-                      onClick={() => setPdfLevel(level)}
-                      className={`py-4 px-3 text-center rounded-xl border-2 transition-all flex flex-col items-center gap-2 ${
-                        pdfLevel === level 
-                          ? "border-primary bg-primary/5 shadow-inner" 
-                          : "border-border hover:border-primary/30"
-                      }`}
-                    >
-                      <span className="font-bold capitalize">{level}</span>
-                      <span className="text-[10px] sm:text-xs text-muted-foreground leading-tight">
-                        {level === 'extreme' ? 'High compression, lower quality' : level === 'recommended' ? 'Good quality, good compression' : 'High quality, low compression'}
-                      </span>
-                    </button>
-                  ))}
-                </div>
-                <div className="p-4 bg-primary/5 rounded-xl flex gap-3 text-sm italic">
-                  <Info className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                  <p>
-                    {pdfLevel === 'low' 
-                      ? "A purely structural optimization. Extracts hidden metadata and compresses objects without modifying image quality or text vectors." 
-                      : "Our hybrid engine re-renders massive hidden images and drops pixel density to aggressively squash the file size."}
-                  </p>
-                </div>
-              </div>
-            ) : null}
-
-            <Button 
-              onClick={handleCompress} 
-              disabled={compressing} 
-              className="w-full h-14 mt-8 rounded-xl text-lg font-bold shadow-lg shadow-primary/20"
+    <ToolLayout
+      title="Universal Compressor"
+      description="Smart compression for PDFs and Images. Drastically reduce file sizes without losing noticeable quality."
+    >
+      <div className="flex flex-col items-center justify-center min-h-[400px]">
+        <AnimatePresence mode="wait">
+          {status === "idle" && (
+            <motion.div 
+              key="idle"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="w-full"
             >
-              {compressing ? <Loader2 className="w-6 h-6 animate-spin" /> : "Start Compression"}
-            </Button>
-          </Card>
-        )}
+              <UploadCard 
+                onUpload={handleUpload} 
+                accept="image/*,application/pdf"
+                title="Drop your PDF or Image here"
+              />
+            </motion.div>
+          )}
 
-        {compressing && (
-          <div className="animate-in fade-in slide-in-from-bottom-4">
-             <div className="flex justify-between text-sm mb-2 font-medium">
-                <span>Optimizing objects...</span>
-                <span>{progress}%</span>
-              </div>
-              <div className="w-full bg-muted rounded-full h-3 overflow-hidden">
-                <div
-                  className="bg-primary h-full transition-all duration-500 ease-out"
-                  style={{ width: `${progress}%` }}
-                />
-              </div>
-          </div>
-        )}
-
-        {result && (
-          <Card className="p-8 border-2 border-green-500/20 bg-green-500/5 shadow-2xl animate-in zoom-in-95 duration-300">
-            <div className="flex items-start justify-between mb-8">
-              <div>
-                <h2 className="text-2xl font-black text-green-700 dark:text-green-400">SUCCESS!</h2>
-                <p className="text-green-600/80 font-medium">Your file is ready.</p>
-              </div>
-              <div className="text-right">
-                <p className="text-3xl font-black text-green-700">
-                  -{Math.round((1 - result.size / file!.size) * 100)}%
-                </p>
-                <p className="text-xs font-bold uppercase tracking-widest text-green-600/60">Smaller</p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4 mb-8">
-              <div className="p-4 bg-background rounded-xl border border-border shadow-sm">
-                <p className="text-xs text-muted-foreground uppercase font-bold tracking-tighter mb-1">Before</p>
-                <p className="text-xl font-bold">{getFileSize(file!.size)}</p>
-              </div>
-              <div className="p-4 bg-background rounded-xl border border-border shadow-sm">
-                <p className="text-xs text-primary uppercase font-bold tracking-tighter mb-1">After</p>
-                <p className="text-xl font-bold text-primary">{getFileSize(result.size)}</p>
-              </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button onClick={handleDownload} className="flex-1 h-14 rounded-xl text-lg font-bold gap-2">
-                <Download className="w-5 h-5" />
-                Download Now
-              </Button>
-              {user && (
-                <Button 
-                  onClick={handleSaveToDashboard} 
-                  disabled={isSaved} 
-                  variant="outline" 
-                   className={`flex-1 h-14 rounded-xl text-lg font-bold gap-2 ${isSaved ? "bg-green-100 text-green-700 border-green-200" : ""}`}
-                >
-                  {isSaved ? <CheckCircle className="w-5 h-5" /> : <Save className="w-5 h-5" />}
-                  {isSaved ? "Saved to Dashboard" : "Save to Dashboard"}
-                </Button>
-              )}
-            </div>
-          </Card>
-        )}
+          {status !== "idle" && (
+            <motion.div
+              key="processing"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="w-full"
+            >
+              <ProcessingStatus
+                status={status}
+                progress={progress}
+                title={status === "processing" ? `Compressing ${file?.name}...` : undefined}
+                description={status === "processing" ? "Optimizing the file contents to reduce size..." : undefined}
+                error={error}
+                onDownload={handleDownload}
+                onReset={handleReset}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-
-      <Footer />
-    </main>
+    </ToolLayout>
   )
 }

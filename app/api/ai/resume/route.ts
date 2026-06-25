@@ -10,25 +10,30 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { action, tool } = await request.json()
+    const { fileId } = await request.json()
 
-    if (!action) {
-      return NextResponse.json({ error: 'Action is required' }, { status: 400 })
+    if (!fileId) {
+      return NextResponse.json({ error: 'File ID is required' }, { status: 400 })
     }
 
-    // Insert log into activity_logs
-    const { data, error } = await supabase
-      .from('activity_logs')
+    // Insert job into ai_jobs
+    const { data: job, error } = await supabase
+      .from('ai_jobs')
       .insert({
         user_id: user.id,
-        action: `${action} via ${tool || 'unknown tool'}`
+        file_id: fileId,
+        job_type: 'resume_parsing',
+        result: { status: 'processing' }
       })
       .select()
       .single()
 
     if (error) throw error
 
-    return NextResponse.json({ success: true, data })
+    // Here you would trigger an asynchronous job (e.g., BullMQ or serverless function)
+    // For now, we simulate processing:
+
+    return NextResponse.json({ success: true, jobId: job.id })
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }

@@ -1,9 +1,11 @@
-"use client"
+'use client'
 
 import Link from "next/link"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { useAuth } from "@/lib/auth-context"
+import { useEffect, useState } from "react"
+import { createClient } from "@/utils/supabase/client"
+import { logout } from "@/app/login/actions"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -13,21 +15,35 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { ChevronDown } from "lucide-react"
+import { ChevronDown, Search } from "lucide-react"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { CommandMenu } from "@/components/command-menu"
 
 export function Navbar() {
-  const { user, loading: authLoading, logout } = useAuth()
+  const [user, setUser] = useState<any>(null)
+  const [authLoading, setAuthLoading] = useState(true)
   const router = useRouter()
+  const supabase = createClient()
 
-  const handleLogout = async () => {
-    try {
-      await logout()
-      router.push("/")
-    } catch (error) {
-      console.error("Logout error:", error)
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      setUser(user)
+      setAuthLoading(false)
     }
-  }
+
+    fetchUser()
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setUser(session?.user || null)
+      }
+    )
+
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [supabase.auth])
 
   return (
     <nav className="border-b border-border bg-background/95 backdrop-blur sticky top-0 z-50">
@@ -108,6 +124,9 @@ export function Navbar() {
           </div>
 
           <div className="flex gap-3 items-center">
+            <Button variant="ghost" size="icon" className="hidden sm:flex text-muted-foreground" onClick={() => document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true }))}>
+              <Search className="w-5 h-5" />
+            </Button>
             <ThemeToggle />
 
             {!authLoading && (
@@ -120,9 +139,11 @@ export function Navbar() {
                         Dashboard
                       </Button>
                     </Link>
-                    <Button onClick={handleLogout} size="sm" variant="outline">
-                      Logout
-                    </Button>
+                    <form action={logout}>
+                      <Button type="submit" size="sm" variant="outline">
+                        Logout
+                      </Button>
+                    </form>
                   </>
                 ) : (
                   <>
@@ -141,6 +162,7 @@ export function Navbar() {
           </div>
         </div>
       </div>
+      <CommandMenu />
     </nav>
   )
 }

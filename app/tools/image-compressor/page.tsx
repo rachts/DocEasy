@@ -1,37 +1,37 @@
 "use client"
 
 import { useState } from "react"
+import { motion, AnimatePresence } from "motion/react"
+import { ToolLayout } from "@/components/ui/tool-layout"
+import { UploadCard } from "@/components/ui/upload-card"
+import { ProcessingStatus, StatusType } from "@/components/ui/processing-status"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { FileUploader } from "@/components/file-uploader"
+import { Image as ImageIcon, Settings2, Download } from "lucide-react"
 import { compressImageWithQuality, calculateCompressionRatio } from "@/lib/image-compressor-utils"
-import { getFileSize } from "@/lib/storage-utils"
-import { Download, Loader2 } from "lucide-react"
-import { Footer } from "@/components/footer"
 import { uploadFileToSupabase, saveFileMetadata, trackEvent, addToRecentFiles } from "@/lib/supabase/helpers"
 
 export default function ImageCompressorPage() {
   const [file, setFile] = useState<File | null>(null)
   const [preview, setPreview] = useState<string | null>(null)
-  const [compressing, setCompressing] = useState(false)
-  const [result, setResult] = useState<Blob | null>(null)
-  const [quality, setQuality] = useState(80)
-  const [supabaseUrl, setSupabaseUrl] = useState<string | null>(null)
+  const [status, setStatus] = useState<StatusType | "configure">("idle")
   const [progress, setProgress] = useState(0)
+  const [error, setError] = useState<string>("")
+  const [quality, setQuality] = useState(80)
+  const [result, setResult] = useState<Blob | null>(null)
+  const [downloadUrl, setDownloadUrl] = useState<string | null>(null)
 
-  const handleFileSelect = (selectedFile: File) => {
+  const handleUpload = (selectedFile: File) => {
     if (!selectedFile.type.startsWith("image/")) {
       alert("Please select an image file")
       return
     }
-
     setFile(selectedFile)
-    setResult(null)
-
-    // Create preview
+    
     const reader = new FileReader()
     reader.onload = (e) => {
       setPreview(e.target?.result as string)
+      setStatus("configure")
     }
     reader.readAsDataURL(selectedFile)
   }
@@ -39,15 +39,13 @@ export default function ImageCompressorPage() {
   const handleCompress = async () => {
     if (!file) return
 
-    setCompressing(true)
+    setStatus("processing")
     setProgress(10)
     try {
       const compressed = await compressImageWithQuality(file, quality)
       setProgress(50)
       
       const fileName = `${file.name.split(".")[0]}-compressed.${file.name.split(".").pop()}`
-
-      // Upload to Supabase
       const { filePath, publicUrl } = await uploadFileToSupabase(compressed, fileName, "image-compressor")
       setProgress(80)
 
@@ -56,160 +54,149 @@ export default function ImageCompressorPage() {
         file_type: file.type,
         file_size: compressed.size,
         tool_used: "image-compressor",
-        storage_path: filePath
+        storage_path: filePath,
+        download_url: publicUrl,
+        is_saved: false
       })
       setProgress(90)
 
       await trackEvent("upload", "image-compressor")
-
-      // Add to recent files
-      addToRecentFiles({
-        name: fileName,
-        url: publicUrl,
-        tool: "image-compressor",
-        timestamp: Date.now()
-      })
+      addToRecentFiles({ name: fileName, url: publicUrl, tool: "image-compressor", timestamp: Date.now() })
 
       setResult(compressed)
-      setSupabaseUrl(publicUrl)
+      setDownloadUrl(publicUrl)
       setProgress(100)
-    } catch (error) {
-      console.error("Compression failed:", error)
-      alert("Failed to compress image. Please try again.")
-    } finally {
-      setCompressing(false)
+      setStatus("success")
+    } catch (e: any) {
+      console.error("Compression failed:", e)
+      setError(e.message || "Failed to compress image. Please try again.")
+      setStatus("error")
     }
   }
 
-  const handleDownload = async () => {
-    if (!supabaseUrl) return
+  const handleDownload = () => {
+    if (downloadUrl) {
+      const link = document.createElement("a")
+      link.href = downloadUrl
+      link.download = `compressed-${file?.name}`
+      link.click()
+    }
+  }
 
-    await trackEvent("download", "image-compressor")
-
-    const link = document.createElement("a")
-    link.href = supabaseUrl
-    link.download = `compressed-${file?.name}`
-    link.click()
+  const handleReset = () => {
+    setFile(null)
+    setPreview(null)
+    setStatus("idle")
+    setProgress(0)
+    setError("")
+    setResult(null)
+    setDownloadUrl(null)
   }
 
   const compressionRatio = file && result ? calculateCompressionRatio(file.size, result.size) : 0
 
   return (
-    <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <h1 className="text-3xl font-bold mb-2">Image Compressor</h1>
-      <p className="text-muted-foreground mb-8">Reduce image file size with adjustable quality</p>
-
-      <div className="space-y-6">
-        <Card className="p-6">
-          <h2 className="text-lg font-bold mb-4">Select Image</h2>
-          <p className="text-sm text-muted-foreground mb-4">Supported formats: JPG, PNG, WebP</p>
-          <FileUploader onFileSelect={handleFileSelect} loading={compressing} accept="image/*" />
-
-          {file && (
-            <div className="mt-4 p-3 bg-muted rounded">
-              <p className="text-sm">
-                <strong>File:</strong> {file.name}
-              </p>
-              <p className="text-sm">
-                <strong>Original Size:</strong> {getFileSize(file.size)}
-              </p>
-              <p className="text-sm">
-                <strong>Type:</strong> {file.type}
-              </p>
-            </div>
+    <ToolLayout
+      title="Image Compressor"
+      description="Reduce image file sizes without sacrificing quality. Perfect for optimizing web assets or saving storage space."
+    >
+      <div className="flex flex-col items-center justify-center min-h-[400px]">
+        <AnimatePresence mode="wait">
+          {status === "idle" && (
+            <motion.div 
+              key="idle"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="w-full"
+            >
+              <UploadCard 
+                onUpload={handleUpload} 
+                accept="image/*"
+                title="Drop your Image here"
+                icon={<ImageIcon className="w-10 h-10" />}
+              />
+            </motion.div>
           )}
-        </Card>
 
-        {preview && (
-          <Card className="p-6">
-            <h2 className="text-lg font-bold mb-4">Preview</h2>
-            <img
-              src={preview || "/placeholder.svg"}
-              alt="Preview"
-              className="w-full max-h-96 object-contain rounded bg-muted"
-            />
-          </Card>
-        )}
-
-        {file && !result && (
-          <Card className="p-6">
-            <h2 className="text-lg font-bold mb-4">Compression Settings</h2>
-            <div className="space-y-4">
-              <div>
-                <div className="flex justify-between items-center mb-2">
-                  <label className="block text-sm font-medium">Quality: {quality}%</label>
-                  <span className="text-xs text-muted-foreground">
-                    {quality >= 90 ? "High" : quality >= 70 ? "Medium" : quality >= 50 ? "Low" : "Very Low"}
-                  </span>
+          {status === "configure" && (
+            <motion.div
+              key="configure"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="w-full max-w-2xl"
+            >
+              <Card className="p-8 shadow-glass bg-card/40 backdrop-blur-md border-border/50">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="p-3 bg-primary/10 rounded-xl">
+                    <Settings2 className="w-6 h-6 text-primary" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-bold">Configure Compression</h2>
+                    <p className="text-sm text-muted-foreground">{file?.name}</p>
+                  </div>
                 </div>
-                <input
-                  type="range"
-                  min="10"
-                  max="100"
-                  step="5"
-                  value={quality}
-                  onChange={(e) => setQuality(Number(e.target.value))}
-                  className="w-full"
-                />
-                <div className="flex justify-between text-xs text-muted-foreground mt-1">
-                  <span>Smaller file</span>
-                  <span>Better quality</span>
+
+                {preview && (
+                  <div className="mb-8 rounded-2xl overflow-hidden bg-black/5 flex items-center justify-center max-h-[300px]">
+                    <img src={preview} alt="Preview" className="max-h-[300px] object-contain w-auto h-auto" />
+                  </div>
+                )}
+
+                <div className="space-y-6">
+                  <div>
+                    <div className="flex justify-between items-center mb-4">
+                      <label className="block font-semibold">Target Quality</label>
+                      <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-bold">
+                        {quality}%
+                      </span>
+                    </div>
+                    <input
+                      type="range"
+                      min="10"
+                      max="100"
+                      step="5"
+                      value={quality}
+                      onChange={(e) => setQuality(Number(e.target.value))}
+                      className="w-full h-2 bg-secondary rounded-lg appearance-none cursor-pointer accent-primary"
+                    />
+                    <div className="flex justify-between text-xs text-muted-foreground mt-2 font-medium">
+                      <span>Smaller File Size</span>
+                      <span>Better Quality</span>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-4 pt-4">
+                    <Button variant="outline" onClick={handleReset} className="w-full h-12 rounded-xl">Cancel</Button>
+                    <Button onClick={handleCompress} className="w-full h-12 rounded-xl shadow-glow">Compress Image</Button>
+                  </div>
                 </div>
-              </div>
+              </Card>
+            </motion.div>
+          )}
 
-              <Button onClick={handleCompress} disabled={compressing} className="w-full" size="lg">
-                {compressing ? "Compressing..." : "Compress Image"}
-              </Button>
-            </div>
-          </Card>
-        )}
-
-        {result && (
-          <Card className="p-6 bg-accent/5 border-accent">
-            <h2 className="text-lg font-bold mb-4 text-accent">Compression Complete</h2>
-            <div className="space-y-3 mb-4">
-              <p className="text-sm">
-                <strong>Original Size:</strong> {getFileSize(file!.size)}
-              </p>
-              <p className="text-sm">
-                <strong>Compressed Size:</strong> {getFileSize(result.size)}
-              </p>
-              <p className="text-sm">
-                <strong>Size Reduced:</strong> {getFileSize(file!.size - result.size)} ({compressionRatio}%)
-              </p>
-              <p className="text-sm">
-                <strong>Quality Level:</strong> {quality}%
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-4 mb-4">
-              <div>
-                <p className="text-xs font-medium mb-2">Original</p>
-                <img
-                  src={preview || "/placeholder.svg"}
-                  alt="Original"
-                  className="w-full h-48 object-contain rounded bg-muted border border-border"
-                />
-              </div>
-              <div>
-                <p className="text-xs font-medium mb-2">Compressed</p>
-                <img
-                  src={URL.createObjectURL(result) || "/placeholder.svg"}
-                  alt="Compressed"
-                  className="w-full h-48 object-contain rounded bg-muted border border-border"
-                />
-              </div>
-            </div>
-
-            <Button onClick={handleDownload} className="w-full" size="lg">
-              <Download className="w-5 h-5 mr-2" />
-              Download Compressed Image
-            </Button>
-          </Card>
-        )}
+          {(status === "processing" || status === "success" || status === "error") && (
+            <motion.div
+              key="processing"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="w-full"
+            >
+              <ProcessingStatus
+                status={status}
+                progress={progress}
+                title={status === "processing" ? "Compressing image..." : undefined}
+                description={status === "success" ? `Reduced by ${compressionRatio}%` : undefined}
+                error={error}
+                onDownload={handleDownload}
+                onReset={handleReset}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-
-      <Footer />
-    </main>
+    </ToolLayout>
   )
 }

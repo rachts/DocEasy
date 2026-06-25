@@ -1,39 +1,53 @@
+import { createClient } from '@/utils/supabase/client'
+import { v4 as uuidv4 } from 'uuid'
+
 export interface StoredFile {
   id: string
-  name: string
-  size: number
-  type: string
-  category: string
-  tags: string[]
-  data: string
-  uploadedAt: number
+  user_id: string
+  file_name: string
+  file_type: string
+  original_size: number
+  processed_size?: number
+  storage_path: string
+  tool_used?: string
+  created_at: string
 }
 
-const STORAGE_KEY = "doceasy_files"
+export async function uploadFileToSupabase(file: File, bucket: 'uploads' | 'avatars' = 'uploads'): Promise<string> {
+  const supabase = createClient()
+  const { data: { user } } = await supabase.auth.getUser()
 
-export function getGuestFiles(): StoredFile[] {
-  if (typeof window === "undefined") return []
-  const stored = localStorage.getItem(STORAGE_KEY)
-  return stored ? JSON.parse(stored) : []
-}
+  if (!user) throw new Error('User must be logged in to upload files')
 
-export function saveGuestFile(file: StoredFile) {
-  if (typeof window === "undefined") return
-  const files = getGuestFiles()
-  const existing = files.findIndex((f) => f.id === file.id)
-  if (existing >= 0) {
-    files[existing] = file
-  } else {
-    files.push(file)
+  const fileExt = file.name.split('.').pop()
+  const fileName = `${uuidv4()}.${fileExt}`
+  const filePath = `${user.id}/${fileName}`
+
+  const { error: uploadError } = await supabase.storage
+    .from(bucket)
+    .upload(filePath, file)
+
+  if (uploadError) {
+    throw uploadError
   }
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(files))
+
+  return filePath
 }
 
-export function deleteGuestFile(id: string) {
-  if (typeof window === "undefined") return
-  const files = getGuestFiles()
-  const filtered = files.filter((f) => f.id !== id)
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered))
+export async function getFileUrl(path: string, bucket: 'uploads' | 'exports' | 'avatars' = 'uploads'): Promise<string> {
+  const supabase = createClient()
+  const { data } = await supabase.storage.from(bucket).createSignedUrl(path, 60 * 60) // 1 hour expiry
+  
+  if (!data?.signedUrl) throw new Error('Failed to generate secure URL')
+  
+  return data.signedUrl
+}
+
+export async function deleteSupabaseFile(path: string, bucket: 'uploads' | 'exports' | 'avatars' = 'uploads') {
+  const supabase = createClient()
+  const { error } = await supabase.storage.from(bucket).remove([path])
+  
+  if (error) throw error
 }
 
 export function getFileSize(bytes: number): string {
@@ -42,13 +56,4 @@ export function getFileSize(bytes: number): string {
   const sizes = ["Bytes", "KB", "MB", "GB"]
   const i = Math.floor(Math.log(bytes) / Math.log(k))
   return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + " " + sizes[i]
-}
-
-export function fileToBase64(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onload = () => resolve(reader.result as string)
-    reader.onerror = reject
-    reader.readAsDataURL(file)
-  })
 }

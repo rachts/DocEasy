@@ -28,63 +28,60 @@ export function LandingPage() {
   return (
     <main className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="relative pt-20 pb-16 overflow-hidden">
-        {/* Abstract Background blobs */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-6xl h-full -z-10 opacity-30 dark:opacity-20 pointer-events-none">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-primary/20 rounded-full blur-[100px]" />
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-500/20 rounded-full blur-[100px]" />
-        </div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section className="relative pt-32 pb-20 overflow-hidden flex flex-col items-center text-center">
+        {/* Premium background glow effect */}
+        <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-primary/20 blur-[120px] rounded-[100%] pointer-events-none" />
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             variants={stagger}
             initial="initial"
             animate="animate"
-            className="flex flex-col items-center"
+            className="flex flex-col items-center relative z-10"
           >
             <motion.div 
               variants={fadeInUp}
-              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-8 border border-primary/20"
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary/50 border border-border/50 text-muted-foreground text-sm font-medium mb-8 backdrop-blur-md"
             >
-              <Zap className="w-4 h-4" />
-              <span>100% Free & Privacy Focused</span>
+              <span className="w-2 h-2 rounded-full bg-primary animate-pulse shadow-[0_0_8px_rgba(var(--primary),0.8)]"></span>
+              Privacy-First Workspace
             </motion.div>
 
             <motion.h1 
               variants={fadeInUp}
-              className="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight text-foreground text-balance leading-[1.1]"
+              className="text-5xl md:text-7xl font-semibold tracking-tight text-foreground text-balance leading-[1.1] mb-6"
             >
-              The ultimate toolkit for your <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-600">documents</span>
+              Document processing, <br className="hidden md:block"/>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-500">simplified.</span>
             </motion.h1>
 
             <motion.p 
               variants={fadeInUp}
-              className="text-xl text-muted-foreground mb-10 max-w-2xl leading-relaxed text-balance"
+              className="text-lg md:text-xl text-muted-foreground mb-10 max-w-2xl leading-relaxed text-balance"
             >
-              Merge, compress, and convert your files in seconds. 
-              No login, no watermarks, and no data tracking. Just pure speed.
+              The ultra-fast, secure, and professional suite for all your document needs. 
+              Convert, compress, and sign in seconds—without ever leaving your browser.
             </motion.p>
 
             <motion.div 
               variants={fadeInUp}
-              className="flex flex-col sm:flex-row gap-4 justify-center w-full sm:w-auto"
+              className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto"
             >
               <Link href="/tools" className="w-full sm:w-auto">
-                <Button size="lg" className="w-full sm:w-auto text-lg h-14 px-8 rounded-2xl shadow-xl shadow-primary/20 hover:shadow-primary/30 transition-all">
-                  Upload your file
-                  <ArrowRight className="w-5 h-5 ml-2" />
+                <Button size="lg" className="w-full sm:w-auto h-14 px-8 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground text-base font-medium shadow-[0_0_40px_rgba(var(--primary),0.4)] transition-all active:scale-[0.98]">
+                  Try for free
                 </Button>
               </Link>
               <Link href="/dashboard" className="w-full sm:w-auto">
-                <Button variant="outline" size="lg" className="w-full sm:w-auto text-lg h-14 px-8 rounded-2xl bg-background/50 backdrop-blur-sm">
-                  Explore Tools
+                <Button variant="outline" size="lg" className="w-full sm:w-auto h-14 px-8 rounded-full border-border/50 bg-card/50 hover:bg-muted text-foreground text-base font-medium backdrop-blur-sm transition-all active:scale-[0.98]">
+                  View Demo
                 </Button>
               </Link>
             </motion.div>
 
             <motion.div 
               variants={fadeInUp}
-              className="mt-16 w-full max-w-5xl"
+              className="mt-20 w-full max-w-5xl"
             >
               <TrustBadges />
             </motion.div>
