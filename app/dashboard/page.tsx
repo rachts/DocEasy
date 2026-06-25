@@ -8,6 +8,7 @@ import { RecentFilesWidget } from '@/components/dashboard/recent-files-widget'
 import { FavoritesWidget } from '@/components/dashboard/favorites-widget'
 import { ActivityTimeline } from '@/components/dashboard/activity-timeline'
 import { StorageUsageCard } from '@/components/dashboard/storage-usage-card'
+import { ProfileDropdown } from '@/components/dashboard/profile-dropdown'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -34,9 +35,7 @@ export default async function DashboardPage() {
             <Bell className="w-5 h-5" />
             <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-primary border-2 border-background"></span>
           </button>
-          <div className="w-9 h-9 flex items-center justify-center font-bold text-sm bg-gradient-to-tr from-blue-500 to-primary text-white rounded-full shadow-md cursor-pointer hover:opacity-90 transition-opacity">
-            {userInitial}
-          </div>
+          <ProfileDropdown userInitial={userInitial} userEmail={user.email || ""} />
         </div>
       </header>
 
