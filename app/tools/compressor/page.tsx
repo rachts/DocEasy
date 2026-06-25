@@ -57,13 +57,20 @@ export default function CompressorPage() {
         const response = await fetch('/api/compression', { method: 'POST', body: formData })
         if (!response.ok) throw new Error("Failed to start compression")
         
-        const { jobId } = await response.json()
+        const data = await response.json()
         let jobStatus = 'waiting'
         let jobResult = null
+
+        if (data.jobId === 'sync-job' && data.result) {
+          jobStatus = 'completed'
+          jobResult = data.result
+        } else if (!data.jobId) {
+          throw new Error("No job ID returned")
+        }
         
         while (jobStatus === 'waiting' || jobStatus === 'active') {
           await new Promise(resolve => setTimeout(resolve, 1000))
-          const statusRes = await fetch(`/api/compression/status/${jobId}`)
+          const statusRes = await fetch(`/api/compression/status/${data.jobId}`)
           if (!statusRes.ok) throw new Error('Failed to check status')
           
           const statusData = await statusRes.json()

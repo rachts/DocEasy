@@ -1,33 +1,25 @@
 "use client"
 
-import { useState } from "react"
 import Link from "next/link"
-import { ArrowLeft, Mail, Send, CheckCircle2, AlertCircle, Loader2 } from "lucide-react"
+import { ArrowLeft, Mail, Send } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { submitContactForm } from "./actions"
 
 export default function ContactPage() {
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [success, setSuccess] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    setIsSubmitting(true)
-    setError(null)
-    setSuccess(false)
 
     const formData = new FormData(e.currentTarget)
-    const result = await submitContactForm(formData)
+    const name = formData.get("name") as string
+    const email = formData.get("email") as string
+    const subject = formData.get("subject") as string
+    const message = formData.get("message") as string
 
-    if (result.error) {
-      setError(result.error)
-    } else {
-      setSuccess(true)
-      e.currentTarget.reset()
-    }
-    
-    setIsSubmitting(false)
+    const mailtoSubject = encodeURIComponent(`DocEasy Contact: ${subject}`)
+    const mailtoBody = encodeURIComponent(
+      `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
+    )
+
+    window.location.href = `mailto:tiwari.rachit@gmail.com?subject=${mailtoSubject}&body=${mailtoBody}`
   }
 
   return (
@@ -55,24 +47,6 @@ export default function ContactPage() {
         </div>
 
         <div className="bg-card border border-border/50 rounded-3xl p-8 shadow-sm">
-          {success && (
-            <div className="mb-8 p-4 bg-green-500/10 border border-green-500/20 rounded-2xl flex flex-col items-center justify-center text-center">
-              <CheckCircle2 className="w-10 h-10 text-green-500 mb-3" />
-              <h3 className="font-bold text-lg mb-1">Message Sent!</h3>
-              <p className="text-muted-foreground text-sm">Thank you for reaching out. We will get back to you soon.</p>
-            </div>
-          )}
-
-          {error && (
-            <div className="mb-8 p-4 bg-red-500/10 border border-red-500/20 rounded-2xl flex items-start gap-3">
-              <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
-              <div className="text-sm">
-                <p className="font-bold text-red-500 mb-1">Could not send message</p>
-                <p className="text-red-500/80">{error}</p>
-              </div>
-            </div>
-          )}
-
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
@@ -125,20 +99,10 @@ export default function ContactPage() {
 
             <Button 
               type="submit" 
-              disabled={isSubmitting} 
-              className="w-full h-12 rounded-xl text-md font-bold bg-primary hover:bg-primary/90 disabled:opacity-70 transition-all"
+              className="w-full h-12 rounded-xl text-md font-bold bg-primary hover:bg-primary/90 transition-all"
             >
-              {isSubmitting ? (
-                <>
-                  <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                  Sending...
-                </>
-              ) : (
-                <>
-                  <Send className="w-5 h-5 mr-2" />
-                  Send Message
-                </>
-              )}
+              <Send className="w-5 h-5 mr-2" />
+              Send via Email
             </Button>
           </form>
         </div>
