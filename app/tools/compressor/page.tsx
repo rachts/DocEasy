@@ -7,6 +7,7 @@ import { UploadCard } from "@/components/ui/upload-card"
 import { ProcessingStatus, StatusType } from "@/components/ui/processing-status"
 import { compressImage } from "@/lib/compression-utils"
 import { uploadFileToSupabase, saveFileMetadata, trackEvent, addToRecentFiles } from "@/lib/supabase/helpers"
+import { compressPDFWithRendering } from "@/lib/pdf-compression-advanced"
 
 export default function CompressorPage() {
   const [file, setFile] = useState<File | null>(null)
@@ -15,6 +16,8 @@ export default function CompressorPage() {
   const [error, setError] = useState<string>("")
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null)
   const [resultFileName, setResultFileName] = useState("")
+  const [level, setLevel] = useState<"less" | "recommended" | "extreme">("recommended")
+  const [engine, setEngine] = useState<"auto" | "browser" | "server">("auto")
 
   const handleUpload = async (selectedFile: File) => {
     setFile(selectedFile)
@@ -50,11 +53,80 @@ export default function CompressorPage() {
         setStatus("success")
       } else if (selectedFile.type === "application/pdf") {
         setProgress(20)
+
+        // --- BROWSER ENGINE ---
+        if (engine === "browser") {
+          console.log("Using browser engine directly...");
+          setProgress(30)
+          const compressed = await compressPDFWithRendering(selectedFile, level)
+          setProgress(60)
+          const { filePath, publicUrl } = await uploadFileToSupabase(compressed, selectedFile.name, "compressor")
+          
+          setProgress(85)
+          await saveFileMetadata({
+            file_name: selectedFile.name,
+            file_type: selectedFile.type,
+            file_size: compressed.size,
+            tool_used: "compressor",
+            storage_path: filePath,
+            download_url: publicUrl,
+            is_saved: false
+          })
+          
+          setProgress(95)
+          await trackEvent("upload", "compressor")
+          addToRecentFiles({ name: selectedFile.name, url: publicUrl, tool: "compressor", timestamp: Date.now() })
+          
+          setProgress(100)
+          setDownloadUrl(publicUrl)
+          setResultFileName(`compressed-${selectedFile.name}`)
+          setStatus("success")
+          return;
+        }
+
+        // --- SERVER / AUTO ENGINE ---
         const formData = new FormData()
         formData.append('file', selectedFile)
-        formData.append('level', "recommended")
+        formData.append('level', level)
 
         const response = await fetch('/api/compression', { method: 'POST', body: formData })
+        
+        if (response.status === 503) {
+          const errorData = await response.json().catch(() => ({}));
+          if (errorData.fallbackToClient) {
+            if (engine === "server") {
+              throw new Error("Server engine is unavailable and fallback is disabled.")
+            }
+            
+            console.log("Server engine unavailable, falling back to client-side compression...");
+            setProgress(30)
+            const compressed = await compressPDFWithRendering(selectedFile, level)
+            setProgress(60)
+            const { filePath, publicUrl } = await uploadFileToSupabase(compressed, selectedFile.name, "compressor")
+            
+            setProgress(85)
+            await saveFileMetadata({
+              file_name: selectedFile.name,
+              file_type: selectedFile.type,
+              file_size: compressed.size,
+              tool_used: "compressor",
+              storage_path: filePath,
+              download_url: publicUrl,
+              is_saved: false
+            })
+            
+            setProgress(95)
+            await trackEvent("upload", "compressor")
+            addToRecentFiles({ name: selectedFile.name, url: publicUrl, tool: "compressor", timestamp: Date.now() })
+            
+            setProgress(100)
+            setDownloadUrl(publicUrl)
+            setResultFileName(`compressed-${selectedFile.name}`)
+            setStatus("success")
+            return;
+          }
+        }
+
         if (!response.ok) throw new Error("Failed to start compression")
         
         const data = await response.json()
@@ -148,11 +220,39 @@ export default function CompressorPage() {
               exit={{ opacity: 0, scale: 0.95 }}
               className="w-full"
             >
-              <UploadCard 
-                onUpload={handleUpload} 
-                accept="image/*,application/pdf"
-                title="Drop your PDF or Image here"
-              />
+              <div className="w-full flex flex-col gap-4">
+                <UploadCard 
+                  onUpload={handleUpload} 
+                  accept="image/*,application/pdf"
+                  title="Drop your PDF or Image here"
+                />
+                <div className="flex flex-col gap-3 bg-card/40 backdrop-blur-sm p-4 rounded-xl border border-border">
+                  <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+                    <span className="text-sm font-medium whitespace-nowrap">PDF Compression Level:</span>
+                    <select 
+                      value={level}
+                      onChange={(e) => setLevel(e.target.value as any)}
+                      className="bg-background border border-input rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary w-full sm:w-auto flex-1"
+                    >
+                      <option value="less">Less (Lossless, Metadata only)</option>
+                      <option value="recommended">Recommended (Good Quality & Size)</option>
+                      <option value="extreme">Extreme (Smallest Size, Lower Quality)</option>
+                    </select>
+                  </div>
+                  <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+                    <span className="text-sm font-medium whitespace-nowrap">Compression Engine:</span>
+                    <select 
+                      value={engine}
+                      onChange={(e) => setEngine(e.target.value as any)}
+                      className="bg-background border border-input rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary w-full sm:w-auto flex-1"
+                    >
+                      <option value="auto">Auto (Recommended)</option>
+                      <option value="browser">Browser (Fast)</option>
+                      <option value="server">Server (Highest Compression)</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
             </motion.div>
           )}
 

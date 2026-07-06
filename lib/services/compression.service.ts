@@ -1,6 +1,7 @@
 import { execFile } from 'child_process';
 import { promisify } from 'util';
 import path from 'path';
+import { rm } from 'fs/promises';
 
 const execFileAsync = promisify(execFile);
 
@@ -29,8 +30,11 @@ export class PDFCompressionService {
 
     try {
       await execFileAsync('gs', args);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Ghostscript compression failed:', error);
+      if (error.code === 'ENOENT') {
+        throw new Error('ENGINE_UNAVAILABLE');
+      }
       throw new Error(`Compression failed: ${error}`);
     }
   }
@@ -50,8 +54,11 @@ export class PDFCompressionService {
 
     try {
       await execFileAsync('qpdf', args);
-    } catch (error) {
+    } catch (error: any) {
       console.error('qpdf linearization failed:', error);
+      if (error.code === 'ENOENT') {
+        throw new Error('ENGINE_UNAVAILABLE');
+      }
       throw new Error(`Optimization failed: ${error}`);
     }
   }
@@ -62,15 +69,16 @@ export class PDFCompressionService {
   async fullOptimize(inputPath: string, outputPath: string, level: CompressionLevel = 'recommended'): Promise<void> {
     const tempPath = `${outputPath}.tmp`;
     
-    // 1. Compress with Ghostscript
-    await this.compress(inputPath, tempPath, level);
-    
-    // 2. Linearize & strip metadata with qpdf
-    await this.linearize(tempPath, outputPath);
-    
-    // 3. Clean up temp file (in a real app, you'd use fs/promises here)
-    const { rm } = await import('fs/promises');
-    await rm(tempPath).catch(() => {});
+    try {
+      // 1. Compress with Ghostscript
+      await this.compress(inputPath, tempPath, level);
+      
+      // 2. Linearize & strip metadata with qpdf
+      await this.linearize(tempPath, outputPath);
+    } finally {
+      // 3. Clean up temp file
+      await rm(tempPath).catch(() => {});
+    }
   }
 
   private getGhostscriptProfile(level: CompressionLevel): string {

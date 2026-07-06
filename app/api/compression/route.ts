@@ -23,9 +23,15 @@ export async function POST(req: NextRequest) {
     const buffer = Buffer.from(await file.arrayBuffer());
     const tempFileName = `${crypto.randomUUID()}.pdf`;
     const tempFilePath = path.join('/tmp', tempFileName);
+    const outputPath = `${tempFilePath}-compressed.pdf`;
 
-    // Save uploaded file temporarily
-    await writeFile(tempFilePath, buffer);
+    let isQueued = false;
+    let tempFilePathCreated = false;
+
+    try {
+      // Save uploaded file temporarily
+      await writeFile(tempFilePath, buffer);
+      tempFilePathCreated = true;
 
     if (compressionQueue) {
       // Enqueue the job in BullMQ
@@ -34,6 +40,7 @@ export async function POST(req: NextRequest) {
         originalFileName: file.name,
         level,
       });
+      isQueued = true;
 
       return NextResponse.json({
         success: true,
@@ -42,8 +49,6 @@ export async function POST(req: NextRequest) {
       });
     } else {
       // Fallback to synchronous processing if no Redis/BullMQ
-      const outputPath = `${tempFilePath}-compressed.pdf`;
-      
       await compressionService.fullOptimize(tempFilePath, outputPath, level);
       
       const fileBuffer = await readFile(outputPath);
@@ -57,9 +62,6 @@ export async function POST(req: NextRequest) {
       
       const originalStat = await stat(tempFilePath);
       const compressedStat = await stat(outputPath);
-      
-      await rm(tempFilePath).catch(() => {});
-      await rm(outputPath).catch(() => {});
 
       return NextResponse.json({
         success: true,
@@ -73,8 +75,18 @@ export async function POST(req: NextRequest) {
         message: 'File compressed successfully (sync mode)',
       });
     }
+  } finally {
+      // Cleanup temp files if we're not passing them to the async queue
+      if (tempFilePathCreated && !isQueued) {
+        await rm(tempFilePath).catch(() => {});
+        await rm(outputPath).catch(() => {});
+      }
+    }
   } catch (error: any) {
     console.error('Failed to compress file:', error);
+    if (error.message === 'ENGINE_UNAVAILABLE') {
+      return NextResponse.json({ error: 'ENGINE_UNAVAILABLE', fallbackToClient: true }, { status: 503 });
+    }
     return NextResponse.json({ error: error.message || 'Internal Server Error' }, { status: 500 });
   }
 }

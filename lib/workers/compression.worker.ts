@@ -75,11 +75,11 @@ export const compressionWorker = connection
   : (null as any);
 
 if (compressionWorker) {
-  compressionWorker.on('completed', (job) => {
+  compressionWorker.on('completed', (job: Job) => {
     console.log(`Job ${job.id} has completed!`);
   });
 
-  compressionWorker.on('failed', (job, err) => {
+  compressionWorker.on('failed', (job: Job | undefined, err: Error) => {
     console.error(`Job ${job?.id} has failed with ${err.message}`);
   });
 }

@@ -70,7 +70,7 @@ export default function PDFMergerPage() {
       }
 
       const mergedPdfBytes = await mergedPdf.save()
-      const blob = new Blob([mergedPdfBytes], { type: "application/pdf" })
+      const blob = new Blob([mergedPdfBytes as any], { type: "application/pdf" })
       const fileName = "merged-document.pdf"
       
       const { filePath, publicUrl } = await uploadFileToSupabase(blob, fileName, "pdf-merger")

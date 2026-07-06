@@ -97,6 +97,11 @@ export async function compressPDFWithRendering(file: File, level: CompressionLev
         width: originalViewport.width,
         height: originalViewport.height,
       })
+      
+      // Release memory
+      canvas.width = 0
+      canvas.height = 0
+      page.cleanup()
     }
 
     // Save compressed PDF
