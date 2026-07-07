@@ -11,10 +11,10 @@
   --card-foreground: oklch(0.14 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.14 0 0);
-  --primary: oklch(0.55 0.2 280); /* Rich Indigo/Purple */
-  --primary-foreground: oklch(0.98 0 0);
-  --secondary: oklch(0.96 0 0);
-  --secondary-foreground: oklch(0.14 0 0);
+  --primary: #4F46E5; /* Minimalist Branding Identity - Indigo */
+  --primary-foreground: #FFFFFF;
+  --secondary: #10B981; /* Minimalist Branding Identity - Emerald */
+  --secondary-foreground: #FFFFFF;
   --muted: oklch(0.96 0 0);
   --muted-foreground: oklch(0.55 0 0);
   --accent: oklch(0.96 0 0);
@@ -23,32 +23,32 @@
   --destructive-foreground: oklch(0.98 0 0);
   --border: oklch(0.92 0 0);
   --input: oklch(0.92 0 0);
-  --ring: oklch(0.55 0.2 280);
+  --ring: #4F46E5;
   
   --radius: 0.75rem; /* Increased base radius for modern SaaS look */
 }
 
 .dark {
-  /* Colors - Dark (SaaS Deep Dark) */
-  --background: oklch(0.18 0.01 280); /* #09090b style */
+  /* Colors - Dark (Minimalist Branding - Slate) */
+  --background: #1E293B;
   --foreground: oklch(0.98 0 0);
-  --card: oklch(0.22 0.02 280); /* Slightly lighter #18181b style */
+  --card: #151F2E; /* Slightly darker than bg for depth */
   --card-foreground: oklch(0.98 0 0);
-  --popover: oklch(0.22 0.02 280);
+  --popover: #151F2E;
   --popover-foreground: oklch(0.98 0 0);
-  --primary: oklch(0.65 0.2 280); /* Lighter vibrant purple for dark mode */
-  --primary-foreground: oklch(0.98 0 0);
-  --secondary: oklch(0.26 0.02 280);
-  --secondary-foreground: oklch(0.98 0 0);
-  --muted: oklch(0.26 0.02 280);
-  --muted-foreground: oklch(0.65 0 0);
-  --accent: oklch(0.26 0.02 280);
+  --primary: #4F46E5; /* Same strong identity color in dark mode */
+  --primary-foreground: #FFFFFF;
+  --secondary: #10B981; 
+  --secondary-foreground: #FFFFFF;
+  --muted: #334155;
+  --muted-foreground: #94A3B8;
+  --accent: #334155;
   --accent-foreground: oklch(0.98 0 0);
   --destructive: oklch(0.4 0.14 26);
   --destructive-foreground: oklch(0.98 0 0);
-  --border: oklch(0.26 0.02 280);
-  --input: oklch(0.26 0.02 280);
-  --ring: oklch(0.65 0.2 280);
+  --border: #334155;
+  --input: #334155;
+  --ring: #4F46E5;
 }
 
 @theme inline {
