@@ -57,7 +57,7 @@ export default function PrivacyPolicyPage() {
             <p className="text-muted-foreground">
               DocEasy is built on a privacy-first philosophy. The majority of our tools, including PDF compression and image conversions, 
               are processed entirely client-side (within your browser). Your sensitive files are never uploaded to our servers unless you explicitly 
-              choose to save them to your cloud dashboard or use advanced AI tools.
+              choose to save them to your cloud dashboard or use advanced analysis tools.
             </p>
           </section>
 
@@ -89,7 +89,7 @@ export default function PrivacyPolicyPage() {
               <h2 className="text-2xl font-semibold">6. Third Party Services</h2>
             </div>
             <p className="text-muted-foreground">
-              We use Supabase for database and authentication infrastructure. For certain AI features, we utilize Google Gemini API. 
+              We use Supabase for database and authentication infrastructure. For certain advanced features, we utilize secure machine learning APIs. 
               Data sent to these services is strictly limited to what is necessary for the feature to function.
             </p>
           </section>

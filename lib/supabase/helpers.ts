@@ -1,4 +1,6 @@
-import { supabase } from "./client"
+import { createClient } from "@/utils/supabase/client"
+
+const supabase = typeof window !== "undefined" ? createClient() : null;
 
 export interface FileMetadata {
   file_name: string
@@ -15,9 +17,16 @@ export interface FileMetadata {
  * Uploads a file (Blob/File) to Supabase Storage
  */
 export async function uploadFileToSupabase(file: Blob | File, fileName: string, toolUsed: string) {
+  const generateFallbackUrl = () => {
+    if (typeof window !== 'undefined') {
+      return { filePath: 'local-fallback', publicUrl: URL.createObjectURL(file) }
+    }
+    return { filePath: '', publicUrl: '' }
+  }
+
   if (!supabase) {
     console.warn("Supabase not initialized. Skipping upload.")
-    return { filePath: "", publicUrl: "" }
+    return generateFallbackUrl()
   }
   try {
     const { data: { user } } = await supabase.auth.getUser()
@@ -35,7 +44,10 @@ export async function uploadFileToSupabase(file: Blob | File, fileName: string, 
         upsert: false
       })
 
-    if (error) throw error
+    if (error) {
+      console.warn("Supabase upload failed, using local URL fallback. Error:", error.message)
+      return generateFallbackUrl()
+    }
 
     // Get public URL
     const { data: { publicUrl } } = supabase.storage
@@ -43,10 +55,12 @@ export async function uploadFileToSupabase(file: Blob | File, fileName: string, 
       .getPublicUrl(filePath)
 
     return { filePath, publicUrl }
-  } catch (error) {
+  } catch (error: any) {
     console.error("Supabase Storage Error:", error)
-    await trackEvent("error", toolUsed)
-    throw error
+    await trackEvent("error", toolUsed).catch(() => {})
+    
+    // Graceful degradation: return a local browser URL so the user can still download their file
+    return generateFallbackUrl()
   }
 }
 
@@ -73,7 +87,8 @@ export async function saveFileMetadata(metadata: FileMetadata) {
     return data[0]
   } catch (error) {
     console.error("Supabase Database Error (Files):", error)
-    throw error
+    // Silently fail so the UI can still display the local compressed file
+    return null
   }
 }
 

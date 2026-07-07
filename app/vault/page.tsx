@@ -4,7 +4,7 @@ import { VaultClient } from "./vault-client"
 
 export const metadata = {
   title: "File Vault | DocEasy",
-  description: "Manage your processed documents, favorites, and AI analysis results.",
+  description: "Manage your processed documents, favorites, and analysis results.",
 }
 
 export default async function VaultPage() {
@@ -30,7 +30,7 @@ export default async function VaultPage() {
 
   const favoriteIds = new Set(favoritesData?.map(f => f.file_id) || [])
 
-  // Fetch user's AI jobs
+  // Fetch user's analysis jobs
   const { data: aiJobs } = await supabase
     .from("ai_jobs")
     .select("*, files(*)")

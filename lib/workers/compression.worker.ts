@@ -5,6 +5,7 @@ import { uploadFileToSupabase } from '../supabase/helpers';
 import fs from 'fs/promises';
 import path from 'path';
 import IORedis from 'ioredis';
+import { APIError } from '../errors';
 
 interface CompressionJobData {
   filePath: string;
@@ -53,10 +54,6 @@ export const compressionWorker = connection
           const originalStat = await fs.stat(filePath);
           const compressedStat = await fs.stat(outputPath);
 
-          // Clean up temp files
-          await fs.rm(filePath).catch(() => {});
-          await fs.rm(outputPath).catch(() => {});
-
           await job.updateProgress(100);
 
           return {
@@ -65,9 +62,16 @@ export const compressionWorker = connection
             originalSize: originalStat.size,
             compressedSize: compressedStat.size,
           };
-        } catch (error) {
+        } catch (error: any) {
           console.error(`Job ${job.id} failed:`, error);
-          throw error;
+          if (error instanceof APIError) {
+             throw new Error(`[${error.code}] ${error.message}`);
+          }
+          throw new Error(error?.message || 'Unknown compression failure');
+        } finally {
+          // Clean up temp files safely in all cases (success or failure)
+          await fs.rm(filePath, { force: true }).catch(() => {});
+          await fs.rm(outputPath, { force: true }).catch(() => {});
         }
       },
       { connection }

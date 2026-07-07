@@ -30,7 +30,7 @@ This script creates:
 - `files`: Tracks uploaded and processed files
 - `activity_logs`: Logs user actions
 - `favorites`: Tracks starred files
-- `ai_jobs`: Keeps track of background AI tasks
+- `ai_jobs`: Keeps track of background document analysis tasks
 
 ## 4. Storage Buckets
 The SQL script also creates the necessary storage buckets.

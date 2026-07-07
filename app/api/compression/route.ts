@@ -5,33 +5,56 @@ import { compressionService } from '@/lib/services/compression.service';
 import { uploadFileToSupabase } from '@/lib/supabase/helpers';
 import path from 'path';
 import crypto from 'crypto';
+import os from 'os';
+import { APIError, formatErrorResponse } from '@/lib/errors';
+import { pipeline } from 'stream/promises';
+import { createWriteStream } from 'fs';
+import { Readable } from 'stream';
 
 export async function POST(req: NextRequest) {
+  let tempFilePath = '';
+  let outputPath = '';
+  let tempFilePathCreated = false;
+  let isQueued = false;
+
   try {
-    const formData = await req.formData();
+    // Basic file size check via header
+    const contentLength = Number(req.headers.get('content-length') || '0');
+    if (contentLength > 250 * 1024 * 1024) {
+      throw new APIError('File is too large for the server engine (250MB limit).', 'FILE_TOO_LARGE', 413, true);
+    }
+
+    const formData = await req.formData().catch(e => {
+      throw new APIError('Failed to parse form data. The file might be too large.', 'FILE_TOO_LARGE', 413, true);
+    });
+
     const file = formData.get('file') as File;
-    const level = formData.get('level') as any || 'recommended';
+    const level = (formData.get('level') as any) || 'recommended';
 
     if (!file) {
-      return NextResponse.json({ error: 'No file provided' }, { status: 400 });
+      throw new APIError('No file provided in the request.', 'INVALID_FILE', 400, false);
     }
 
     if (file.type !== 'application/pdf') {
-      return NextResponse.json({ error: 'Only PDF files are supported' }, { status: 400 });
+      throw new APIError('Only PDF files are supported.', 'INVALID_FILE', 400, false);
+    }
+    
+    // Read magic bytes %PDF- (only load first 5 bytes into memory)
+    const magicBytes = Buffer.from(await file.slice(0, 5).arrayBuffer()).toString('utf8');
+    if (magicBytes !== '%PDF-') {
+      throw new APIError('Invalid PDF file signature.', 'INVALID_PDF', 400, false);
     }
 
-    const buffer = Buffer.from(await file.arrayBuffer());
     const tempFileName = `${crypto.randomUUID()}.pdf`;
-    const tempFilePath = path.join('/tmp', tempFileName);
-    const outputPath = `${tempFilePath}-compressed.pdf`;
+    tempFilePath = path.join(os.tmpdir(), tempFileName);
+    outputPath = `${tempFilePath}-compressed.pdf`;
 
-    let isQueued = false;
-    let tempFilePathCreated = false;
-
-    try {
-      // Save uploaded file temporarily
-      await writeFile(tempFilePath, buffer);
-      tempFilePathCreated = true;
+    // Stream uploaded file directly to disk to prevent OOM
+    await pipeline(
+      Readable.fromWeb(file.stream() as any),
+      createWriteStream(tempFilePath)
+    );
+    tempFilePathCreated = true;
 
     if (compressionQueue) {
       // Enqueue the job in BullMQ
@@ -75,18 +98,14 @@ export async function POST(req: NextRequest) {
         message: 'File compressed successfully (sync mode)',
       });
     }
+  } catch (error: unknown) {
+    const errorResponse = formatErrorResponse(error);
+    return NextResponse.json(errorResponse, { status: errorResponse.status });
   } finally {
-      // Cleanup temp files if we're not passing them to the async queue
-      if (tempFilePathCreated && !isQueued) {
-        await rm(tempFilePath).catch(() => {});
-        await rm(outputPath).catch(() => {});
-      }
+    // Cleanup temp files if we're not passing them to the async queue
+    if (tempFilePathCreated && !isQueued) {
+      if (tempFilePath) await rm(tempFilePath, { force: true }).catch(() => {});
+      if (outputPath) await rm(outputPath, { force: true }).catch(() => {});
     }
-  } catch (error: any) {
-    console.error('Failed to compress file:', error);
-    if (error.message === 'ENGINE_UNAVAILABLE') {
-      return NextResponse.json({ error: 'ENGINE_UNAVAILABLE', fallbackToClient: true }, { status: 503 });
-    }
-    return NextResponse.json({ error: error.message || 'Internal Server Error' }, { status: 500 });
   }
 }

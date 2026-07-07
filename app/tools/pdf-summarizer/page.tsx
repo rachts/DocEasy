@@ -39,12 +39,12 @@ export default function PDFSummarizerPage() {
       await new Promise(r => setTimeout(r, 1500))
 
       // Step 2: Analyze
-      setStatusText("Summarizing with Gemini AI...")
+      setStatusText("Summarizing document...")
       await new Promise(r => setTimeout(r, 2000))
 
       // Mock Result
       const mockResult: SummaryResult = {
-        executiveSummary: "This document outlines the Q3 Financial Report, highlighting a 15% increase in revenue driven by new enterprise software subscriptions. While operational costs grew by 5%, the net profit margin improved significantly. The strategic focus remains on expanding the cloud infrastructure and enhancing AI capabilities.",
+        executiveSummary: "This document outlines the Q3 Financial Report, highlighting a 15% increase in revenue driven by new enterprise software subscriptions. While operational costs grew by 5%, the net profit margin improved significantly. The strategic focus remains on expanding the cloud infrastructure and enhancing technological capabilities.",
         keyPoints: [
           "Q3 Revenue reached $45M, a 15% Year-Over-Year increase.",
           "Enterprise subscription models accounted for 60% of total revenue.",
@@ -53,7 +53,7 @@ export default function PDFSummarizerPage() {
         ],
         importantDates: [
           { date: "Oct 15, 2026", event: "Board Meeting to discuss Q4 projections" },
-          { date: "Nov 01, 2026", event: "Launch of new AI tools beta" }
+          { date: "Nov 01, 2026", event: "Launch of new analysis tools beta" }
         ],
         actionItems: [
           "Finalize the Q4 marketing budget allocation",
@@ -83,7 +83,7 @@ export default function PDFSummarizerPage() {
           }]).select().single()
 
           if (!fileError && fileData) {
-            // Create AI Job record
+            // Create Analysis Job record
             await supabase.from("ai_jobs").insert([{
               user_id: user.id,
               file_id: fileData.id,
@@ -117,9 +117,9 @@ export default function PDFSummarizerPage() {
           <div className="bg-primary/10 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6">
             <FileText className="w-8 h-8 text-primary" />
           </div>
-          <h1 className="text-4xl font-bold tracking-tight text-foreground mb-4">AI PDF Summarizer</h1>
+          <h1 className="text-4xl font-bold tracking-tight text-foreground mb-4">PDF Summarizer</h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Upload any long PDF document, and our AI will instantly generate an executive summary, key points, and action items.
+            Upload any long PDF document, and our engine will instantly generate an executive summary, key points, and action items.
           </p>
         </div>
 

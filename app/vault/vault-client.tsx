@@ -112,7 +112,7 @@ export function VaultClient({ initialFiles, favoriteIds: initialFavs, aiJobs }: 
           <TabsList className="bg-muted/50 p-1">
             <TabsTrigger value="recent" className="gap-2"><HardDrive className="w-4 h-4" /> All Files</TabsTrigger>
             <TabsTrigger value="favorites" className="gap-2"><Star className="w-4 h-4" /> Favorites</TabsTrigger>
-            <TabsTrigger value="ai" className="gap-2"><Sparkles className="w-4 h-4" /> AI Results</TabsTrigger>
+            <TabsTrigger value="ai" className="gap-2"><Sparkles className="w-4 h-4" /> Analysis Results</TabsTrigger>
             <TabsTrigger value="shared" className="gap-2"><Share2 className="w-4 h-4" /> Shared</TabsTrigger>
           </TabsList>
 
@@ -170,7 +170,7 @@ export function VaultClient({ initialFiles, favoriteIds: initialFavs, aiJobs }: 
               ))}
             </div>
           ) : (
-            <EmptyState title="No AI results yet" description="Use the Resume Analyzer or PDF Summarizer to generate insights." />
+            <EmptyState title="No analysis results yet" description="Use the Resume Analyzer or PDF Summarizer to generate insights." />
           )}
         </TabsContent>
 

@@ -40,7 +40,7 @@ export default function ResumeAnalyzerPage() {
       await new Promise(r => setTimeout(r, 1500))
 
       // Step 2: Analyze
-      setStatusText("Analyzing with Gemini AI...")
+      setStatusText("Analyzing resume...")
       await new Promise(r => setTimeout(r, 2000))
 
       // Mock Result
@@ -85,7 +85,7 @@ export default function ResumeAnalyzerPage() {
           }]).select().single()
 
           if (!fileError && fileData) {
-            // Create AI Job record
+            // Create Analysis Job record
             await supabase.from("ai_jobs").insert([{
               user_id: user.id,
               file_id: fileData.id,
@@ -119,9 +119,9 @@ export default function ResumeAnalyzerPage() {
           <div className="bg-primary/10 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6">
             <Sparkles className="w-8 h-8 text-primary" />
           </div>
-          <h1 className="text-4xl font-bold tracking-tight text-foreground mb-4">AI Resume Analyzer</h1>
+          <h1 className="text-4xl font-bold tracking-tight text-foreground mb-4">Resume Analyzer</h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Upload your resume and our AI will analyze it against industry standards, giving you an ATS score, missing keywords, and formatting suggestions.
+            Upload your resume and our system will analyze it against industry standards, giving you an ATS score, missing keywords, and formatting suggestions.
           </p>
         </div>
 

@@ -3,7 +3,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useMemo } from "react"
 import { createClient } from "@/utils/supabase/client"
 import { logout } from "@/app/login/actions"
 import { Button } from "@/components/ui/button"
@@ -26,21 +26,35 @@ export function Navbar() {
   const supabase = createClient()
 
   useEffect(() => {
+    let mounted = true
+
     const fetchUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser()
-      setUser(user)
-      setAuthLoading(false)
+      try {
+        const { data: { user } } = await supabase.auth.getUser()
+        if (mounted) {
+          setUser(user)
+          setAuthLoading(false)
+        }
+      } catch (error) {
+        if (mounted) {
+          setAuthLoading(false)
+        }
+      }
     }
 
     fetchUser()
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (_event, session) => {
-        setUser(session?.user || null)
+        if (mounted) {
+          setUser(session?.user || null)
+          setAuthLoading(false)
+        }
       }
     )
 
     return () => {
+      mounted = false
       subscription.unsubscribe()
     }
   }, [supabase.auth])

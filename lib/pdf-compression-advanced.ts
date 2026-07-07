@@ -6,6 +6,8 @@ export type CompressionLevel = "extreme" | "recommended" | "less"
  * @param level Compression intensity (less = structural, extreme = rasterization)
  */
 export async function compressPDFWithRendering(file: File, level: CompressionLevel = "recommended"): Promise<Blob> {
+  let pdfjsLib: any = null;
+  
   try {
     const arrayBuffer = await file.arrayBuffer()
     const { PDFDocument } = await import("pdf-lib")
@@ -31,11 +33,11 @@ export async function compressPDFWithRendering(file: File, level: CompressionLev
     }
 
     // "Recommended" & "Extreme" Compression: Rendering-based squashing
-    const pdfjsLib = await import("pdfjs-dist")
+    pdfjsLib = await import("pdfjs-dist")
 
     // Set worker path (pdfjs-dist v4+ uses .mjs instead of .js)
     const pdfjsVersion = pdfjsLib.version || "4.10.38"
-    pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsVersion}/pdf.worker.min.mjs`
+    pdfjsLib.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjsVersion}/build/pdf.worker.min.mjs`
 
     // Define quality settings based on level
     const settings = {
@@ -54,54 +56,66 @@ export async function compressPDFWithRendering(file: File, level: CompressionLev
     const numPages = pdfJsDoc.numPages
 
     for (let pageNum = 1; pageNum <= numPages; pageNum++) {
-      const page = await pdfJsDoc.getPage(pageNum)
-      const viewport = page.getViewport({ scale: settings.scale })
-
-      // Create canvas
-      const canvas = document.createElement("canvas")
-      const context = canvas.getContext("2d")
-      if (!context) throw new Error("Could not get canvas context")
-
-      canvas.height = viewport.height
-      canvas.width = viewport.width
-
-      // Render PDF page to canvas
-      await page.render({
-        canvasContext: context,
-        viewport: viewport,
-      } as any).promise
-
-      // Convert canvas to JPEG blob
-      const blob = await new Promise<Blob>((resolve, reject) => {
-        canvas.toBlob(
-          (b) => {
-            if (b) resolve(b)
-            else reject(new Error("Failed to create blob"))
-          },
-          "image/jpeg",
-          settings.quality,
-        )
-      })
-
-      // Embed image in new PDF
-      const imageBytes = await blob.arrayBuffer()
-      const image = await newPdfDoc.embedJpg(imageBytes)
-
-      // Use original dimensions for the new page but draw the scaled image onto it
-      const originalViewport = page.getViewport({ scale: 1.0 })
-      const newPage = newPdfDoc.addPage([originalViewport.width, originalViewport.height])
+      let page: any = null;
+      let canvas: HTMLCanvasElement | null = null;
       
-      newPage.drawImage(image, {
-        x: 0,
-        y: 0,
-        width: originalViewport.width,
-        height: originalViewport.height,
-      })
-      
-      // Release memory
-      canvas.width = 0
-      canvas.height = 0
-      page.cleanup()
+      try {
+        page = await pdfJsDoc.getPage(pageNum)
+        
+        const viewport = page.getViewport({ scale: settings.scale })
+
+        // Create canvas
+        canvas = document.createElement("canvas")
+        const context = canvas.getContext("2d")
+        if (!context) throw new Error("Could not get canvas context")
+
+        canvas.height = viewport.height
+        canvas.width = viewport.width
+
+        // Render PDF page to canvas
+        await page.render({
+          canvasContext: context,
+          viewport: viewport,
+        } as any).promise
+
+        // Convert canvas to JPEG blob
+        const blob = await new Promise<Blob>((resolve, reject) => {
+          if (!canvas) return reject(new Error("Canvas missing"));
+          canvas.toBlob(
+            (b) => {
+              if (b) resolve(b)
+              else reject(new Error("Failed to create blob"))
+            },
+            "image/jpeg",
+            settings.quality,
+          )
+        })
+
+        // Embed image in new PDF
+        const imageBytes = await blob.arrayBuffer()
+        const image = await newPdfDoc.embedJpg(imageBytes)
+
+        // Use original dimensions for the new page but draw the scaled image onto it
+        const originalViewport = page.getViewport({ scale: 1.0 })
+        const newPage = newPdfDoc.addPage([originalViewport.width, originalViewport.height])
+        
+        newPage.drawImage(image, {
+          x: 0,
+          y: 0,
+          width: originalViewport.width,
+          height: originalViewport.height,
+        })
+      } finally {
+        // Strict release memory
+        if (canvas) {
+          canvas.width = 0
+          canvas.height = 0
+          canvas.remove()
+        }
+        if (page) {
+          page.cleanup()
+        }
+      }
     }
 
     // Save compressed PDF
@@ -111,11 +125,19 @@ export async function compressPDFWithRendering(file: File, level: CompressionLev
 
     const compressedBlob = new Blob([compressedBytes as any], { type: "application/pdf" })
 
-    // Return compressed version
     console.log(`PDF Compressed (${level}): ${(file.size / 1024).toFixed(1)}KB -> ${(compressedBlob.size / 1024).toFixed(1)}KB`)
+    
+    // Explicitly destroy the original pdfJsDoc document to free WASM memory
+    if (pdfJsDoc && typeof pdfJsDoc.cleanup === 'function') {
+      pdfJsDoc.cleanup()
+    }
+    if (loadingTask && typeof loadingTask.destroy === 'function') {
+      loadingTask.destroy()
+    }
+    
     return compressedBlob
-  } catch (error) {
+  } catch (error: any) {
     console.error("Advanced PDF compression error:", error)
-    throw error
+    throw new Error(error?.message || "Failed to compress PDF in browser.")
   }
 }

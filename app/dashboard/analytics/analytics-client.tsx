@@ -119,11 +119,11 @@ export function AnalyticsClient({ files }: AnalyticsClientProps) {
         </Card>
         <Card className="bg-card hover:border-purple-500/50 transition-colors">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">AI Tasks Completed</CardTitle>
+            <CardTitle className="text-sm font-medium">Analysis Tasks Completed</CardTitle>
             <Zap className="h-4 w-4 text-purple-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.pieData.filter(d => d.name.includes('AI') || d.name.includes('Analyzer') || d.name.includes('Summarizer')).reduce((acc, curr) => acc + curr.value, 0)}</div>
+            <div className="text-2xl font-bold">{stats.pieData.filter(d => d.name.includes('Analysis') || d.name.includes('Analyzer') || d.name.includes('Summarizer')).reduce((acc, curr) => acc + curr.value, 0)}</div>
             <p className="text-xs text-muted-foreground mt-1">Documents analyzed</p>
           </CardContent>
         </Card>
