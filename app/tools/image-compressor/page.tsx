@@ -1,202 +1,276 @@
-"use client"
+'use client'
 
-import { useState } from "react"
-import { motion, AnimatePresence } from "motion/react"
-import { ToolLayout } from "@/components/ui/tool-layout"
-import { UploadCard } from "@/components/ui/upload-card"
-import { ProcessingStatus, StatusType } from "@/components/ui/processing-status"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Image as ImageIcon, Settings2, Download } from "lucide-react"
-import { compressImageWithQuality, calculateCompressionRatio } from "@/lib/image-compressor-utils"
-import { uploadFileToSupabase, saveFileMetadata, trackEvent, addToRecentFiles } from "@/lib/supabase/helpers"
+import React, { useState } from 'react'
+import Link from 'next/link'
+import { Sidebar } from '@/components/Sidebar'
+import { ProgressBar } from '@/components/ProgressBar'
+import { UploadZone } from '@/components/UploadZone'
+import { 
+  ImageIcon, 
+  X, 
+  ArrowRight, 
+  Download, 
+  RotateCcw 
+} from 'lucide-react'
+import { compressImageWithQuality } from '@/lib/image-compressor-utils'
+import { uploadFileToSupabase, saveFileMetadata, trackEvent, addToRecentFiles } from '@/lib/supabase/helpers'
 
 export default function ImageCompressorPage() {
   const [file, setFile] = useState<File | null>(null)
-  const [preview, setPreview] = useState<string | null>(null)
-  const [status, setStatus] = useState<StatusType | "configure">("idle")
+  const [quality, setQuality] = useState(75)
+  const [processing, setProcessing] = useState(false)
   const [progress, setProgress] = useState(0)
-  const [error, setError] = useState<string>("")
-  const [quality, setQuality] = useState(80)
-  const [result, setResult] = useState<Blob | null>(null)
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null)
+  const [resultFileName, setResultFileName] = useState('')
+  const [error, setError] = useState<string>('')
+  const [metrics, setMetrics] = useState<{
+    originalSize: number
+    compressedSize: number
+    reductionPercent: number
+  } | null>(null)
 
-  const handleUpload = (selectedFile: File) => {
-    if (!selectedFile.type.startsWith("image/")) {
-      alert("Please select an image file")
+  const formatBytes = (bytes: number) => {
+    if (bytes === 0) return '0 Bytes'
+    const k = 1024
+    const sizes = ['Bytes', 'KB', 'MB', 'GB']
+    const i = Math.floor(Math.log(bytes) / Math.log(k))
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
+  }
+
+  const handleFileSelect = (selectedFile: File) => {
+    if (!selectedFile.type.startsWith('image/')) {
+      setError('Please select an image file (PNG, JPG, WebP)')
       return
     }
     setFile(selectedFile)
-    
-    const reader = new FileReader()
-    reader.onload = (e) => {
-      setPreview(e.target?.result as string)
-      setStatus("configure")
-    }
-    reader.readAsDataURL(selectedFile)
+    setDownloadUrl(null)
+    setMetrics(null)
+    setError('')
   }
 
   const handleCompress = async () => {
     if (!file) return
 
-    setStatus("processing")
-    setProgress(10)
+    setProcessing(true)
+    setProgress(20)
+    setError('')
+
     try {
       const compressed = await compressImageWithQuality(file, quality)
-      setProgress(50)
-      
-      const fileName = `${file.name.split(".")[0]}-compressed.${file.name.split(".").pop()}`
-      const { filePath, publicUrl } = await uploadFileToSupabase(compressed, fileName, "image-compressor")
-      setProgress(80)
+      setProgress(60)
+
+      const fileName = `compressed_${file.name}`
+      const { filePath, publicUrl } = await uploadFileToSupabase(compressed, fileName, 'image-compressor')
+      setProgress(85)
 
       await saveFileMetadata({
         file_name: fileName,
         file_type: file.type,
         file_size: compressed.size,
-        tool_used: "image-compressor",
+        tool_used: 'image-compressor',
         storage_path: filePath,
         download_url: publicUrl,
-        is_saved: false
+        is_saved: false,
       })
-      setProgress(90)
 
-      await trackEvent("upload", "image-compressor")
-      addToRecentFiles({ name: fileName, url: publicUrl, tool: "image-compressor", timestamp: Date.now() })
+      addToRecentFiles({
+        name: fileName,
+        url: publicUrl,
+        tool: 'image-compressor',
+        timestamp: Date.now(),
+      })
 
-      setResult(compressed)
+      trackEvent('compress', 'image_compressor')
+
+      const originalSize = file.size
+      const compressedSize = compressed.size
+      const reductionPercent = Math.max(0, Math.round(((originalSize - compressedSize) / originalSize) * 100))
+
+      setMetrics({
+        originalSize,
+        compressedSize,
+        reductionPercent,
+      })
+
       setDownloadUrl(publicUrl)
+      setResultFileName(fileName)
       setProgress(100)
-      setStatus("success")
-    } catch (e: any) {
-      console.error("Compression failed:", e)
-      setError(e.message || "Failed to compress image. Please try again.")
-      setStatus("error")
-    }
-  }
-
-  const handleDownload = () => {
-    if (downloadUrl) {
-      const link = document.createElement("a")
-      link.href = downloadUrl
-      link.download = `compressed-${file?.name}`
-      link.click()
+    } catch (err: any) {
+      console.error('Compression error:', err)
+      setError(err.message || 'Image compression failed')
+    } finally {
+      setProcessing(false)
     }
   }
 
   const handleReset = () => {
     setFile(null)
-    setPreview(null)
-    setStatus("idle")
-    setProgress(0)
-    setError("")
-    setResult(null)
     setDownloadUrl(null)
+    setMetrics(null)
+    setProgress(0)
+    setError('')
   }
 
-  const compressionRatio = file && result ? calculateCompressionRatio(file.size, result.size) : 0
-
   return (
-    <ToolLayout
-      title="Image Compressor"
-      description="Reduce image file sizes without sacrificing quality. Perfect for optimizing web assets or saving storage space."
-    >
-      <div className="flex flex-col items-center justify-center min-h-[400px]">
-        <AnimatePresence mode="wait">
-          {status === "idle" && (
-            <motion.div 
-              key="idle"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="w-full"
-            >
-              <UploadCard 
-                onUpload={handleUpload} 
-                accept="image/*"
-                title="Drop your Image here"
-                icon={<ImageIcon className="w-10 h-10" />}
-              />
-            </motion.div>
+    <div className="min-h-screen bg-[#0C0A09] text-[#FAFAF9] font-sans flex antialiased">
+      <ProgressBar active={processing} progress={progress} />
+      <Sidebar currentPath="/tools" />
+
+      <main className="w-full md:pl-[240px] flex flex-col min-h-screen">
+        <header className="bg-[#141110] border-b border-[#292524] h-[56px] flex justify-between items-center px-8 md:px-16 sticky top-0 z-30">
+          <div className="flex items-center gap-2 font-mono text-[12px] uppercase tracking-[0.05em]">
+            <span className="text-[#57534E]">TOOLING</span>
+            <span className="text-[#292524]">/</span>
+            <span className="text-[#FAFAF9]">IMAGE COMPRESSOR</span>
+          </div>
+        </header>
+
+        <div className="p-8 md:p-16 max-w-6xl w-full mx-auto flex-1 flex flex-col gap-10">
+          <div>
+            <h1 className="text-4xl md:text-5xl font-medium tracking-tight text-[#FAFAF9]">
+              Image Compressor
+            </h1>
+            <p className="text-[15px] text-[#A8A29E] mt-2 max-w-2xl leading-relaxed">
+              Lossless and lossy raster compression for PNG, JPG, and WebP graphics with precise quantization controls.
+            </p>
+          </div>
+
+          {error && (
+            <div className="p-4 bg-[#1C1917] border border-[#7F1D1D] rounded-[6px] text-[13px] font-mono text-[#FAFAF9]">
+              [ERROR]: {error}
+            </div>
           )}
 
-          {status === "configure" && (
-            <motion.div
-              key="configure"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="w-full max-w-2xl"
-            >
-              <Card className="p-8 shadow-glass bg-card/40 backdrop-blur-md border-border/50">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="p-3 bg-primary/10 rounded-xl">
-                    <Settings2 className="w-6 h-6 text-primary" />
+          {!file ? (
+            <UploadZone
+              onFileSelect={handleFileSelect}
+              accept=".png,.jpg,.jpeg,.webp"
+              supportedFormats="PNG, JPG, WEBP"
+              title="Drag & Drop Image Here"
+              subtitle="or click to browse local storage"
+            />
+          ) : (
+            <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
+              {/* Left Column: Image Payload */}
+              <div className="xl:col-span-8 bg-[#1C1917] border border-[#292524] p-6 rounded-[8px]">
+                <div className="flex justify-between items-center border-b border-[#292524] pb-3 mb-4">
+                  <h2 className="font-mono text-[12px] uppercase tracking-[0.05em] text-[#57534E]">
+                    Source Image
+                  </h2>
+                  <button
+                    onClick={handleReset}
+                    className="text-[#57534E] hover:text-[#FAFAF9] transition-colors p-1"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+
+                <div className="flex items-center gap-4 py-4">
+                  <div className="w-12 h-14 bg-[#141110] border border-[#292524] flex items-center justify-center rounded-[4px]">
+                    <ImageIcon className="w-5 h-5 text-[#A8A29E] stroke-[1.5]" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-bold">Configure Compression</h2>
-                    <p className="text-sm text-muted-foreground">{file?.name}</p>
+                    <p className="text-[15px] font-medium text-[#FAFAF9] truncate max-w-md">
+                      {file.name}
+                    </p>
+                    <p className="font-mono text-[12px] text-[#57534E] mt-0.5">
+                      {formatBytes(file.size)} • {file.type}
+                    </p>
                   </div>
                 </div>
 
-                {preview && (
-                  <div className="mb-8 rounded-2xl overflow-hidden bg-black/5 flex items-center justify-center max-h-[300px]">
-                    <img src={preview} alt="Preview" className="max-h-[300px] object-contain w-auto h-auto" />
+                {metrics && (
+                  <div className="mt-6 pt-6 border-t border-[#292524] bg-[#141110] p-4 rounded-[6px]">
+                    <div className="font-mono text-[12px] uppercase tracking-[0.05em] text-[#57534E] mb-3">
+                      Compression Metrics
+                    </div>
+                    <div className="grid grid-cols-3 gap-4 font-mono">
+                      <div>
+                        <span className="text-[11px] text-[#57534E] block uppercase">Original</span>
+                        <span className="text-[15px] text-[#FAFAF9] font-medium">{formatBytes(metrics.originalSize)}</span>
+                      </div>
+                      <div>
+                        <span className="text-[11px] text-[#57534E] block uppercase">Compressed</span>
+                        <span className="text-[15px] text-[#FAFAF9] font-medium">{formatBytes(metrics.compressedSize)}</span>
+                      </div>
+                      <div>
+                        <span className="text-[11px] text-[#57534E] block uppercase">Reduction</span>
+                        <span className="text-[15px] text-[#D6D3D1] font-medium">-{metrics.reductionPercent}%</span>
+                      </div>
+                    </div>
                   </div>
                 )}
+              </div>
 
-                <div className="space-y-6">
-                  <div>
-                    <div className="flex justify-between items-center mb-4">
-                      <label className="block font-semibold">Target Quality</label>
-                      <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-bold">
-                        {quality}%
-                      </span>
-                    </div>
-                    <input
-                      type="range"
-                      min="10"
-                      max="100"
-                      step="5"
-                      value={quality}
-                      onChange={(e) => setQuality(Number(e.target.value))}
-                      className="w-full h-2 bg-secondary rounded-lg appearance-none cursor-pointer accent-primary"
-                    />
-                    <div className="flex justify-between text-xs text-muted-foreground mt-2 font-medium">
-                      <span>Smaller File Size</span>
-                      <span>Better Quality</span>
-                    </div>
-                  </div>
+              {/* Right Column: Settings */}
+              <div className="xl:col-span-4 bg-[#1C1917] border border-[#292524] p-6 rounded-[8px] flex flex-col">
+                <h2 className="font-mono text-[12px] uppercase tracking-[0.05em] text-[#57534E] border-b border-[#292524] pb-3 mb-6">
+                  Quality Ratio: {quality}%
+                </h2>
 
-                  <div className="flex gap-4 pt-4">
-                    <Button variant="outline" onClick={handleReset} className="w-full h-12 rounded-xl">Cancel</Button>
-                    <Button onClick={handleCompress} className="w-full h-12 rounded-xl shadow-glow">Compress Image</Button>
+                <div className="space-y-4 flex-1">
+                  <input
+                    type="range"
+                    min="10"
+                    max="95"
+                    value={quality}
+                    onChange={(e) => setQuality(Number(e.target.value))}
+                    className="w-full accent-[#FAFAF9] bg-[#141110] h-2 rounded cursor-pointer"
+                  />
+                  <div className="flex justify-between font-mono text-[11px] text-[#57534E]">
+                    <span>MAX COMPRESSION</span>
+                    <span>BALANCED</span>
+                    <span>HIGH FIDELITY</span>
                   </div>
                 </div>
-              </Card>
-            </motion.div>
-          )}
 
-          {(status === "processing" || status === "success" || status === "error") && (
-            <motion.div
-              key="processing"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="w-full"
-            >
-              <ProcessingStatus
-                status={status}
-                progress={progress}
-                title={status === "processing" ? "Compressing image..." : undefined}
-                description={status === "success" ? `Reduced by ${compressionRatio}%` : undefined}
-                error={error}
-                onDownload={handleDownload}
-                onReset={handleReset}
-              />
-            </motion.div>
+                {downloadUrl ? (
+                  <div className="mt-8 space-y-3">
+                    <a
+                      href={downloadUrl}
+                      download={resultFileName}
+                      className="w-full h-10 bg-[#FAFAF9] text-[#0C0A09] font-mono text-[12px] uppercase font-medium tracking-[0.05em] rounded-[6px] hover:bg-[#D6D3D1] transition-colors duration-150 flex items-center justify-center gap-2"
+                    >
+                      <Download className="w-4 h-4" />
+                      DOWNLOAD COMPRESSED IMAGE
+                    </a>
+                    <button
+                      onClick={handleReset}
+                      className="w-full h-10 bg-transparent text-[#A8A29E] hover:text-[#FAFAF9] border border-[#292524] hover:border-[#A8A29E] font-mono text-[12px] uppercase tracking-[0.05em] rounded-[6px] transition-colors duration-150 flex items-center justify-center gap-2"
+                    >
+                      <RotateCcw className="w-4 h-4" />
+                      COMPRESS ANOTHER IMAGE
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={handleCompress}
+                    disabled={processing}
+                    className="w-full h-10 bg-[#FAFAF9] text-[#0C0A09] font-mono text-[12px] uppercase font-medium tracking-[0.05em] rounded-[6px] hover:bg-[#D6D3D1] transition-colors duration-150 flex items-center justify-center gap-2 mt-8 cursor-pointer disabled:opacity-50"
+                  >
+                    {processing ? (
+                      <>
+                        <div className="w-2 h-2 rounded-full bg-[#0C0A09] pulse-dot" />
+                        PROCESSING ({progress}%)
+                      </>
+                    ) : (
+                      <>
+                        COMPRESS IMAGE
+                        <ArrowRight className="w-4 h-4" />
+                      </>
+                    )}
+                  </button>
+                )}
+              </div>
+            </div>
           )}
-        </AnimatePresence>
-      </div>
-    </ToolLayout>
+        </div>
+
+        <footer className="bg-[#141110] border-t border-[#292524] w-full py-4 px-8 md:px-16 flex justify-between items-center mt-auto font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E]">
+          <span className="text-[#FAFAF9] font-semibold tracking-normal font-sans">DocEasy</span>
+          <span>© 2024 DOCEASY</span>
+        </footer>
+      </main>
+    </div>
   )
 }

@@ -1,238 +1,101 @@
-"use client"
+'use client'
 
-import { useState, useMemo } from "react"
-import Link from "next/link"
-import { ArrowLeft, Search, Filter, HardDrive, Star, Sparkles, Share2, FileIcon, FileTextIcon, ImageIcon, Download, Trash2, Heart } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-
-type FileItem = {
-  id: string
-  file_name: string
-  file_type: string
-  original_size: number
-  processed_size: number
-  storage_path: string
-  tool_used: string
-  created_at: string
-}
-
-type AIJob = {
-  id: string
-  file_id: string
-  job_type: string
-  result: any
-  created_at: string
-  files?: FileItem
-}
+import React, { useState, useMemo } from 'react'
+import { FileRow } from '@/components/FileRow'
+import { Search } from 'lucide-react'
 
 interface VaultClientProps {
-  initialFiles: FileItem[]
+  initialFiles: any[]
   favoriteIds: string[]
-  aiJobs: AIJob[]
+  aiJobs: any[]
 }
 
-export function VaultClient({ initialFiles, favoriteIds: initialFavs, aiJobs }: VaultClientProps) {
-  const [searchQuery, setSearchQuery] = useState("")
-  const [activeTab, setActiveTab] = useState("recent")
-  const [sortBy, setSortBy] = useState<"recent" | "oldest" | "largest">("recent")
-  const [favorites, setFavorites] = useState<Set<string>>(new Set(initialFavs))
+export function VaultClient({ initialFiles = [], favoriteIds = [] }: VaultClientProps) {
+  const [searchQuery, setSearchQuery] = useState('')
+  const [activeTab, setActiveTab] = useState<'all' | 'pdf' | 'img'>('all')
 
-  const handleToggleFavorite = (id: string) => {
-    setFavorites(prev => {
-      const next = new Set(prev)
-      if (next.has(id)) next.delete(id)
-      else next.add(id)
-      return next
+  const filteredFiles = useMemo(() => {
+    return initialFiles.filter((f) => {
+      const nameMatch = (f.file_name || f.name || '').toLowerCase().includes(searchQuery.toLowerCase())
+      if (!nameMatch) return false
+
+      if (activeTab === 'pdf') return (f.file_type || '').includes('pdf') || (f.name || '').endsWith('.pdf')
+      if (activeTab === 'img') return (f.file_type || '').includes('image') || /\.(png|jpg|jpeg|webp)$/i.test(f.name || '')
+      return true
     })
-    // In a real app, this would also trigger a server action to update the DB
-  }
-
-  const filteredAndSortedFiles = useMemo(() => {
-    let result = [...initialFiles]
-
-    // 1. Filter by Tab
-    if (activeTab === "favorites") {
-      result = result.filter(f => favorites.has(f.id))
-    } else if (activeTab === "shared") {
-      result = [] // Mock for shared
-    }
-
-    // 2. Search
-    if (searchQuery) {
-      const q = searchQuery.toLowerCase()
-      result = result.filter(f => 
-        f.file_name.toLowerCase().includes(q) || 
-        f.file_type.toLowerCase().includes(q) ||
-        f.tool_used.toLowerCase().includes(q)
-      )
-    }
-
-    // 3. Sort
-    result.sort((a, b) => {
-      if (sortBy === "recent") {
-        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-      } else if (sortBy === "oldest") {
-        return new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-      } else if (sortBy === "largest") {
-        return (b.processed_size || b.original_size || 0) - (a.processed_size || a.original_size || 0)
-      }
-      return 0
-    })
-
-    return result
-  }, [initialFiles, activeTab, searchQuery, sortBy, favorites])
-
-  const formatSize = (bytes: number) => {
-    if (!bytes) return "0 B"
-    const k = 1024
-    const sizes = ["B", "KB", "MB", "GB"]
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i]
-  }
+  }, [initialFiles, searchQuery, activeTab])
 
   return (
-    <div className="py-8 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-        <div>
-          <Link href="/dashboard">
-            <Button variant="ghost" className="mb-4 hover:bg-muted -ml-4">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Dashboard
-            </Button>
-          </Link>
-          <h1 className="text-3xl font-bold tracking-tight">File Vault</h1>
-          <p className="text-muted-foreground mt-1">Manage and search all your processed documents.</p>
-        </div>
-      </div>
-
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <TabsList className="bg-muted/50 p-1">
-            <TabsTrigger value="recent" className="gap-2"><HardDrive className="w-4 h-4" /> All Files</TabsTrigger>
-            <TabsTrigger value="favorites" className="gap-2"><Star className="w-4 h-4" /> Favorites</TabsTrigger>
-            <TabsTrigger value="ai" className="gap-2"><Sparkles className="w-4 h-4" /> Analysis Results</TabsTrigger>
-            <TabsTrigger value="shared" className="gap-2"><Share2 className="w-4 h-4" /> Shared</TabsTrigger>
-          </TabsList>
-
-          <div className="flex items-center gap-3 w-full sm:w-auto">
-            <div className="relative flex-1 sm:w-64">
-              <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-              <input 
-                type="text" 
-                placeholder="Search files..." 
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full h-10 pl-9 pr-4 rounded-xl bg-card border border-border/50 focus:border-primary focus:ring-1 focus:ring-primary outline-none text-sm transition-all"
-              />
-            </div>
-            <div className="relative">
-              <select 
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as any)}
-                className="h-10 pl-10 pr-8 rounded-xl bg-card border border-border/50 outline-none text-sm appearance-none cursor-pointer"
-              >
-                <option value="recent">Recent</option>
-                <option value="oldest">Oldest</option>
-                <option value="largest">Largest</option>
-              </select>
-              <Filter className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-            </div>
-          </div>
+    <div className="flex flex-col gap-6">
+      {/* Controls Bar */}
+      <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
+        {/* Search */}
+        <div className="relative w-full sm:w-80">
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#57534E]" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search vault..."
+            className="w-full h-10 bg-[#141110] border border-[#292524] rounded-[6px] pl-10 pr-3.5 text-[14px] text-[#FAFAF9] placeholder:text-[#57534E] focus:border-[#A8A29E] focus:outline-none transition-colors"
+          />
         </div>
 
-        <TabsContent value="recent" className="m-0">
-          <FileList files={filteredAndSortedFiles} favorites={favorites} onToggleFav={handleToggleFavorite} formatSize={formatSize} />
-        </TabsContent>
-
-        <TabsContent value="favorites" className="m-0">
-          <FileList files={filteredAndSortedFiles} favorites={favorites} onToggleFav={handleToggleFavorite} formatSize={formatSize} />
-        </TabsContent>
-
-        <TabsContent value="ai" className="m-0">
-          {aiJobs.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {aiJobs.map(job => (
-                <Card key={job.id} className="p-5 flex flex-col justify-between bg-card hover:border-primary/50 transition-colors">
-                  <div>
-                    <div className="flex items-center gap-2 mb-3">
-                      <Sparkles className="w-5 h-5 text-primary" />
-                      <span className="font-semibold capitalize text-sm">{job.job_type.replace('_', ' ')}</span>
-                    </div>
-                    <p className="text-sm text-foreground/80 font-medium mb-1 truncate">{job.files?.file_name || "Unknown File"}</p>
-                    <p className="text-xs text-muted-foreground mb-4">
-                      {new Date(job.created_at).toLocaleDateString()}
-                    </p>
-                  </div>
-                  <Button variant="secondary" className="w-full text-xs">View Analysis</Button>
-                </Card>
-              ))}
-            </div>
-          ) : (
-            <EmptyState title="No analysis results yet" description="Use the Resume Analyzer or PDF Summarizer to generate insights." />
-          )}
-        </TabsContent>
-
-        <TabsContent value="shared" className="m-0">
-          <EmptyState title="No shared files" description="Files you share securely via links will appear here." />
-        </TabsContent>
-      </Tabs>
-    </div>
-  )
-}
-
-function FileList({ files, favorites, onToggleFav, formatSize }: { files: FileItem[], favorites: Set<string>, onToggleFav: (id: string) => void, formatSize: (s: number) => string }) {
-  if (files.length === 0) {
-    return <EmptyState title="No files found" description="Adjust your search or start uploading new documents." />
-  }
-
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-      {files.map(file => (
-        <Card key={file.id} className="group p-4 bg-card hover:border-primary/50 transition-all shadow-sm hover:shadow-md">
-          <div className="flex justify-between items-start mb-4">
-            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
-              {file.file_type.includes('pdf') ? <FileTextIcon className="w-5 h-5" /> : 
-               file.file_type.includes('image') ? <ImageIcon className="w-5 h-5" /> : 
-               <FileIcon className="w-5 h-5" />}
-            </div>
-            <button 
-              onClick={() => onToggleFav(file.id)}
-              className="p-1.5 rounded-md hover:bg-muted text-muted-foreground transition-colors"
+        {/* Filter Pills */}
+        <div className="flex gap-2 w-full sm:w-auto font-mono text-[11px] uppercase tracking-[0.05em]">
+          {[
+            { id: 'all', label: 'ALL PAYLOADS' },
+            { id: 'pdf', label: 'PDFS' },
+            { id: 'img', label: 'IMAGES' },
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id as any)}
+              className={`px-3 py-2 rounded-[4px] border transition-colors ${
+                activeTab === tab.id
+                  ? 'bg-[#FAFAF9] text-[#0C0A09] border-[#FAFAF9] font-medium'
+                  : 'bg-[#141110] text-[#57534E] border-[#292524] hover:text-[#FAFAF9]'
+              }`}
             >
-              <Heart className={`w-4 h-4 ${favorites.has(file.id) ? "fill-red-500 text-red-500" : ""}`} />
+              {tab.label}
             </button>
-          </div>
-          <div className="mb-4">
-            <h3 className="font-semibold text-sm truncate" title={file.file_name}>{file.file_name}</h3>
-            <p className="text-xs text-muted-foreground mt-1 capitalize">{file.tool_used}</p>
-          </div>
-          <div className="flex items-center justify-between mt-auto pt-4 border-t border-border/50">
-            <span className="text-xs text-muted-foreground">{formatSize(file.processed_size || file.original_size)}</span>
-            <div className="flex gap-1">
-              <Button size="icon" variant="ghost" className="h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity">
-                <Download className="w-3.5 h-3.5" />
-              </Button>
-              <Button size="icon" variant="ghost" className="h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity text-red-500 hover:text-red-600 hover:bg-red-500/10">
-                <Trash2 className="w-3.5 h-3.5" />
-              </Button>
-            </div>
-          </div>
-        </Card>
-      ))}
-    </div>
-  )
-}
-
-function EmptyState({ title, description }: { title: string, description: string }) {
-  return (
-    <div className="py-20 flex flex-col items-center justify-center text-center border-2 border-dashed border-border/50 rounded-3xl bg-muted/20">
-      <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mb-4">
-        <HardDrive className="w-8 h-8 text-muted-foreground" />
+          ))}
+        </div>
       </div>
-      <h3 className="text-lg font-bold mb-1">{title}</h3>
-      <p className="text-muted-foreground max-w-sm text-sm">{description}</p>
+
+      {/* Files List */}
+      <div className="border border-[#292524] bg-[#1C1917] p-6 rounded-[8px]">
+        <div className="border-b border-[#292524] pb-3 mb-4 flex justify-between items-center">
+          <h2 className="font-mono text-[12px] uppercase tracking-[0.05em] text-[#57534E]">
+            Indexed Files ({filteredFiles.length})
+          </h2>
+          <span className="font-mono text-[11px] text-[#57534E] uppercase">
+            TTL: 2 HOURS
+          </span>
+        </div>
+
+        {filteredFiles.length > 0 ? (
+          <ul className="flex flex-col gap-2">
+            {filteredFiles.map((file, i) => (
+              <FileRow
+                key={file.id || i}
+                name={file.file_name || file.name}
+                size={file.file_size || file.size}
+                type={file.file_type || file.type || 'PDF'}
+                uploadedAt={file.created_at ? new Date(file.created_at).toLocaleTimeString() : undefined}
+                onDownload={file.download_url ? () => window.open(file.download_url, '_blank') : undefined}
+              />
+            ))}
+          </ul>
+        ) : (
+          <div className="p-12 text-center bg-[#141110] border border-[#292524] rounded-[6px]">
+            <p className="text-[15px] font-medium text-[#FAFAF9] mb-1">No matching files in vault</p>
+            <p className="font-mono text-[12px] uppercase tracking-[0.05em] text-[#57534E]">
+              Upload a document from the Dashboard or Tools suite to view it here
+            </p>
+          </div>
+        )}
+      </div>
     </div>
   )
 }

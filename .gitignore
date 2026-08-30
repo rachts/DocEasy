@@ -1,90 +1,113 @@
-# =========================
-# Dependencies
-# =========================
-node_modules/
+# ==============================================================================
+# DocEasy - Comprehensive .gitignore
+# ==============================================================================
 
-# =========================
-# Next.js
-# =========================
+# ------------------------------------------------------------------------------
+# Dependencies
+# ------------------------------------------------------------------------------
+node_modules/
+.pnpm-store/
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# ------------------------------------------------------------------------------
+# Next.js Build Outputs & Caches
+# ------------------------------------------------------------------------------
 .next/
 out/
-.vercel/
-
-# =========================
-# Build
-# =========================
-dist/
 build/
-coverage/
+dist/
+.vercel/
 .turbo/
 *.tsbuildinfo
 
-# =========================
-# Environment Variables
-# =========================
-.env.local
-.env.development.local
-.env.production.local
-.env.test.local
+# ------------------------------------------------------------------------------
+# Environment Variables & Secrets (Keep .env.example only)
+# ------------------------------------------------------------------------------
 .env
-
-# Keep the example file
+.env*.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+*.key
+*.cert
 !.env.example
 
-# =========================
-# Logs
-# =========================
+# ------------------------------------------------------------------------------
+# Logs & Process Dumps
+# ------------------------------------------------------------------------------
 logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+lerna-debug.log*
 
-# =========================
-# Operating System
-# =========================
+# ------------------------------------------------------------------------------
+# Operating System & File System Artifacts
+# ------------------------------------------------------------------------------
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
 Desktop.ini
 
-# =========================
-# Editors / IDEs
-# =========================
-.vscode/
-!.vscode/extensions.json
+# ------------------------------------------------------------------------------
+# IDEs, Code Editors & Tooling
+# ------------------------------------------------------------------------------
+.vscode/*
 !.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
 .idea/
+*.sublime-project
+*.sublime-workspace
 *.swp
 *.swo
+*~
 
-# =========================
-# Temporary Files
-# =========================
+# ------------------------------------------------------------------------------
+# Testing, Coverage & Linters
+# ------------------------------------------------------------------------------
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+.eslintcache
+
+# ------------------------------------------------------------------------------
+# Temporary Files & Local Caches
+# ------------------------------------------------------------------------------
 tmp/
 temp/
 .cache/
-.eslintcache
+*.bak
+*.orig
+*.rej
 
-# =========================
-# Python
-# =========================
+# ------------------------------------------------------------------------------
+# Python & Redis (Local helpers & task queues)
+# ------------------------------------------------------------------------------
 __pycache__/
-*.pyc
-
-# =========================
-# Redis
-# =========================
+*.py[cod]
+*$py.class
 dump.rdb
-
-# =========================
-# Docker
-# =========================
 docker-data/
 
-# =========================
-# AI / Agent Artifacts
-# =========================
+# ------------------------------------------------------------------------------
+# AI Agents, Design References & IDE Workspace Artifacts
+# ------------------------------------------------------------------------------
+stitch_redesign/
 .gemini/
 .cursor/
 .claude/
@@ -98,10 +121,3 @@ implementation_plan.md
 walkthrough.md
 cleanup_report.md
 task.md
-
-# =========================
-# Misc
-# =========================
-*.bak
-*.orig
-*.rej

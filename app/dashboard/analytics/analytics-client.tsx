@@ -1,6 +1,6 @@
-"use client"
+'use client'
 
-import { useMemo } from "react"
+import { useMemo } from 'react'
 import { 
   BarChart, 
   Bar, 
@@ -11,11 +11,9 @@ import {
   ResponsiveContainer,
   PieChart,
   Pie,
-  Cell,
-  Legend
-} from "recharts"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { Activity, HardDrive, Zap, FileIcon } from "lucide-react"
+  Cell
+} from 'recharts'
+import { Activity, HardDrive, Zap, FileText } from 'lucide-react'
 
 type FileItem = {
   created_at: string
@@ -28,10 +26,9 @@ interface AnalyticsClientProps {
   files: FileItem[]
 }
 
-const COLORS = ['#2563eb', '#16a34a', '#d97706', '#9333ea', '#dc2626', '#0891b2']
+const MONO_COLORS = ['#FAFAF9', '#D6D3D1', '#A8A29E', '#78716C', '#57534E', '#44403C']
 
 export function AnalyticsClient({ files }: AnalyticsClientProps) {
-  
   const stats = useMemo(() => {
     let totalFiles = files.length
     let originalTotal = 0
@@ -48,15 +45,13 @@ export function AnalyticsClient({ files }: AnalyticsClientProps) {
       datesMap[dateStr] = 0
     }
 
-    files.forEach(f => {
+    files.forEach((f) => {
       originalTotal += (f.original_size || 0)
       processedTotal += (f.processed_size || f.original_size || 0)
 
-      // Tool count
       if (!toolCounts[f.tool_used]) toolCounts[f.tool_used] = 0
       toolCounts[f.tool_used] += 1
 
-      // Date count
       const dateStr = new Date(f.created_at).toISOString().split('T')[0]
       if (datesMap[dateStr] !== undefined) {
         datesMap[dateStr] += 1
@@ -65,158 +60,125 @@ export function AnalyticsClient({ files }: AnalyticsClientProps) {
 
     const storageSaved = Math.max(0, originalTotal - processedTotal)
     
-    const pieData = Object.keys(toolCounts).map(key => ({
+    const pieData = Object.keys(toolCounts).map((key) => ({
       name: key,
       value: toolCounts[key]
     }))
 
-    const barData = Object.keys(datesMap).map(date => {
-      const parts = date.split('-')
-      return {
-        date: `${parts[1]}/${parts[2]}`,
-        files: datesMap[date]
-      }
-    })
+    const barData = Object.keys(datesMap).map((date) => ({
+      date: date.slice(5),
+      count: datesMap[date]
+    }))
 
     return {
       totalFiles,
-      storageSaved,
+      originalTotal: (originalTotal / (1024 * 1024)).toFixed(2),
+      processedTotal: (processedTotal / (1024 * 1024)).toFixed(2),
+      storageSaved: (storageSaved / (1024 * 1024)).toFixed(2),
       pieData,
       barData
     }
   }, [files])
 
-  const formatSize = (bytes: number) => {
-    if (!bytes) return "0 B"
-    const k = 1024
-    const sizes = ["B", "KB", "MB", "GB"]
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i]
-  }
-
   return (
-    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card className="bg-card hover:border-primary/50 transition-colors">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Files Processed</CardTitle>
-            <FileIcon className="h-4 w-4 text-primary" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.totalFiles}</div>
-            <p className="text-xs text-muted-foreground mt-1">Across all tools</p>
-          </CardContent>
-        </Card>
-        <Card className="bg-card hover:border-green-500/50 transition-colors">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Storage Saved</CardTitle>
-            <HardDrive className="h-4 w-4 text-green-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-green-500">{formatSize(stats.storageSaved)}</div>
-            <p className="text-xs text-muted-foreground mt-1">Via compression tools</p>
-          </CardContent>
-        </Card>
-        <Card className="bg-card hover:border-purple-500/50 transition-colors">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Analysis Tasks Completed</CardTitle>
-            <Zap className="h-4 w-4 text-purple-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.pieData.filter(d => d.name.includes('Analysis') || d.name.includes('Analyzer') || d.name.includes('Summarizer')).reduce((acc, curr) => acc + curr.value, 0)}</div>
-            <p className="text-xs text-muted-foreground mt-1">Documents analyzed</p>
-          </CardContent>
-        </Card>
-        <Card className="bg-card hover:border-orange-500/50 transition-colors">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Weekly Activity</CardTitle>
-            <Activity className="h-4 w-4 text-orange-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.barData.reduce((acc, curr) => acc + curr.files, 0)}</div>
-            <p className="text-xs text-muted-foreground mt-1">Files in last 7 days</p>
-          </CardContent>
-        </Card>
+    <div className="space-y-8 font-sans">
+      {/* 4 Summary Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="bg-[#1C1917] border border-[#292524] p-5 rounded-[8px]">
+          <div className="flex items-center justify-between font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] mb-2">
+            <span>EXECUTIONS</span>
+            <FileText className="w-3.5 h-3.5 text-[#A8A29E]" />
+          </div>
+          <div className="text-3xl font-medium tracking-tight text-[#FAFAF9]">{stats.totalFiles}</div>
+          <p className="font-mono text-[11px] text-[#57534E] mt-1">LIFETIME ACTIONS</p>
+        </div>
+
+        <div className="bg-[#1C1917] border border-[#292524] p-5 rounded-[8px]">
+          <div className="flex items-center justify-between font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] mb-2">
+            <span>VOLUME PROCESSED</span>
+            <HardDrive className="w-3.5 h-3.5 text-[#A8A29E]" />
+          </div>
+          <div className="text-3xl font-medium tracking-tight text-[#FAFAF9]">{stats.originalTotal} <span className="text-lg font-mono text-[#57534E]">MB</span></div>
+          <p className="font-mono text-[11px] text-[#57534E] mt-1">INGESTED THROUGHPUT</p>
+        </div>
+
+        <div className="bg-[#1C1917] border border-[#292524] p-5 rounded-[8px]">
+          <div className="flex items-center justify-between font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] mb-2">
+            <span>BANDWIDTH SAVED</span>
+            <Zap className="w-3.5 h-3.5 text-[#A8A29E]" />
+          </div>
+          <div className="text-3xl font-medium tracking-tight text-[#FAFAF9]">{stats.storageSaved} <span className="text-lg font-mono text-[#57534E]">MB</span></div>
+          <p className="font-mono text-[11px] text-[#57534E] mt-1">QUANTIZATION DELTA</p>
+        </div>
+
+        <div className="bg-[#1C1917] border border-[#292524] p-5 rounded-[8px]">
+          <div className="flex items-center justify-between font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] mb-2">
+            <span>ACTIVE TOOLS</span>
+            <Activity className="w-3.5 h-3.5 text-[#A8A29E]" />
+          </div>
+          <div className="text-3xl font-medium tracking-tight text-[#FAFAF9]">{stats.pieData.length}</div>
+          <p className="font-mono text-[11px] text-[#57534E] mt-1">DIFFERENT ROUTINES</p>
+        </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        <Card className="col-span-4 bg-card hover:border-primary/50 transition-all">
-          <CardHeader>
-            <CardTitle>Activity Overview</CardTitle>
-            <CardDescription>
-              Files processed per day over the last 7 days.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="pl-2">
-            <div className="h-[300px] w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={stats.barData}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
-                  <XAxis 
-                    dataKey="date" 
-                    stroke="hsl(var(--muted-foreground))"
-                    fontSize={12}
-                    tickLine={false}
-                    axisLine={false}
-                  />
-                  <YAxis
-                    stroke="hsl(var(--muted-foreground))"
-                    fontSize={12}
-                    tickLine={false}
-                    axisLine={false}
-                    tickFormatter={(value) => `${value}`}
-                  />
-                  <Tooltip 
-                    cursor={{fill: 'hsl(var(--muted))'}}
-                    contentStyle={{ borderRadius: '8px', border: '1px solid hsl(var(--border))', backgroundColor: 'hsl(var(--card))' }}
-                  />
-                  <Bar dataKey="files" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </CardContent>
-        </Card>
+      {/* Chart Grids */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="bg-[#1C1917] border border-[#292524] p-6 rounded-[8px]">
+          <div className="border-b border-[#292524] pb-3 mb-6">
+            <h2 className="font-mono text-[12px] uppercase tracking-[0.05em] text-[#57534E]">
+              7-Day Execution Trajectory
+            </h2>
+          </div>
+          <div className="h-64 w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={stats.barData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#292524" vertical={false} />
+                <XAxis dataKey="date" stroke="#57534E" tick={{ fontSize: 11, fontFamily: 'monospace' }} />
+                <YAxis stroke="#57534E" tick={{ fontSize: 11, fontFamily: 'monospace' }} allowDecimals={false} />
+                <Tooltip 
+                  contentStyle={{ backgroundColor: '#141110', borderColor: '#292524', borderRadius: '6px', color: '#FAFAF9', fontFamily: 'monospace', fontSize: '12px' }}
+                />
+                <Bar dataKey="count" fill="#FAFAF9" radius={[2, 2, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
 
-        <Card className="col-span-3 bg-card hover:border-primary/50 transition-all">
-          <CardHeader>
-            <CardTitle>Tool Usage</CardTitle>
-            <CardDescription>
-              Breakdown of the tools you use most.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="h-[300px] w-full">
-              {stats.pieData.length > 0 ? (
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={stats.pieData}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={60}
-                      outerRadius={80}
-                      paddingAngle={5}
-                      dataKey="value"
-                    >
-                      {stats.pieData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                      ))}
-                    </Pie>
-                    <Tooltip 
-                      contentStyle={{ borderRadius: '8px', border: '1px solid hsl(var(--border))', backgroundColor: 'hsl(var(--card))' }}
-                    />
-                    <Legend />
-                  </PieChart>
-                </ResponsiveContainer>
-              ) : (
-                <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground">
-                  <Activity className="w-8 h-8 mb-2 opacity-20" />
-                  <p>No tools used yet</p>
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
+        <div className="bg-[#1C1917] border border-[#292524] p-6 rounded-[8px]">
+          <div className="border-b border-[#292524] pb-3 mb-6">
+            <h2 className="font-mono text-[12px] uppercase tracking-[0.05em] text-[#57534E]">
+              Tool Usage Distribution
+            </h2>
+          </div>
+          <div className="h-64 w-full flex items-center justify-center">
+            {stats.pieData.length > 0 ? (
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={stats.pieData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={50}
+                    outerRadius={80}
+                    paddingAngle={4}
+                    dataKey="value"
+                  >
+                    {stats.pieData.map((_, index) => (
+                      <Cell key={`cell-${index}`} fill={MONO_COLORS[index % MONO_COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip 
+                    contentStyle={{ backgroundColor: '#141110', borderColor: '#292524', borderRadius: '6px', color: '#FAFAF9', fontFamily: 'monospace', fontSize: '12px' }}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="font-mono text-[12px] uppercase text-[#57534E]">
+                No usage data recorded yet
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   )

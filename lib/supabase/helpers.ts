@@ -110,12 +110,41 @@ export async function trackEvent(eventType: "upload" | "download" | "error", too
 }
 
 /**
- * Bonus: Add to local storage recent files
+ * Add to local storage recent files
  */
 export function addToRecentFiles(file: any) {
   if (typeof window === "undefined") return
 
-  const recentFiles = JSON.parse(localStorage.getItem("recent_files") || "[]")
-  const updatedFiles = [file, ...recentFiles].slice(0, 3) // Keep last 3
-  localStorage.setItem("recent_files", JSON.stringify(updatedFiles))
+  try {
+    const recentFiles = JSON.parse(localStorage.getItem("recent_files") || "[]")
+    const updatedFiles = [file, ...recentFiles.filter((f: any) => f.name !== file.name)].slice(0, 10)
+    localStorage.setItem("recent_files", JSON.stringify(updatedFiles))
+  } catch (e) {
+    console.error("Failed to add to recent files:", e)
+  }
+}
+
+/**
+ * Get recent files from local storage
+ */
+export function getRecentFiles(): any[] {
+  if (typeof window === "undefined") return []
+  try {
+    return JSON.parse(localStorage.getItem("recent_files") || "[]")
+  } catch (e) {
+    console.error("Failed to read recent files:", e)
+    return []
+  }
+}
+
+/**
+ * Clear recent files from local storage
+ */
+export function clearRecentFiles() {
+  if (typeof window === "undefined") return
+  try {
+    localStorage.removeItem("recent_files")
+  } catch (e) {
+    console.error("Failed to clear recent files:", e)
+  }
 }

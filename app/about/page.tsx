@@ -1,106 +1,138 @@
-import Link from "next/link"
-import Image from "next/image"
-import { ArrowLeft, Github, Linkedin, Mail, Code, Terminal, Cpu, Layout, Layers, Database, ChevronRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import Link from 'next/link'
+import { Navbar } from '@/components/navbar'
+import { Footer } from '@/components/footer'
+import { ArrowLeft, ArrowRight, Github, Linkedin, Mail, ShieldCheck, Terminal, Cpu } from 'lucide-react'
 
 export const metadata = {
-  title: "About Rachit | DocEasy",
-  description: "Learn more about the creator of DocEasy.",
+  title: 'Architecture & Security Manifesto | DocEasy',
+  description: 'Learn about the technical architecture and team behind DocEasy.',
 }
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-background">
-      {/* Hero Section */}
-      <section className="relative py-20 lg:py-32 overflow-hidden border-b border-border/50 bg-gradient-to-b from-primary/5 to-background">
-        <div className="absolute inset-0 bg-grid-white/10 [mask-image:linear-gradient(0deg,transparent,black)] pointer-events-none" />
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <Link href="/">
-            <Button variant="ghost" className="mb-12 hover:bg-muted">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Home
-            </Button>
-          </Link>
+    <div className="min-h-screen bg-[#0C0A09] text-[#FAFAF9] font-sans flex flex-col selection:bg-[#292524] selection:text-[#FAFAF9]">
+      <Navbar />
 
-          <div className="flex flex-col lg:flex-row items-center gap-12">
-            <div className="flex-1 text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-                </span>
-                Available for new opportunities
-              </div>
-              <h1 className="text-4xl lg:text-6xl font-extrabold tracking-tight text-foreground mb-6">
-                Hi, I'm <span className="text-primary bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-600">Rachit Kumar Tiwari</span>
-              </h1>
-              <p className="text-xl text-muted-foreground leading-relaxed mb-8 max-w-2xl mx-auto lg:mx-0">
-                A passionate Computer Science Student, Full Stack Developer, and Builder of useful products. I love turning complex problems into simple, beautiful, and intuitive designs.
+      <main className="flex-1 pt-[56px]">
+        {/* Header Breadcrumb */}
+        <div className="bg-[#141110] border-b border-[#292524] py-3 px-6 md:px-16">
+          <div className="max-w-6xl mx-auto flex items-center gap-2 font-mono text-[12px] uppercase tracking-[0.05em]">
+            <Link href="/" className="text-[#57534E] hover:text-[#FAFAF9] transition-colors">
+              SYSTEM
+            </Link>
+            <span className="text-[#292524]">/</span>
+            <span className="text-[#FAFAF9]">ARCHITECTURE & MANIFESTO</span>
+          </div>
+        </div>
+
+        {/* Hero Section */}
+        <section className="py-16 md:py-24 px-6 md:px-16 max-w-6xl mx-auto">
+          <h1 className="text-4xl md:text-5xl font-medium tracking-tight text-[#FAFAF9] leading-tight">
+            Security Architecture & Manifesto
+          </h1>
+          <p className="text-[16px] text-[#A8A29E] mt-4 max-w-3xl leading-relaxed">
+            DocEasy is engineered around a zero-trust, client-ephemeral computation model. All document parsing, compression, rasterization, and conversion pipelines execute inside memory-sandboxed WebAssembly binaries.
+          </p>
+
+          <div className="mt-8 font-mono text-[12px] uppercase tracking-[0.05em] text-[#57534E] flex flex-wrap gap-4 border-y border-[#292524] py-4">
+            <span>ZERO CLOUD STORAGE LOGGING</span>
+            <span className="text-[#292524]">•</span>
+            <span>END-TO-END MEMORY ISOLATION</span>
+            <span className="text-[#292524]">•</span>
+            <span>AUDITED CLIENT WASM</span>
+          </div>
+        </section>
+
+        {/* Architecture Spec Grid */}
+        <section className="py-12 px-6 md:px-16 max-w-6xl mx-auto border-t border-[#292524]">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="p-6 bg-[#1C1917] border border-[#292524] rounded-[8px] space-y-3">
+              <span className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] block">
+                PIPELINE 01
+              </span>
+              <h2 className="text-xl font-medium text-[#FAFAF9]">WebAssembly Core</h2>
+              <p className="text-[14px] text-[#A8A29E] leading-relaxed">
+                Native C/C++ compiled binaries execute PDF linearization and SIMD image compression with bare-metal speed without server handoffs.
               </p>
-              
-              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4">
-                <Link href="https://github.com/rachts" target="_blank">
-                  <Button variant="outline" className="gap-2 h-12 px-6 rounded-full">
-                    <Github className="w-5 h-5" />
-                    GitHub
-                  </Button>
+            </div>
+
+            <div className="p-6 bg-[#1C1917] border border-[#292524] p-6 rounded-[8px] space-y-3">
+              <span className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] block">
+                PIPELINE 02
+              </span>
+              <h2 className="text-xl font-medium text-[#FAFAF9]">Ephemeral Retention</h2>
+              <p className="text-[14px] text-[#A8A29E] leading-relaxed">
+                All uploaded byte buffers are stored in isolated volatile memory and wiped upon download or session termination.
+              </p>
+            </div>
+
+            <div className="p-6 bg-[#1C1917] border border-[#292524] rounded-[8px] space-y-3">
+              <span className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] block">
+                PIPELINE 03
+              </span>
+              <h2 className="text-xl font-medium text-[#FAFAF9]">Zero Telemetry</h2>
+              <p className="text-[14px] text-[#A8A29E] leading-relaxed">
+                No analytics trackers, document profiling, or metadata scraping. Your intellectual property never leaves your device.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Author / Maintainer Section */}
+        <section className="py-16 px-6 md:px-16 max-w-6xl mx-auto border-t border-[#292524]">
+          <div className="bg-[#1C1917] border border-[#292524] p-8 md:p-12 rounded-[8px] flex flex-col md:flex-row justify-between gap-8 items-start">
+            <div className="max-w-xl">
+              <span className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] block mb-2">
+                SYSTEM CREATOR & MAINTAINER
+              </span>
+              <h2 className="text-3xl font-medium tracking-tight text-[#FAFAF9]">
+                Rachit Kumar Tiwari
+              </h2>
+              <p className="text-[15px] text-[#A8A29E] mt-3 leading-relaxed">
+                Full-Stack Engineer and systems builder focused on high-performance web tooling, distributed architecture, and user privacy guarantees.
+              </p>
+              <div className="flex gap-4 mt-6">
+                <Link
+                  href="https://github.com/rachts"
+                  target="_blank"
+                  className="h-10 px-4 bg-[#141110] border border-[#292524] hover:border-[#A8A29E] font-mono text-[12px] uppercase tracking-[0.05em] text-[#FAFAF9] rounded-[6px] transition-colors flex items-center gap-2"
+                >
+                  <Github className="w-4 h-4" />
+                  GITHUB
                 </Link>
-                <Link href="https://www.linkedin.com/in/rachitkrtiwari/" target="_blank">
-                  <Button variant="outline" className="gap-2 h-12 px-6 rounded-full border-blue-500/20 hover:bg-blue-500/10 hover:text-blue-500">
-                    <Linkedin className="w-5 h-5" />
-                    LinkedIn
-                  </Button>
-                </Link>
-                <Link href="https://x.com/rachtss" target="_blank">
-                  <Button variant="outline" className="gap-2 h-12 px-6 rounded-full hover:bg-muted">
-                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                    </svg>
-                    X
-                  </Button>
-                </Link>
-                <Link href="mailto:tiwari.rachit@gmail.com">
-                  <Button className="gap-2 h-12 px-6 rounded-full bg-primary hover:bg-primary/90">
-                    <Mail className="w-5 h-5" />
-                    Contact Me
-                  </Button>
+                <Link
+                  href="https://www.linkedin.com/in/rachitkrtiwari/"
+                  target="_blank"
+                  className="h-10 px-4 bg-[#141110] border border-[#292524] hover:border-[#A8A29E] font-mono text-[12px] uppercase tracking-[0.05em] text-[#FAFAF9] rounded-[6px] transition-colors flex items-center gap-2"
+                >
+                  <Linkedin className="w-4 h-4" />
+                  LINKEDIN
                 </Link>
               </div>
             </div>
+
+            <div className="p-6 bg-[#141110] border border-[#292524] rounded-[6px] w-full md:w-80 font-mono text-[12px] space-y-3">
+              <div className="text-[#57534E] border-b border-[#292524] pb-2 uppercase">
+                ENGINEERING METRICS
+              </div>
+              <div className="flex justify-between">
+                <span className="text-[#57534E]">RUNTIME</span>
+                <span className="text-[#FAFAF9]">NEXT.JS 16 + WASM</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-[#57534E]">DESIGN SYSTEM</span>
+                <span className="text-[#FAFAF9]">WARM INDUSTRIAL</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-[#57534E]">DEPLOYMENT</span>
+                <span className="text-[#FAFAF9]">VERCEL EDGE</span>
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </main>
 
-      {/* Portfolio Section */}
-      <section className="py-20 bg-muted/30 border-y border-border/50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold tracking-tight mb-6">Want to know more?</h2>
-          <p className="text-xl text-muted-foreground leading-relaxed mb-10 max-w-2xl mx-auto">
-            Check out my personal portfolio to see my full journey, other featured projects, and the complete tech stack I work with.
-          </p>
-          <Link href="https://portfolio-rachts.vercel.app/" target="_blank">
-            <Button size="lg" className="h-14 px-8 rounded-full text-lg font-bold gap-2 group">
-              Visit My Portfolio
-              <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Button>
-          </Link>
-        </div>
-      </section>
-
-      {/* Contact CTA */}
-      <section className="py-24 bg-primary text-primary-foreground text-center">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-bold tracking-tight mb-6">Let's build something great together.</h2>
-          <p className="text-primary-foreground/80 text-lg mb-10 max-w-2xl mx-auto">
-            Whether you have a question, a project idea, or just want to say hi, I'll try my best to get back to you!
-          </p>
-          <Link href="/contact">
-            <Button size="lg" variant="secondary" className="h-14 px-8 text-lg rounded-full font-bold">
-              Get in Touch
-            </Button>
-          </Link>
-        </div>
-      </section>
+      <Footer />
     </div>
   )
 }

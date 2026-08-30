@@ -1,5 +1,4 @@
 import { createClient } from '@/utils/supabase/server'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { HardDrive } from 'lucide-react'
 import { getFileSize } from '@/lib/storage-utils'
 
@@ -9,7 +8,6 @@ export async function StorageUsageCard() {
 
   if (!user) return null
 
-  // Calculate total storage used from files table
   const { data: files } = await supabase
     .from('files')
     .select('original_size, processed_size')
@@ -20,37 +18,30 @@ export async function StorageUsageCard() {
     totalSize = files.reduce((acc, file) => acc + (file.original_size || 0) + (file.processed_size || 0), 0)
   }
 
-  // Define a limit, e.g., 100 MB for free tier
   const limit = 100 * 1024 * 1024
   const percentage = Math.min((totalSize / limit) * 100, 100)
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <HardDrive className="w-5 h-5 text-primary" />
-          Storage Usage
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          <div className="flex justify-between text-sm">
-            <span>{getFileSize(totalSize)} Used</span>
-            <span className="text-muted-foreground">{getFileSize(limit)} Limit</span>
-          </div>
-          <div className="h-2 w-full bg-secondary rounded-full overflow-hidden">
-            <div 
-              className={`h-full rounded-full ${percentage > 90 ? 'bg-destructive' : 'bg-primary'}`}
-              style={{ width: `${percentage}%` }}
-            />
-          </div>
-          {percentage > 90 && (
-            <p className="text-xs text-destructive">
-              You are running out of storage space. Please upgrade your plan.
-            </p>
-          )}
+    <div className="bg-[#1C1917] border border-[#292524] p-6 rounded-[8px]">
+      <div className="border-b border-[#292524] pb-3 mb-4 flex items-center gap-2">
+        <HardDrive className="w-4 h-4 text-[#A8A29E]" />
+        <h2 className="font-mono text-[12px] uppercase tracking-[0.05em] text-[#57534E]">
+          Vault Quota
+        </h2>
+      </div>
+
+      <div className="space-y-3 font-mono text-[12px]">
+        <div className="flex justify-between">
+          <span className="text-[#FAFAF9]">{getFileSize(totalSize)} ALLOCATED</span>
+          <span className="text-[#57534E]">{getFileSize(limit)} CAP</span>
         </div>
-      </CardContent>
-    </Card>
+        <div className="h-1.5 w-full bg-[#141110] border border-[#292524] overflow-hidden">
+          <div 
+            className="h-full bg-[#FAFAF9]"
+            style={{ width: `${percentage}%` }}
+          />
+        </div>
+      </div>
+    </div>
   )
 }

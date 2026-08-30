@@ -1,210 +1,326 @@
-"use client"
+'use client'
 
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { FileText, Zap, Shield, ArrowRight, Github, Linkedin, Mail } from "lucide-react"
-import { motion } from "motion/react"
-import { TrustBadges } from "@/components/trust-badges"
-import { ToolsGrid } from "@/components/tools-grid"
-import { HowItWorks } from "@/components/how-it-works"
-import { Footer } from "@/components/footer"
-import { RecentFiles } from "@/components/recent-files"
-
-const fadeInUp = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.5 }
-}
-
-const stagger = {
-  animate: {
-    transition: {
-      staggerChildren: 0.1
-    }
-  }
-}
+import React, { useState, useMemo } from 'react'
+import Link from 'next/link'
+import { Navbar } from '@/components/navbar'
+import { Footer } from '@/components/footer'
+import { 
+  Minimize2, 
+  ArrowLeftRight, 
+  Merge, 
+  FileSearch, 
+  ArrowRight,
+  Award,
+  Crop,
+  User,
+  FileText,
+  Lock,
+  Search,
+  Sparkles
+} from 'lucide-react'
 
 export function LandingPage() {
+  const [selectedCategory, setSelectedCategory] = useState<'ALL' | 'PDF' | 'IMAGE' | 'INTELLIGENCE'>('ALL')
+  const [searchQuery, setSearchQuery] = useState('')
+
+  const allTools = [
+    {
+      name: 'PDF Compressor',
+      description: 'Reduce file size without quality loss using high-efficiency WebAssembly algorithms.',
+      href: '/tools/compress',
+      icon: Minimize2,
+      category: 'PDF',
+      tag: 'WASM 2.4MB AVG'
+    },
+    {
+      name: 'Format Converter',
+      description: 'Instantly switch between DOCX, PDF, Markdown, and plain text with exact layout fidelity.',
+      href: '/tools/convert',
+      icon: ArrowLeftRight,
+      category: 'PDF',
+      tag: 'CROSS-FORMAT'
+    },
+    {
+      name: 'Document Merger',
+      description: 'Combine multiple PDF or image documents into a unified sequence with zero upload delay.',
+      href: '/tools/merge',
+      icon: Merge,
+      category: 'PDF',
+      tag: 'LOSSLESS'
+    },
+    {
+      name: 'PDF Maker',
+      description: 'Generate structured PDFs from templates (Invoice, Certificate, Resume, CV).',
+      href: '/tools/pdf-maker',
+      icon: Award,
+      category: 'PDF',
+      tag: 'TEMPLATES'
+    },
+    {
+      name: 'PDF Extractor',
+      description: 'Isolate raw text streams, table matrices, and embedded vector assets.',
+      href: '/tools/pdf-extractor',
+      icon: FileSearch,
+      category: 'PDF',
+      tag: 'PARSER'
+    },
+    {
+      name: 'PDF Summarizer',
+      description: 'Summarize long documents and extract key insights directly in your browser.',
+      href: '/tools/analysis',
+      icon: Sparkles,
+      category: 'INTELLIGENCE',
+      tag: 'LOCAL OCR'
+    },
+    {
+      name: 'Image Compressor',
+      description: 'Compress PNG, JPG, and WebP assets with real-time compression ratio preview.',
+      href: '/tools/image-compressor',
+      icon: Minimize2,
+      category: 'IMAGE',
+      tag: 'SIMD QUANT'
+    },
+    {
+      name: 'Image Converter',
+      description: 'Transform between modern web image formats with ICC color profile preservation.',
+      href: '/tools/image-converter',
+      icon: ArrowLeftRight,
+      category: 'IMAGE',
+      tag: 'RASTER ENGINE'
+    },
+    {
+      name: 'Passport Photo Editor',
+      description: 'Biometric standard crop presets, background normalization, and face alignment.',
+      href: '/tools/passport-photo',
+      icon: User,
+      category: 'IMAGE',
+      tag: 'BIOMETRIC'
+    },
+    {
+      name: 'Smart Image Cropper',
+      description: 'Interactive canvas bounding, custom aspect ratio locks, and lossless exports.',
+      href: '/tools/cropper',
+      icon: Crop,
+      category: 'IMAGE',
+      tag: 'CANVAS 2D'
+    },
+    {
+      name: 'Resume & ATS Analyzer',
+      description: 'Parse keyword density, formatting compliance, and structural ATS scores privately.',
+      href: '/tools/analysis',
+      icon: FileText,
+      category: 'INTELLIGENCE',
+      tag: 'ATS ENGINE'
+    },
+    {
+      name: 'Encrypted File Vault',
+      description: 'Ephemeral client-encrypted session storage with automatic 2-hour TTL auto-purge.',
+      href: '/dashboard',
+      icon: Lock,
+      category: 'INTELLIGENCE',
+      tag: 'ZERO-KNOWLEDGE'
+    },
+  ]
+
+  const filteredTools = useMemo(() => {
+    return allTools.filter((tool) => {
+      const matchesCategory = selectedCategory === 'ALL' || tool.category === selectedCategory
+      const matchesSearch = searchQuery === '' || 
+        tool.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        tool.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        tool.tag.toLowerCase().includes(searchQuery.toLowerCase())
+      return matchesCategory && matchesSearch
+    })
+  }, [allTools, selectedCategory, searchQuery])
+
   return (
-    <main className="min-h-screen bg-background">
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-20 overflow-hidden flex flex-col items-center text-center">
-        {/* Premium background glow effect */}
-        <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-primary/20 blur-[120px] rounded-[100%] pointer-events-none" />
-        
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            variants={stagger}
-            initial="initial"
-            animate="animate"
-            className="flex flex-col items-center relative z-10"
-          >
-            <motion.div 
-              variants={fadeInUp}
-              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary/50 border border-border/50 text-muted-foreground text-sm font-medium mb-8 backdrop-blur-md"
-            >
-              <span className="w-2 h-2 rounded-full bg-primary animate-pulse shadow-[0_0_8px_rgba(var(--primary),0.8)]"></span>
-              Privacy-First Workspace
-            </motion.div>
+    <div className="min-h-screen bg-[#0C0A09] text-[#FAFAF9] font-sans flex flex-col selection:bg-[#292524] selection:text-[#FAFAF9]">
+      <Navbar />
 
-            <motion.h1 
-              variants={fadeInUp}
-              className="text-5xl md:text-7xl font-semibold tracking-tight text-foreground text-balance leading-[1.1] mb-6"
-            >
-              Document processing, <br className="hidden md:block"/>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-500">simplified.</span>
-            </motion.h1>
-
-            <motion.p 
-              variants={fadeInUp}
-              className="text-lg md:text-xl text-muted-foreground mb-10 max-w-2xl leading-relaxed text-balance"
-            >
-              The ultra-fast, secure, and professional suite for all your document needs. 
-              Convert, compress, and sign in seconds—without ever leaving your browser.
-            </motion.p>
-
-            <motion.div 
-              variants={fadeInUp}
-              className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto"
-            >
-              <Link href="/tools" className="w-full sm:w-auto">
-                <Button size="lg" className="w-full sm:w-auto h-14 px-8 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground text-base font-medium shadow-[0_0_40px_rgba(var(--primary),0.4)] transition-all active:scale-[0.98]">
-                  Try for free
-                </Button>
-              </Link>
-              <Link href="/dashboard" className="w-full sm:w-auto">
-                <Button variant="outline" size="lg" className="w-full sm:w-auto h-14 px-8 rounded-full border-border/50 bg-card/50 hover:bg-muted text-foreground text-base font-medium backdrop-blur-sm transition-all active:scale-[0.98]">
-                  View Demo
-                </Button>
-              </Link>
-            </motion.div>
-
-            <motion.div 
-              variants={fadeInUp}
-              className="mt-20 w-full max-w-5xl"
-            >
-              <TrustBadges />
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Recent Files Section */}
-      <RecentFiles />
-
-      {/* How it works */}
-      <HowItWorks />
-
-      {/* Tools Grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <ToolsGrid />
-      </div>
-
-      {/* About Creator Section */}
-      <section className="py-24 bg-muted/30 border-y border-border/50">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="text-3xl font-bold mb-6">Why I built DocEasy</h2>
-              <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-                I was tired of using document tools that were cluttered with ads, 
-                required account sign-ups, or had suspicious privacy policies. 
-              </p>
-              <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                As a CSE student and developer, I wanted to build something that I'd 
-                use myself—a clean, fast, and privacy-first solution for common 
-                document tasks.
-              </p>
-              <div className="flex items-center gap-6">
-                <div className="flex flex-col">
-                  <span className="font-bold text-xl text-foreground">Rachit Kumar</span>
-                  <span className="text-primary font-medium">Founder & Lead Developer</span>
-                </div>
-                <div className="h-12 w-[1px] bg-border" />
-                <div className="flex gap-4">
-                  <Link href="https://github.com/rachts" target="_blank" className="p-2 rounded-lg bg-card border border-border hover:bg-muted transition-colors">
-                    <Github className="w-5 h-5" />
-                  </Link>
-                  <Link href="https://www.linkedin.com/in/rachitkrtiwari/" target="_blank" className="p-2 rounded-lg bg-card border border-border hover:bg-muted transition-colors">
-                    <Linkedin className="w-5 h-5" />
-                  </Link>
-                  <Link href="https://x.com/rachtss" target="_blank" className="p-2 rounded-lg bg-card border border-border hover:bg-muted transition-colors">
-                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                    </svg>
-                  </Link>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              className="relative"
-            >
-              <div className="aspect-square rounded-3xl overflow-hidden bg-gradient-to-br from-primary/20 to-blue-600/20 border border-primary/20 backdrop-blur-sm flex items-center justify-center">
-                <div className="text-center p-8">
-                  <div className="bg-primary/10 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                    <Shield className="w-10 h-10 text-primary" />
-                  </div>
-                  <h3 className="text-2xl font-bold mb-2">Privacy is our Priority</h3>
-                  <p className="text-muted-foreground">
-                    No trackers. No logs. No nonsense. 
-                    Just your documents, processed securely.
-                  </p>
-                </div>
-              </div>
-              {/* Decorative elements */}
-              <div className="absolute -top-4 -right-4 w-24 h-24 bg-primary/10 rounded-full blur-2xl" />
-              <div className="absolute -bottom-4 -left-4 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl" />
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Final */}
-      <section className="py-24 text-center">
-        <div className="max-w-4xl mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="p-12 rounded-[2.5rem] bg-foreground text-background relative overflow-hidden"
-          >
-            {/* Background pattern */}
-            <div className="absolute inset-0 opacity-10 pointer-events-none">
-              <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-background/20 via-transparent to-transparent" />
+      <main className="flex-1 pt-[56px]">
+        {/* 1. Hero Section (pt-32, pb-24 for generous negative space) */}
+        <section className="px-6 md:px-16 pt-32 pb-24 max-w-6xl mx-auto">
+          <div className="flex flex-col text-left">
+            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-[4px] bg-[#141110] border border-[#292524] w-fit mb-6">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#FAFAF9]" />
+              <span className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#A8A29E]">
+                100% Client-Side WebAssembly Architecture
+              </span>
             </div>
 
-            <h2 className="text-4xl font-bold mb-6 tracking-tight relative z-10">
-              Ready to simplify your tasks?
-            </h2>
-            <p className="text-lg mb-10 text-background/80 max-w-xl mx-auto relative z-10">
-              Join thousands of users who process their documents securely every day.
+            <h1 className="text-4xl sm:text-5xl md:text-6xl font-medium tracking-tight text-[#FAFAF9] leading-[1.1] max-w-4xl">
+              Document tools that respect your privacy.
+            </h1>
+            
+            <p className="text-[15px] md:text-[17px] text-[#A8A29E] mt-6 max-w-2xl leading-relaxed">
+              Powerful processing, zero server retention. Compress, convert, and edit your documents locally within your browser using state-of-the-art WebAssembly architecture.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center relative z-10">
-              <Link href="/tools">
-                <Button size="lg" variant="secondary" className="w-full sm:w-auto h-14 px-10 rounded-2xl text-lg font-bold">
-                  Get Started for Free
-                </Button>
+
+            <div className="mt-10 flex flex-col sm:flex-row gap-4 items-start">
+              <Link
+                href="/tools/compress"
+                className="h-10 px-6 bg-[#FAFAF9] text-[#0C0A09] font-mono text-[12px] font-medium uppercase tracking-[0.05em] rounded-[6px] hover:bg-[#D6D3D1] transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer"
+              >
+                START PROCESSING
+                <ArrowRight className="w-4 h-4" />
               </Link>
-              <Link href="mailto:tiwari.rachit@gmail.com">
-                <Button size="lg" variant="outline" className="w-full sm:w-auto h-14 px-10 rounded-2xl text-lg font-bold bg-transparent text-background border-background/20 hover:bg-background/10">
-                  <Mail className="w-5 h-5 mr-2" />
-                  Contact Us
-                </Button>
+              <Link
+                href="/about"
+                className="h-10 px-6 bg-transparent text-[#FAFAF9] border border-[#292524] font-mono text-[12px] font-medium uppercase tracking-[0.05em] rounded-[6px] hover:bg-[#1C1917] hover:border-[#A8A29E] transition-colors duration-150 flex items-center justify-center cursor-pointer"
+              >
+                VIEW ARCHITECTURE
               </Link>
             </div>
-          </motion.div>
-        </div>
-      </section>
+
+            {/* Monospace Stats Row (mt-16 above, mb-24 below) */}
+            <div className="mt-16 mb-24 pt-6 border-t border-[#292524]">
+              <div className="font-mono text-[12px] uppercase tracking-[0.05em] text-[#A8A29E] flex flex-wrap items-center gap-3">
+                <span>2.4MB avg compression</span>
+                <span className="text-[#57534E]">•</span>
+                <span>0s server retention</span>
+                <span className="text-[#57534E]">•</span>
+                <span>12 browser tools</span>
+                <span className="text-[#57534E]">•</span>
+                <span className="text-[#57534E]">WASM ISOLATED</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 2. Core Tooling Suites (id="tools", Interactive Filter & Search, py-24) */}
+        <section id="tools" className="px-6 md:px-16 py-24 max-w-6xl mx-auto scroll-mt-20">
+          <div className="border-b border-[#292524] pb-6 mb-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div>
+              <span className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] block mb-1">
+                ENGINE DIRECTORY
+              </span>
+              <h2 className="text-3xl font-medium tracking-tight text-[#FAFAF9]">
+                Core Tooling Suites
+              </h2>
+            </div>
+
+            {/* Category Filter Pills & Search */}
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="flex items-center bg-[#141110] border border-[#292524] rounded-[6px] p-1 gap-1">
+                {(['ALL', 'PDF', 'IMAGE', 'INTELLIGENCE'] as const).map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setSelectedCategory(cat)}
+                    className={`font-mono text-[11px] uppercase tracking-[0.05em] px-3 py-1.5 rounded-[4px] transition-colors cursor-pointer ${
+                      selectedCategory === cat
+                        ? 'bg-[#1C1917] text-[#FAFAF9] border border-[#292524]'
+                        : 'text-[#57534E] hover:text-[#A8A29E] border border-transparent'
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+
+              <div className="relative">
+                <Search className="w-3.5 h-3.5 text-[#57534E] absolute left-3 top-1/2 -translate-y-1/2" />
+                <input
+                  type="text"
+                  placeholder="FILTER TOOLS..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="bg-[#141110] border border-[#292524] focus:border-[#A8A29E] text-[#FAFAF9] placeholder:text-[#57534E] font-mono text-[11px] uppercase tracking-[0.05em] pl-8 pr-3 py-1.5 rounded-[6px] outline-none w-36 sm:w-44 transition-colors"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Tool Rows List */}
+          <div className="flex flex-col gap-3 border-t border-[#292524] pt-3">
+            {filteredTools.map((tool) => (
+              <Link
+                key={tool.name}
+                href={tool.href}
+                className="group flex items-center justify-between py-4 border-b border-[#292524] hover:bg-[#1C1917] transition-colors duration-150 px-4 -mx-4 rounded-[6px]"
+              >
+                <div className="flex items-center gap-4 md:gap-6 min-w-0">
+                  <div className="w-10 h-10 rounded-[4px] bg-[#141110] border border-[#292524] flex items-center justify-center shrink-0 group-hover:border-[#A8A29E] transition-colors duration-150">
+                    <tool.icon className="w-4 h-4 text-[#A8A29E] group-hover:text-[#FAFAF9] stroke-[1.5] transition-colors duration-150" />
+                  </div>
+                  <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-6 min-w-0">
+                    <span className="text-[15px] font-medium text-[#FAFAF9] shrink-0">
+                      {tool.name}
+                    </span>
+                    <span className="text-[14px] text-[#A8A29E] truncate">
+                      {tool.description}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3 shrink-0 ml-4">
+                  <span className="font-mono text-[10px] uppercase tracking-[0.05em] text-[#57534E] border border-[#292524] bg-[#141110] px-2 py-0.5 rounded hidden lg:inline">
+                    {tool.tag}
+                  </span>
+                  <span className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] hidden sm:inline">
+                    LAUNCH
+                  </span>
+                  <ArrowRight className="w-4 h-4 text-[#57534E] group-hover:text-[#FAFAF9] transition-colors duration-150 group-hover:translate-x-0.5" />
+                </div>
+              </Link>
+            ))}
+
+            {filteredTools.length === 0 && (
+              <div className="text-center py-12 font-mono text-[12px] uppercase tracking-[0.05em] text-[#57534E]">
+                No tools matched &ldquo;{searchQuery}&rdquo; in {selectedCategory} category.
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* 3. How It Works Section (id="process", Inline Sentence Flow, py-24) */}
+        <section id="process" className="px-6 md:px-16 py-24 max-w-6xl mx-auto scroll-mt-20">
+          <div className="border-t border-[#292524] pt-8">
+            <h2 className="text-3xl font-medium tracking-tight text-[#FAFAF9] mb-6">
+              How It Works
+            </h2>
+            <p className="text-xl md:text-2xl text-[#A8A29E] leading-relaxed max-w-4xl tracking-tight">
+              <span className="text-[#FAFAF9] font-medium">Upload</span> your file{' '}
+              <span className="text-[#57534E] mx-2">→</span>{' '}
+              <span className="text-[#FAFAF9] font-medium">Process</span> instantly in your browser{' '}
+              <span className="text-[#57534E] mx-2">→</span>{' '}
+              <span className="text-[#FAFAF9] font-medium">Download</span> securely.{' '}
+              <span className="text-[#A8A29E]">Files deleted in </span>
+              <span className="text-[#FAFAF9] font-medium">2 hours</span>.
+            </p>
+          </div>
+        </section>
+
+        {/* 4. Privacy Manifesto Section (id="manifesto", Full-width, bg #1C1917, py-24) */}
+        <section id="manifesto" className="w-full bg-[#1C1917] border-y border-[#292524] py-24 px-6 md:px-16 scroll-mt-20">
+          <div className="max-w-6xl mx-auto flex flex-col text-left">
+            <div className="flex flex-col gap-2 max-w-3xl">
+              <h2 className="text-3xl sm:text-4xl font-medium text-[#FAFAF9] tracking-tight leading-tight">
+                We don&apos;t store.
+              </h2>
+              <h2 className="text-3xl sm:text-4xl font-medium text-[#FAFAF9] tracking-tight leading-tight">
+                We don&apos;t track.
+              </h2>
+              <h2 className="text-3xl sm:text-4xl font-medium text-[#FAFAF9] tracking-tight leading-tight">
+                We don&apos;t ask for your email.
+              </h2>
+            </div>
+            
+            <div className="mt-8 font-mono text-[12px] uppercase tracking-[0.05em] text-[#57534E] flex flex-wrap items-center gap-3">
+              <span>Last audited: 2024-08-30</span>
+              <span className="text-[#292524]">·</span>
+              <Link 
+                href="https://github.com/rachts/DocEasy" 
+                target="_blank"
+                className="text-[#A8A29E] hover:text-[#FAFAF9] transition-colors underline underline-offset-4"
+              >
+                Open source on GitHub
+              </Link>
+            </div>
+          </div>
+        </section>
+      </main>
 
       <Footer />
-    </main>
+    </div>
   )
 }

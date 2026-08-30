@@ -1,182 +1,380 @@
 'use client'
 
-import Link from "next/link"
-import Image from "next/image"
-import { useRouter } from "next/navigation"
-import { useEffect, useState, useMemo } from "react"
-import { createClient } from "@/utils/supabase/client"
-import { logout } from "@/app/login/actions"
-import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { ChevronDown, Search } from "lucide-react"
-import { ThemeToggle } from "@/components/theme-toggle"
-import { CommandMenu } from "@/components/command-menu"
+import React, { useState, useRef, useEffect } from 'react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { 
+  ChevronDown, 
+  Search, 
+  ArrowRight,
+  Globe,
+  Menu,
+  X
+} from 'lucide-react'
+import { CommandMenu } from '@/components/command-menu'
 
 export function Navbar() {
-  const [user, setUser] = useState<any>(null)
-  const [authLoading, setAuthLoading] = useState(true)
-  const router = useRouter()
-  const supabase = createClient()
+  const [toolsOpen, setToolsOpen] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [activeSection, setActiveSection] = useState<string>('')
+  const dropdownRef = useRef<HTMLDivElement>(null)
+  const pathname = usePathname()
 
+  const isHome = pathname === '/'
+
+  // IntersectionObserver to detect active section on landing page
   useEffect(() => {
-    let mounted = true
-
-    const fetchUser = async () => {
-      try {
-        const { data: { user } } = await supabase.auth.getUser()
-        if (mounted) {
-          setUser(user)
-          setAuthLoading(false)
-        }
-      } catch (error) {
-        if (mounted) {
-          setAuthLoading(false)
-        }
-      }
+    if (!isHome) {
+      setActiveSection('')
+      return
     }
 
-    fetchUser()
+    const sectionIds = ['tools', 'process', 'manifesto']
+    const observers: IntersectionObserver[] = []
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        if (mounted) {
-          setUser(session?.user || null)
-          setAuthLoading(false)
+    const observerCallback: IntersectionObserverCallback = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id)
         }
+      })
+    }
+
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id)
+      if (el) {
+        const observer = new IntersectionObserver(observerCallback, {
+          rootMargin: '-50% 0px -50% 0px',
+          threshold: 0,
+        })
+        observer.observe(el)
+        observers.push(observer)
       }
-    )
+    })
 
     return () => {
-      mounted = false
-      subscription.unsubscribe()
+      observers.forEach((obs) => obs.disconnect())
     }
-  }, [supabase.auth])
+  }, [isHome])
+
+  // Handle outside click for dropdown
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setToolsOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileMenuOpen(false)
+    setToolsOpen(false)
+  }, [pathname])
+
+  const scrollToSection = (id: string, e: React.MouseEvent) => {
+    if (isHome) {
+      e.preventDefault()
+      const element = document.getElementById(id)
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+      setMobileMenuOpen(false)
+    }
+  }
 
   return (
-    <nav className="border-b border-border bg-background/95 backdrop-blur sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-6">
-            <Link href="/" className="font-extrabold text-2xl text-slate-800 dark:text-white hover:opacity-90 transition-opacity flex items-center gap-2.5 tracking-tight">
-              <Image src="/logo.svg" alt="DocEasy Logo" width={36} height={36} className="drop-shadow-sm" />
+    <>
+      <nav className="fixed top-0 left-0 w-full h-[56px] bg-[#0C0A09] border-b border-[#292524] flex justify-between items-center px-6 md:px-12 z-50 select-none">
+        {/* Left: Brand Logo & Navigation Links */}
+        <div className="flex items-center gap-8">
+          {/* Logo & Wordmark */}
+          <Link href="/" className="flex items-center gap-2.5 group">
+            <div className="w-7 h-7 bg-[#1C1917] border border-[#292524] group-hover:border-[#A8A29E] rounded-[5px] flex items-center justify-center transition-colors duration-150">
+              <svg className="w-4 h-4 text-[#FAFAF9]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14" />
+                <path d="m12 5 7 7-7 7" />
+              </svg>
+            </div>
+            <span className="text-[17px] font-semibold tracking-[-0.02em] text-[#FAFAF9]">
               DocEasy
+            </span>
+          </Link>
+
+          {/* Navigation Links with Anchor Smooth Scroll (Desktop) */}
+          <div className="hidden md:flex items-center gap-6">
+            {/* TOOLS (Scroll to #tools + Dropdown toggle) */}
+            <div className="relative flex items-center" ref={dropdownRef}>
+              <Link
+                href="/#tools"
+                onClick={(e) => scrollToSection('tools', e)}
+                className={`font-mono text-[12px] uppercase tracking-[0.05em] transition-colors duration-150 ${
+                  activeSection === 'tools'
+                    ? 'text-[#FAFAF9]'
+                    : 'text-[#57534E] hover:text-[#A8A29E]'
+                }`}
+              >
+                TOOLS
+              </Link>
+              <button
+                type="button"
+                onClick={() => setToolsOpen(!toolsOpen)}
+                className="p-1 text-[#57534E] hover:text-[#FAFAF9] transition-colors cursor-pointer ml-0.5"
+                title="Toggle tools menu"
+                aria-expanded={toolsOpen}
+              >
+                <ChevronDown className={`w-3 h-3 transition-transform duration-150 ${toolsOpen ? 'rotate-180 text-[#FAFAF9]' : ''}`} />
+              </button>
+
+              {/* Dropdown Menu Container */}
+              {toolsOpen && (
+                <div className="absolute top-[calc(100%+12px)] left-0 w-64 bg-[#1C1917] border border-[#292524] rounded-[8px] p-2 z-50 font-sans shadow-none animate-in fade-in-0 zoom-in-95 duration-100">
+                  {/* PDF Tools */}
+                  <div className="px-3 pt-2 pb-1.5 font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] font-medium">
+                    PDF Tools
+                  </div>
+                  <div className="flex flex-col space-y-0.5">
+                    <Link
+                      href="/tools/convert"
+                      onClick={() => setToolsOpen(false)}
+                      className="px-3 py-1.5 rounded-[4px] text-[13.5px] text-[#A8A29E] hover:text-[#FAFAF9] hover:bg-[#141110] transition-colors"
+                    >
+                      PDF Converter
+                    </Link>
+                    <Link
+                      href="/tools/pdf-maker"
+                      onClick={() => setToolsOpen(false)}
+                      className="px-3 py-1.5 rounded-[4px] text-[13.5px] text-[#A8A29E] hover:text-[#FAFAF9] hover:bg-[#141110] transition-colors"
+                    >
+                      PDF Maker
+                    </Link>
+                    <Link
+                      href="/tools/merge"
+                      onClick={() => setToolsOpen(false)}
+                      className="px-3 py-1.5 rounded-[4px] text-[13.5px] text-[#A8A29E] hover:text-[#FAFAF9] hover:bg-[#141110] transition-colors"
+                    >
+                      PDF Merger
+                    </Link>
+                    <Link
+                      href="/tools/pdf-extractor"
+                      onClick={() => setToolsOpen(false)}
+                      className="px-3 py-1.5 rounded-[4px] text-[13.5px] text-[#A8A29E] hover:text-[#FAFAF9] hover:bg-[#141110] transition-colors"
+                    >
+                      PDF Extractor
+                    </Link>
+                    <Link
+                      href="/tools/compress"
+                      onClick={() => setToolsOpen(false)}
+                      className="px-3 py-1.5 rounded-[4px] text-[13.5px] text-[#A8A29E] hover:text-[#FAFAF9] hover:bg-[#141110] transition-colors"
+                    >
+                      PDF Compressor
+                    </Link>
+                  </div>
+
+                  {/* Image Tools */}
+                  <div className="border-t border-[#292524] mt-2 pt-2 px-3 pb-1.5 font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] font-medium">
+                    Image Tools
+                  </div>
+                  <div className="flex flex-col space-y-0.5">
+                    <Link
+                      href="/tools/image-compressor"
+                      onClick={() => setToolsOpen(false)}
+                      className="px-3 py-1.5 rounded-[4px] text-[13.5px] text-[#A8A29E] hover:text-[#FAFAF9] hover:bg-[#141110] transition-colors"
+                    >
+                      Image Compressor
+                    </Link>
+                    <Link
+                      href="/tools/image-converter"
+                      onClick={() => setToolsOpen(false)}
+                      className="px-3 py-1.5 rounded-[4px] text-[13.5px] text-[#A8A29E] hover:text-[#FAFAF9] hover:bg-[#141110] transition-colors"
+                    >
+                      Image Converter
+                    </Link>
+                    <Link
+                      href="/tools/passport-photo"
+                      onClick={() => setToolsOpen(false)}
+                      className="px-3 py-1.5 rounded-[4px] text-[13.5px] text-[#A8A29E] hover:text-[#FAFAF9] hover:bg-[#141110] transition-colors"
+                    >
+                      Passport Photo Editor
+                    </Link>
+                    <Link
+                      href="/tools/cropper"
+                      onClick={() => setToolsOpen(false)}
+                      className="px-3 py-1.5 rounded-[4px] text-[13.5px] text-[#A8A29E] hover:text-[#FAFAF9] hover:bg-[#141110] transition-colors"
+                    >
+                      Image Cropper
+                    </Link>
+                  </div>
+
+                  {/* View All Tools */}
+                  <div className="border-t border-[#292524] mt-2 pt-1.5">
+                    <Link
+                      href="/tools"
+                      onClick={() => setToolsOpen(false)}
+                      className="flex items-center justify-between px-3 py-2 rounded-[4px] text-[13.5px] font-medium text-[#FAFAF9] hover:bg-[#141110] transition-colors"
+                    >
+                      <span>View All Tools</span>
+                      <ArrowRight className="w-3.5 h-3.5 text-[#57534E]" />
+                    </Link>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* MANIFESTO (#manifesto) */}
+            <Link 
+              href="/#manifesto"
+              onClick={(e) => scrollToSection('manifesto', e)}
+              className={`font-mono text-[12px] uppercase tracking-[0.05em] transition-colors duration-150 ${
+                activeSection === 'manifesto'
+                  ? 'text-[#FAFAF9]'
+                  : 'text-[#57534E] hover:text-[#A8A29E]'
+              }`}
+            >
+              MANIFESTO
             </Link>
 
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="hidden md:flex items-center gap-1">
-                  Tools
-                  <ChevronDown className="w-4 h-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" className="w-56">
-                <DropdownMenuLabel>PDF Tools</DropdownMenuLabel>
-                <DropdownMenuItem asChild>
-                  <Link href="/tools/pdf-converter" className="cursor-pointer">
-                    PDF Converter
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/tools/pdf-maker" className="cursor-pointer">
-                    PDF Maker
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/tools/pdf-merger" className="cursor-pointer">
-                    PDF Merger
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/tools/pdf-extractor" className="cursor-pointer">
-                    PDF Extractor
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/tools/compressor" className="cursor-pointer">
-                    PDF Compressor
-                  </Link>
-                </DropdownMenuItem>
+            {/* PROCESS (#process) */}
+            <Link 
+              href="/#process"
+              onClick={(e) => scrollToSection('process', e)}
+              className={`font-mono text-[12px] uppercase tracking-[0.05em] transition-colors duration-150 ${
+                activeSection === 'process'
+                  ? 'text-[#FAFAF9]'
+                  : 'text-[#57534E] hover:text-[#A8A29E]'
+              }`}
+            >
+              PROCESS
+            </Link>
 
-                <DropdownMenuSeparator />
-                <DropdownMenuLabel>Image Tools</DropdownMenuLabel>
-                <DropdownMenuItem asChild>
-                  <Link href="/tools/image-compressor" className="cursor-pointer">
-                    Image Compressor
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/tools/image-converter" className="cursor-pointer">
-                    Image Converter
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/tools/passport-photo" className="cursor-pointer">
-                    Passport Photo Editor
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/tools/cropper" className="cursor-pointer">
-                    Image Cropper
-                  </Link>
-                </DropdownMenuItem>
-
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <Link href="/tools" className="cursor-pointer font-medium">
-                    View All Tools
-                  </Link>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-
-          <div className="flex gap-3 items-center">
-            <Button variant="ghost" size="icon" className="hidden sm:flex text-muted-foreground" onClick={() => document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true }))}>
-              <Search className="w-5 h-5" />
-            </Button>
-            <ThemeToggle />
-
-            {!authLoading && (
-              <>
-                {user ? (
-                  <>
-                    <span className="text-sm text-muted-foreground hidden sm:inline">{user.email}</span>
-                    <Link href="/dashboard">
-                      <Button variant="outline" size="sm">
-                        Dashboard
-                      </Button>
-                    </Link>
-                    <form action={logout}>
-                      <Button type="submit" size="sm" variant="outline">
-                        Logout
-                      </Button>
-                    </form>
-                  </>
-                ) : (
-                  <>
-                    <Link href="/login">
-                      <Button variant="outline" size="sm">
-                        Login
-                      </Button>
-                    </Link>
-                    <Link href="/signup">
-                      <Button size="sm">Sign Up</Button>
-                    </Link>
-                  </>
-                )}
-              </>
-            )}
+            {/* VAULT (/dashboard) */}
+            <Link 
+              href="/dashboard" 
+              className="font-mono text-[12px] uppercase tracking-[0.05em] text-[#57534E] hover:text-[#A8A29E] transition-colors duration-150"
+            >
+              VAULT
+            </Link>
           </div>
         </div>
-      </div>
+
+        {/* Right: Search, Lang, Auth CTAs, Mobile Hamburger */}
+        <div className="flex items-center gap-3 md:gap-4">
+          {/* Search Trigger */}
+          <button
+            type="button"
+            onClick={() => {
+              window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true }))
+            }}
+            className="p-1.5 text-[#57534E] hover:text-[#FAFAF9] rounded-[4px] transition-colors flex items-center gap-2 font-mono text-[11px] cursor-pointer"
+            title="Search tools (⌘K)"
+          >
+            <Search className="w-4 h-4" />
+            <span className="hidden lg:inline border border-[#292524] bg-[#141110] px-1.5 py-0.5 rounded text-[10px] text-[#57534E]">
+              ⌘K
+            </span>
+          </button>
+
+          {/* Lang Selector */}
+          <div className="hidden sm:flex items-center gap-1 font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] hover:text-[#A8A29E] transition-colors cursor-pointer px-1.5 py-1">
+            <Globe className="w-3.5 h-3.5" />
+            <span>EN</span>
+          </div>
+
+          {/* Login Link */}
+          <Link
+            href="/login"
+            className="font-mono text-[12px] uppercase tracking-[0.05em] text-[#57534E] hover:text-[#FAFAF9] px-2 py-1.5 transition-colors hidden sm:inline-block"
+          >
+            LOGIN
+          </Link>
+
+          {/* Sign Up / Primary Action Button */}
+          <Link
+            href="/signup"
+            className="h-8 md:h-9 px-3.5 md:px-4 bg-[#FAFAF9] text-[#0C0A09] font-mono text-[11px] md:text-[12px] font-medium uppercase tracking-[0.05em] rounded-[6px] hover:bg-[#D6D3D1] transition-colors flex items-center justify-center shrink-0"
+          >
+            SIGN UP
+          </Link>
+
+          {/* Mobile Menu Toggle Button */}
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="p-1.5 text-[#57534E] hover:text-[#FAFAF9] rounded-[4px] md:hidden transition-colors cursor-pointer"
+            aria-label="Toggle Navigation Menu"
+          >
+            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
+      </nav>
+
+      {/* Mobile Navigation Drawer */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 top-[56px] bg-[#0C0A09] z-40 md:hidden flex flex-col p-6 overflow-y-auto border-b border-[#292524] animate-in fade-in-0 slide-in-from-top-2 duration-150">
+          <div className="flex flex-col space-y-4 pt-2">
+            <div className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] pb-1 border-b border-[#292524]">
+              NAVIGATION
+            </div>
+            <Link
+              href="/#tools"
+              onClick={(e) => scrollToSection('tools', e)}
+              className="font-mono text-[14px] uppercase tracking-[0.05em] text-[#FAFAF9] py-2 border-b border-[#292524]/60"
+            >
+              CORE TOOLS
+            </Link>
+            <Link
+              href="/#process"
+              onClick={(e) => scrollToSection('process', e)}
+              className="font-mono text-[14px] uppercase tracking-[0.05em] text-[#A8A29E] hover:text-[#FAFAF9] py-2 border-b border-[#292524]/60"
+            >
+              HOW IT WORKS
+            </Link>
+            <Link
+              href="/#manifesto"
+              onClick={(e) => scrollToSection('manifesto', e)}
+              className="font-mono text-[14px] uppercase tracking-[0.05em] text-[#A8A29E] hover:text-[#FAFAF9] py-2 border-b border-[#292524]/60"
+            >
+              PRIVACY MANIFESTO
+            </Link>
+            <Link
+              href="/dashboard"
+              onClick={() => setMobileMenuOpen(false)}
+              className="font-mono text-[14px] uppercase tracking-[0.05em] text-[#A8A29E] hover:text-[#FAFAF9] py-2 border-b border-[#292524]/60"
+            >
+              LOCAL VAULT STORAGE
+            </Link>
+            <Link
+              href="/tools"
+              onClick={() => setMobileMenuOpen(false)}
+              className="font-mono text-[14px] uppercase tracking-[0.05em] text-[#A8A29E] hover:text-[#FAFAF9] py-2 border-b border-[#292524]/60"
+            >
+              VIEW ALL 12 TOOLS →
+            </Link>
+
+            <div className="pt-6 flex gap-3">
+              <Link
+                href="/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex-1 h-10 bg-transparent text-[#FAFAF9] border border-[#292524] font-mono text-[12px] font-medium uppercase tracking-[0.05em] rounded-[6px] hover:bg-[#1C1917] flex items-center justify-center"
+              >
+                LOGIN
+              </Link>
+              <Link
+                href="/signup"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex-1 h-10 bg-[#FAFAF9] text-[#0C0A09] font-mono text-[12px] font-medium uppercase tracking-[0.05em] rounded-[6px] hover:bg-[#D6D3D1] flex items-center justify-center"
+              >
+                SIGN UP
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Global Command Menu */}
       <CommandMenu />
-    </nav>
+    </>
   )
 }

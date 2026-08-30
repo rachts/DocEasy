@@ -1,121 +1,72 @@
-import Link from "next/link"
-import { ArrowLeft, Shield, Lock, FileText, Database, Cookie, Mail, Clock, UserCheck } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import Link from 'next/link'
+import { Navbar } from '@/components/navbar'
+import { Footer } from '@/components/footer'
 
 export const metadata = {
-  title: "Privacy Policy | DocEasy",
-  description: "Learn about how DocEasy protects your data and privacy.",
+  title: 'Privacy Protocol | DocEasy',
+  description: 'DocEasy privacy protocol and data minimization guarantees.',
 }
 
 export default function PrivacyPolicyPage() {
   return (
-    <div className="min-h-screen bg-background py-20">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <Link href="/">
-          <Button variant="ghost" className="mb-8 hover:bg-muted">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Home
-          </Button>
-        </Link>
-        
-        <div className="text-center mb-16">
-          <div className="bg-primary/10 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6">
-            <Shield className="w-8 h-8 text-primary" />
+    <div className="min-h-screen bg-[#0C0A09] text-[#FAFAF9] font-sans flex flex-col selection:bg-[#292524] selection:text-[#FAFAF9]">
+      <Navbar />
+
+      <main className="flex-1 pt-[56px]">
+        {/* Header Breadcrumb */}
+        <div className="bg-[#141110] border-b border-[#292524] py-3 px-6 md:px-16">
+          <div className="max-w-4xl mx-auto flex items-center gap-2 font-mono text-[12px] uppercase tracking-[0.05em]">
+            <Link href="/" className="text-[#57534E] hover:text-[#FAFAF9] transition-colors">
+              SYSTEM
+            </Link>
+            <span className="text-[#292524]">/</span>
+            <span className="text-[#FAFAF9]">PRIVACY PROTOCOL</span>
           </div>
-          <h1 className="text-4xl font-bold tracking-tight text-foreground mb-4">Privacy Policy</h1>
-          <p className="text-lg text-muted-foreground">Last updated: {new Date().toLocaleDateString()}</p>
         </div>
 
-        <div className="space-y-12 text-foreground/80 leading-relaxed max-w-3xl mx-auto">
-          <section className="p-6 rounded-2xl bg-card border border-border/50 shadow-sm">
-            <div className="flex items-center gap-3 mb-4 text-foreground">
-              <Shield className="w-6 h-6 text-primary" />
-              <h2 className="text-2xl font-semibold">1. Information Collection</h2>
-            </div>
-            <p className="text-muted-foreground">
-              At DocEasy, your privacy is our priority. We collect minimal information necessary to provide our services. 
-              This includes basic account details (if you choose to sign up) and temporary processing data required for file conversions.
-            </p>
-          </section>
+        <section className="py-16 md:py-24 px-6 md:px-16 max-w-4xl mx-auto">
+          <h1 className="text-4xl md:text-5xl font-medium tracking-tight text-[#FAFAF9] leading-tight mb-4">
+            Privacy Protocol & Guarantees
+          </h1>
+          <p className="font-mono text-[12px] uppercase tracking-[0.05em] text-[#57534E] mb-12 border-b border-[#292524] pb-4">
+            EFFECTIVE REVISION: 2024.10 • STANDARD: ZERO PERMANENT LOGGING
+          </p>
 
-          <section className="p-6 rounded-2xl bg-card border border-border/50 shadow-sm">
-            <div className="flex items-center gap-3 mb-4 text-foreground">
-              <Lock className="w-6 h-6 text-primary" />
-              <h2 className="text-2xl font-semibold">2. Authentication Data</h2>
+          <div className="space-y-8">
+            <div className="p-6 bg-[#1C1917] border border-[#292524] rounded-[8px] space-y-2">
+              <span className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] block">
+                SECTION 01
+              </span>
+              <h2 className="text-xl font-medium text-[#FAFAF9]">Client-Side Execution</h2>
+              <p className="text-[15px] text-[#A8A29E] leading-relaxed">
+                All document parsing, formatting, rasterization, and compression routines run locally within your browser context via sandboxed WebAssembly execution threads. Byte buffers are never streamed to third parties.
+              </p>
             </div>
-            <p className="text-muted-foreground">
-              When you create an account, we store your email address and a securely hashed password. Authentication is managed by Supabase, 
-              which employs industry-standard encryption and security practices. We never have access to your plaintext password.
-            </p>
-          </section>
 
-          <section className="p-6 rounded-2xl bg-card border border-border/50 shadow-sm">
-            <div className="flex items-center gap-3 mb-4 text-foreground">
-              <FileText className="w-6 h-6 text-primary" />
-              <h2 className="text-2xl font-semibold">3. File Processing Policy</h2>
+            <div className="p-6 bg-[#1C1917] border border-[#292524] rounded-[8px] space-y-2">
+              <span className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] block">
+                SECTION 02
+              </span>
+              <h2 className="text-xl font-medium text-[#FAFAF9]">Ephemeral Storage TTL</h2>
+              <p className="text-[15px] text-[#A8A29E] leading-relaxed">
+                If an authenticated user chooses to synchronize processed files, the object is placed in an encrypted volatile bucket with an automated 2-hour TTL expiration policy.
+              </p>
             </div>
-            <p className="text-muted-foreground">
-              DocEasy is built on a privacy-first philosophy. The majority of our tools, including PDF compression and image conversions, 
-              are processed entirely client-side (within your browser). Your sensitive files are never uploaded to our servers unless you explicitly 
-              choose to save them to your cloud dashboard or use advanced analysis tools.
-            </p>
-          </section>
 
-          <section className="p-6 rounded-2xl bg-card border border-border/50 shadow-sm">
-            <div className="flex items-center gap-3 mb-4 text-foreground">
-              <Database className="w-6 h-6 text-primary" />
-              <h2 className="text-2xl font-semibold">4. Storage Policy</h2>
+            <div className="p-6 bg-[#1C1917] border border-[#292524] rounded-[8px] space-y-2">
+              <span className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] block">
+                SECTION 03
+              </span>
+              <h2 className="text-xl font-medium text-[#FAFAF9]">No Telemetry Harvesting</h2>
+              <p className="text-[15px] text-[#A8A29E] leading-relaxed">
+                We do not inject third-party ad pixels, session replay recording scripts, or behavioral trackers. Anonymized performance signals are restricted to error diagnostics.
+              </p>
             </div>
-            <p className="text-muted-foreground">
-              Files uploaded to the cloud dashboard are securely stored in private storage buckets. Only you have access to your uploaded 
-              files and generated exports. You can delete these files at any time from your dashboard, which will permanently remove them from our storage.
-            </p>
-          </section>
+          </div>
+        </section>
+      </main>
 
-          <section className="p-6 rounded-2xl bg-card border border-border/50 shadow-sm">
-            <div className="flex items-center gap-3 mb-4 text-foreground">
-              <Cookie className="w-6 h-6 text-primary" />
-              <h2 className="text-2xl font-semibold">5. Cookies</h2>
-            </div>
-            <p className="text-muted-foreground">
-              We use essential cookies to maintain your session and keep you logged in securely. We do not use third-party tracking cookies 
-              or sell your data to advertisers.
-            </p>
-          </section>
-
-          <section className="p-6 rounded-2xl bg-card border border-border/50 shadow-sm">
-            <div className="flex items-center gap-3 mb-4 text-foreground">
-              <UserCheck className="w-6 h-6 text-primary" />
-              <h2 className="text-2xl font-semibold">6. Third Party Services</h2>
-            </div>
-            <p className="text-muted-foreground">
-              We use Supabase for database and authentication infrastructure. For certain advanced features, we utilize secure machine learning APIs. 
-              Data sent to these services is strictly limited to what is necessary for the feature to function.
-            </p>
-          </section>
-
-          <section className="p-6 rounded-2xl bg-card border border-border/50 shadow-sm">
-            <div className="flex items-center gap-3 mb-4 text-foreground">
-              <Clock className="w-6 h-6 text-primary" />
-              <h2 className="text-2xl font-semibold">7. Data Retention & User Rights</h2>
-            </div>
-            <p className="text-muted-foreground">
-              You have the right to access, modify, or delete your personal data at any time. If you delete your account, all associated 
-              files, activity logs, and personal information will be permanently erased from our systems.
-            </p>
-          </section>
-
-          <section className="p-6 rounded-2xl bg-card border border-border/50 shadow-sm">
-            <div className="flex items-center gap-3 mb-4 text-foreground">
-              <Mail className="w-6 h-6 text-primary" />
-              <h2 className="text-2xl font-semibold">8. Contact Information</h2>
-            </div>
-            <p className="text-muted-foreground">
-              If you have any questions or concerns regarding this Privacy Policy, please reach out to us via the <Link href="/contact" className="text-primary hover:underline font-medium">Contact Page</Link>.
-            </p>
-          </section>
-        </div>
-      </div>
+      <Footer />
     </div>
   )
 }

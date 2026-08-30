@@ -1,22 +1,36 @@
 import type React from "react"
-import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import type { Metadata, Viewport } from "next"
+import { Inter, JetBrains_Mono } from "next/font/google"
 import "./globals.css"
-import { Navbar } from "@/components/navbar"
 import { ThemeProvider } from "@/lib/theme-provider"
 import { Analytics } from "@vercel/analytics/next"
 
-const inter = Inter({ subsets: ["latin"] })
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+})
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains-mono",
+  display: "swap",
+})
+
+export const viewport: Viewport = {
+  themeColor: "#0C0A09",
+  colorScheme: "dark",
+}
 
 export const metadata: Metadata = {
   title: {
-    default: "DocEasy | Fast & Private Document Tools",
+    default: "DocEasy | Privacy-First Document & Image Tools",
     template: "%s | DocEasy"
   },
-  description: "The ultimate privacy-first document toolkit. Compress, convert, merge, and edit PDFs and images with lightning speed. No login, no watermarks.",
-  keywords: ["PDF compressor", "image converter", "merge PDF", "free document tools", "private document processing", "passport photo generator"],
-  authors: [{ name: "Rachit, Akhtar, Pranav" }],
-  creator: "Rachit, Akhtar, Pranav",
+  description: "Fast, privacy-focused document processing with zero server retention. Compress PDFs, convert formats, and edit documents locally in your browser.",
+  keywords: ["PDF compressor", "image converter", "merge PDF", "private document tools", "browser PDF processing", "privacy manifesto"],
+  authors: [{ name: "DocEasy" }],
+  creator: "DocEasy",
   publisher: "DocEasy",
   robots: "index, follow",
 }
@@ -27,10 +41,9 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} bg-background text-foreground`}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <Navbar />
+    <html lang="en" className="dark" suppressHydrationWarning>
+      <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans bg-[#0C0A09] text-[#FAFAF9] min-h-screen antialiased selection:bg-[#292524] selection:text-[#FAFAF9]`}>
+        <ThemeProvider attribute="class" defaultTheme="dark" forcedTheme="dark" disableTransitionOnChange>
           {children}
           <Analytics />
         </ThemeProvider>
