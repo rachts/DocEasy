@@ -3,7 +3,7 @@
 # ==============================================================================
 
 # ------------------------------------------------------------------------------
-# Dependencies
+# Dependencies & Package Managers
 # ------------------------------------------------------------------------------
 node_modules/
 .pnpm-store/
@@ -15,7 +15,7 @@ node_modules/
 !.yarn/versions
 
 # ------------------------------------------------------------------------------
-# Next.js Build Outputs & Caches
+# Next.js Build Outputs, Bundlers & Caches
 # ------------------------------------------------------------------------------
 .next/
 out/
@@ -26,16 +26,21 @@ dist/
 *.tsbuildinfo
 
 # ------------------------------------------------------------------------------
-# Environment Variables & Secrets (Keep .env.example only)
+# Environment Variables, Secrets & Keys (Preserve .env.example)
 # ------------------------------------------------------------------------------
 .env
 .env*.local
 .env.development.local
 .env.test.local
 .env.production.local
+.env.development
+.env.production
+.env.test
 *.pem
 *.key
 *.cert
+*.crt
+*.pfx
 !.env.example
 
 # ------------------------------------------------------------------------------
@@ -70,6 +75,8 @@ Desktop.ini
 !.vscode/launch.json
 !.vscode/extensions.json
 .idea/
+.fleet/
+.history/
 *.sublime-project
 *.sublime-workspace
 *.swp
@@ -96,24 +103,31 @@ temp/
 *.rej
 
 # ------------------------------------------------------------------------------
-# Python & Redis (Local helpers & task queues)
+# Python, Redis, Databases & Local Runtime Data
 # ------------------------------------------------------------------------------
 __pycache__/
 *.py[cod]
 *$py.class
 dump.rdb
 docker-data/
+*.sqlite
+*.sqlite3
+*.db
 
 # ------------------------------------------------------------------------------
-# AI Agents, Design References & IDE Workspace Artifacts
+# AI Agents, Design References, Seed Data & Scratch Scripts
 # ------------------------------------------------------------------------------
 stitch_redesign/
+seed_data/
+*.sh
 .gemini/
 .cursor/
 .claude/
+.windsurf/
 .aider/
 .copilot/
 .openai/
+.agents/
 .prompt/
 .prompts/
 brain/
@@ -121,3 +135,5 @@ implementation_plan.md
 walkthrough.md
 cleanup_report.md
 task.md
+
+# ==============================================================================

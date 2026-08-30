@@ -15,7 +15,7 @@ import {
   RotateCcw 
 } from 'lucide-react'
 import { compressPDFWithRendering } from '@/lib/pdf-compression-advanced'
-import { compressImage } from '@/lib/compression-utils'
+import { compressImageWithQuality } from '@/lib/image-compressor-utils'
 import { uploadFileToSupabase, saveFileMetadata, trackEvent, addToRecentFiles } from '@/lib/supabase/helpers'
 
 export default function CompressPDFPage() {
@@ -62,8 +62,8 @@ export default function CompressPDFPage() {
         compressedBlob = await compressPDFWithRendering(file, level)
       } else if (file.type.startsWith('image/')) {
         setProgress(35)
-        const quality = level === 'extreme' ? 0.4 : level === 'recommended' ? 0.7 : 0.9
-        compressedBlob = await compressImage(file, quality)
+        const quality = level === 'extreme' ? 40 : level === 'recommended' ? 70 : 90
+        compressedBlob = await compressImageWithQuality(file, quality)
       } else {
         throw new Error('Unsupported format for compression')
       }
