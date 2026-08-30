@@ -2,7 +2,6 @@
 
 import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
 
 export async function updateProfile(formData: FormData) {
   const supabase = await createClient()
@@ -47,7 +46,7 @@ export async function updateProfile(formData: FormData) {
     }
   }
 
-  revalidatePath('/account')
+  revalidatePath('/settings')
   return { success: true }
 }
 

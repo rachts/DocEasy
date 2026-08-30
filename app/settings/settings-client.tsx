@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { updateProfile, updatePassword } from '../account/actions'
+import { updateProfile, updatePassword } from './actions'
 import { logout } from '../login/actions'
 
 interface SettingsClientProps {
