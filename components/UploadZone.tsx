@@ -123,6 +123,7 @@ export function UploadZone({
       onDragEnter={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
+      style={{ viewTransitionName: 'tool-card-active' }}
       className={`w-full border border-[#292524] p-12 md:p-16 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-150 rounded-[8px] group select-none outline-none focus-visible:border-[#A8A29E] ${
         isDragging ? 'bg-[#292524] border-[#FAFAF9]' : 'bg-[#141110] hover:bg-[#1C1917] hover:border-[#A8A29E]'
       } ${className}`}

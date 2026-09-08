@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { ArrowRight, LucideIcon } from 'lucide-react'
 
 export interface ToolItem {
@@ -84,9 +85,22 @@ function BentoCard({
 }) {
   const cardRef = useRef<HTMLAnchorElement | null>(null)
   const [tilt, setTilt] = useState<{ x: number; y: number }>({ x: 0, y: 0 })
+  const router = useRouter()
 
   const isHovered = hoveredIdx === idx
   const hasNeighborHovered = hoveredIdx !== null && hoveredIdx !== idx
+
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (typeof document !== 'undefined' && 'startViewTransition' in document) {
+      e.preventDefault()
+      if (cardRef.current) {
+        cardRef.current.style.viewTransitionName = 'tool-card-active'
+      }
+      ;(document as any).startViewTransition(() => {
+        router.push(tool.href)
+      })
+    }
+  }
 
   const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (!allowPointerEffects || !cardRef.current) return
@@ -132,6 +146,7 @@ function BentoCard({
     <Link
       ref={cardRef}
       href={tool.href}
+      onClick={handleClick}
       onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}

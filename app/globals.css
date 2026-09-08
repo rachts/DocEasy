@@ -245,3 +245,10 @@
   background-color: #A8A29E;
   transition: width 150ms ease-out;
 }
+
+/* View Transitions API: Tool Card -> Tool Drop Zone */
+::view-transition-old(tool-card-active),
+::view-transition-new(tool-card-active) {
+  animation-duration: 250ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}

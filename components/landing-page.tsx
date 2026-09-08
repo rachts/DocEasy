@@ -8,6 +8,7 @@ import { PrivacyProofScene } from '@/components/privacy-proof-scene'
 import { HeroWebGLScene } from '@/components/hero-webgl-scene'
 import { HeroHeadlineReveal } from '@/components/hero-headline-reveal'
 import { HowItWorksScene } from '@/components/how-it-works-scene'
+import { MagneticButton } from '@/components/magnetic-button'
 import { 
   Minimize2, 
   ArrowLeftRight, 
@@ -148,12 +149,11 @@ export function LandingPage() {
             </p>
 
             <div className="mt-10 flex flex-col sm:flex-row gap-4 items-start">
-              <Link
-                href="/tools/compress"
-                className="h-10 px-6 bg-[#FAFAF9] text-[#0C0A09] text-[13px] font-medium rounded-[6px] hover:bg-[#D6D3D1] focus-visible:ring-2 focus-visible:ring-[#FAFAF9] transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer"
-              >
-                Start processing
-                <ArrowRight className="w-4 h-4" />
+              <Link href="/tools/compress" className="inline-block">
+                <MagneticButton className="h-10 px-6 bg-[#FAFAF9] text-[#0C0A09] text-[13px] font-medium rounded-[6px] hover:bg-[#D6D3D1] focus-visible:ring-2 focus-visible:ring-[#FAFAF9] transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer">
+                  Start processing
+                  <ArrowRight className="w-4 h-4" />
+                </MagneticButton>
               </Link>
               <Link
                 href="/about"

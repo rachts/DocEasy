@@ -5,6 +5,8 @@ import Link from 'next/link'
 import { Sidebar } from '@/components/Sidebar'
 import { ProgressBar } from '@/components/ProgressBar'
 import { UploadZone } from '@/components/UploadZone'
+import { MagneticButton } from '@/components/magnetic-button'
+import { SuccessCheckmark } from '@/components/success-checkmark'
 import { getAndClearPendingDroppedFile } from '@/lib/global-file-stash'
 import { 
   FileText, 
@@ -323,6 +325,10 @@ export default function CompressPDFPage() {
 
                 {downloadUrl ? (
                   <div className="mt-8 space-y-3">
+                    <div className="flex flex-col items-center justify-center py-2 text-center">
+                      <SuccessCheckmark size={48} className="mb-2" />
+                      <span className="text-xs font-medium text-emerald-400">Compression complete</span>
+                    </div>
                     <a
                       href={downloadUrl}
                       download={resultFileName}
@@ -340,7 +346,7 @@ export default function CompressPDFPage() {
                     </button>
                   </div>
                 ) : (
-                  <button
+                  <MagneticButton
                     onClick={handleCompress}
                     disabled={processing}
                     className="w-full h-10 bg-[#FAFAF9] text-[#0C0A09] text-[13px] font-medium rounded-[6px] hover:bg-[#E7E5E4] transition-colors duration-150 flex items-center justify-center gap-2 mt-8 cursor-pointer disabled:opacity-50"
@@ -356,7 +362,7 @@ export default function CompressPDFPage() {
                         <ArrowRight className="w-4 h-4" />
                       </>
                     )}
-                  </button>
+                  </MagneticButton>
                 )}
               </div>
             </div>
