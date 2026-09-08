@@ -13,7 +13,15 @@ import {
   X, 
   ArrowRight 
 } from 'lucide-react'
-import { convertImageToPDF, convertWordToPDF, convertExcelToPDF } from '@/lib/pdf-converter-utils'
+import { 
+  convertImageToPDF, 
+  convertWordToPDF, 
+  convertExcelToPDF,
+  convertMarkdownToPDF,
+  convertMarkdownToDOCX,
+  convertMarkdownToTXT,
+  convertMarkdownToPNG
+} from '@/lib/pdf-converter-utils'
 import { uploadFileToSupabase, saveFileMetadata, trackEvent, addToRecentFiles } from '@/lib/supabase/helpers'
 
 export default function ConvertPage() {
@@ -41,7 +49,21 @@ export default function ConvertPage() {
     try {
       let resultBlob: Blob
 
-      if (file.type.startsWith('image/')) {
+      const isMarkdown = file.name.endsWith('.md') || file.name.endsWith('.markdown') || file.type === 'text/markdown'
+
+      if (isMarkdown) {
+        setProgress(40)
+        const text = await file.text()
+        if (targetFormat === 'docx') {
+          resultBlob = await convertMarkdownToDOCX(text)
+        } else if (targetFormat === 'txt') {
+          resultBlob = convertMarkdownToTXT(text)
+        } else if (targetFormat === 'png') {
+          resultBlob = await convertMarkdownToPNG(text)
+        } else {
+          resultBlob = await convertMarkdownToPDF(text)
+        }
+      } else if (file.type.startsWith('image/')) {
         setProgress(40)
         resultBlob = await convertImageToPDF(file)
       } else if (file.name.endsWith('.docx') || file.type.includes('word')) {
@@ -115,7 +137,7 @@ export default function ConvertPage() {
             <span className="text-[#FAFAF9]">FORMAT CONVERTER</span>
           </div>
           <div className="hidden md:flex gap-6 font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E]">
-            <span>FORMAT MATRIX: DOCX / PDF / TXT / IMG</span>
+            <span>FORMAT MATRIX: DOCX / PDF / MD / TXT / IMG</span>
           </div>
         </header>
 
@@ -138,8 +160,8 @@ export default function ConvertPage() {
           {!file ? (
             <UploadZone
               onFileSelect={handleFileSelect}
-              accept=".pdf,.docx,.xlsx,.txt,.png,.jpg,.jpeg"
-              supportedFormats="PDF, DOCX, XLSX, TXT, PNG, JPG"
+              accept=".pdf,.docx,.xlsx,.txt,.png,.jpg,.jpeg,.md,.markdown"
+              supportedFormats="PDF, DOCX, XLSX, TXT, MD, PNG, JPG"
               title="Drag & Drop Document Here"
               subtitle="or click to browse local storage"
             />
