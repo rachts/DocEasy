@@ -161,7 +161,7 @@ export function LandingPage() {
             </div>
 
             {/* Hero Stats Row (mt-16 above, mb-24 below) */}
-            <div className="mt-16 mb-24 pt-6 border-t border-[#292524]">
+            <div className="mt-16 mb-20 pt-6 border-t border-[#292524]">
               <div className="text-[13px] text-[#A8A29E] flex flex-wrap items-center gap-3">
                 <span>Up to <span className="font-mono text-[#FAFAF9]">~80%</span> smaller</span>
                 <span className="text-[#57534E]">•</span>
@@ -169,6 +169,63 @@ export function LandingPage() {
                 <span className="text-[#57534E]">•</span>
                 <span><span className="font-mono text-[#FAFAF9]">{allTools.length}</span> browser tools</span>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Real UI Proof Section */}
+        <section className="px-6 md:px-16 pb-20 max-w-6xl mx-auto">
+          <div className="bg-[#141110] border border-[#292524] rounded-[8px] p-6 md:p-8">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-[#292524] mb-6">
+              <div>
+                <span className="text-[12px] font-medium text-[#78716C] block mb-1">
+                  Verifiable proof
+                </span>
+                <h2 className="text-2xl md:text-3xl font-medium tracking-tight text-[#FAFAF9]">
+                  Drop → Process → Download in action
+                </h2>
+                <p className="text-[14px] text-[#A8A29E] mt-1.5">
+                  Watch client-side WebAssembly compression in real-time. Zero network uploads.
+                </p>
+              </div>
+
+              {/* Network verification callout */}
+              <div className="inline-flex items-center gap-2.5 px-3 py-2 rounded-[6px] bg-[#1C1917] border border-[#292524] text-[12px] text-[#FAFAF9] shrink-0">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="font-medium">Check your network tab — zero uploads</span>
+              </div>
+            </div>
+
+            {/* Video Embed */}
+            <div className="relative rounded-[6px] overflow-hidden border border-[#292524] bg-[#0C0A09]">
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-auto rounded-[6px] block"
+              >
+                <source src="/demo.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+
+            <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#78716C]">
+              <div className="flex items-center gap-2">
+                <span>Demo workflow:</span>
+                <span className="font-mono text-[#FAFAF9]">2.4 MB</span>
+                <span>→</span>
+                <span className="text-emerald-400 font-medium">Local WASM</span>
+                <span>→</span>
+                <span className="font-mono text-[#FAFAF9]">482 KB (~80% smaller)</span>
+              </div>
+              <Link
+                href="/tools/compress"
+                className="text-[#FAFAF9] hover:text-[#A8A29E] underline underline-offset-4 flex items-center gap-1"
+              >
+                <span>Try with your own file</span>
+                <ArrowRight className="w-3 h-3" />
+              </Link>
             </div>
           </div>
         </section>

@@ -97,12 +97,16 @@ export function UploadZone({
         {subtitle}
       </p>
 
-      <div className="border-t border-[#292524] pt-4 mt-2 w-full max-w-sm">
-        <p className="text-[12px] text-[#78716C]">
-          Supported: <span className="font-mono text-[#A8A29E]">{supportedFormats}</span>
-          <span className="text-[#57534E] mx-1.5">•</span>
-          Max size: <span className="font-mono text-[#A8A29E]">{maxSize}</span>
+      <div className="border-t border-[#292524] pt-4 mt-2 w-full max-w-md">
+        <p className="text-[12px] text-[#78716C] flex items-center justify-center gap-2 flex-wrap">
+          <span>Supported: <span className="font-mono text-[#A8A29E]">{supportedFormats}</span></span>
+          <span className="text-[#57534E]">•</span>
+          <span>Max size: <span className="font-mono text-[#A8A29E]">{maxSize}</span></span>
         </p>
+        <div className="mt-3 flex items-center justify-center gap-2 text-[12px] text-[#A8A29E]">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+          <span>Check your network tab — zero uploads</span>
+        </div>
       </div>
     </div>
   )
