@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { Navbar } from '@/components/navbar'
 import { Footer } from '@/components/footer'
+import { VaultPadlock } from '@/components/vault-padlock'
 import { 
   Lock, 
   Upload, 
@@ -192,8 +193,7 @@ export default function VaultPage() {
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-[#292524]">
             <div>
               <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-[4px] bg-[#1C1917] border border-[#292524] text-xs text-[#A8A29E] mb-3">
-                <Lock className="w-3.5 h-3.5 text-[#FAFAF9]" />
-                Zero-Knowledge Local Storage
+                <VaultPadlock initialUnlocked={true} />
               </div>
               <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-[#FAFAF9]">
                 Encrypted Vault

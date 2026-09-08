@@ -175,7 +175,7 @@ export function UploadZone({
         {subtitle}
       </p>
 
-      <div className="border-t border-[#292524] pt-4 mt-2 w-full max-w-md">
+      <div className="border-t border-[#292524] pt-4 mt-2 w-full max-w-[480px]">
         <p className="text-[12px] text-[#A8A29E] flex items-center justify-center gap-2 flex-wrap">
           <span>Supported: <span className="font-mono text-[#A8A29E]">{supportedFormats}</span></span>
           <span className="text-[#57534E]">•</span>
