@@ -12,7 +12,6 @@ const nextConfig = {
       { source: '/tools/compressor', destination: '/tools/compress', permanent: true },
       { source: '/tools/converter', destination: '/tools/convert', permanent: true },
       { source: '/tools/compress-image', destination: '/tools/image-compressor', permanent: true },
-      { source: '/tools/image-converter', destination: '/tools/convert', permanent: true },
       { source: '/tools/pdf-converter', destination: '/tools/convert', permanent: true },
       { source: '/tools/pdf-merger', destination: '/tools/merge', permanent: true },
       { source: '/tools/pdf-summarizer', destination: '/tools/analysis', permanent: true },
