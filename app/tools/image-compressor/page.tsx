@@ -159,8 +159,8 @@ export default function ImageCompressorPage() {
               {/* Left Column: Image Payload */}
               <div className="xl:col-span-8 bg-[#1C1917] border border-[#292524] p-6 rounded-[8px]">
                 <div className="flex justify-between items-center border-b border-[#292524] pb-3 mb-4">
-                  <h2 className="font-mono text-[12px] uppercase tracking-[0.05em] text-[#57534E]">
-                    Source Image
+                  <h2 className="text-[13px] font-medium text-[#FAFAF9]">
+                    Source image
                   </h2>
                   <button
                     onClick={handleReset}
@@ -186,8 +186,8 @@ export default function ImageCompressorPage() {
 
                 {metrics && (
                   <div className="mt-6 pt-6 border-t border-[#292524] bg-[#141110] p-4 rounded-[6px]">
-                    <div className="font-mono text-[12px] uppercase tracking-[0.05em] text-[#57534E] mb-3">
-                      Compression Metrics
+                    <div className="text-[12px] font-medium text-[#78716C] mb-3">
+                      Compression metrics
                     </div>
                     <div className="grid grid-cols-3 gap-4 font-mono">
                       <div>
@@ -209,8 +209,8 @@ export default function ImageCompressorPage() {
 
               {/* Right Column: Settings */}
               <div className="xl:col-span-4 bg-[#1C1917] border border-[#292524] p-6 rounded-[8px] flex flex-col">
-                <h2 className="font-mono text-[12px] uppercase tracking-[0.05em] text-[#57534E] border-b border-[#292524] pb-3 mb-6">
-                  Quality Ratio: {quality}%
+                <h2 className="text-[13px] font-medium text-[#FAFAF9] border-b border-[#292524] pb-3 mb-6">
+                  Quality ratio: <span className="font-mono">{quality}%</span>
                 </h2>
 
                 <div className="space-y-4 flex-1">
@@ -222,10 +222,10 @@ export default function ImageCompressorPage() {
                     onChange={(e) => setQuality(Number(e.target.value))}
                     className="w-full accent-[#FAFAF9] bg-[#141110] h-2 rounded cursor-pointer"
                   />
-                  <div className="flex justify-between font-mono text-[11px] text-[#57534E]">
-                    <span>MAX COMPRESSION</span>
-                    <span>BALANCED</span>
-                    <span>HIGH FIDELITY</span>
+                  <div className="flex justify-between text-[11px] text-[#78716C]">
+                    <span>Smaller file</span>
+                    <span>Balanced</span>
+                    <span>Higher quality</span>
                   </div>
                 </div>
 
@@ -234,33 +234,33 @@ export default function ImageCompressorPage() {
                     <a
                       href={downloadUrl}
                       download={resultFileName}
-                      className="w-full h-10 bg-[#FAFAF9] text-[#0C0A09] font-mono text-[12px] uppercase font-medium tracking-[0.05em] rounded-[6px] hover:bg-[#D6D3D1] transition-colors duration-150 flex items-center justify-center gap-2"
+                      className="w-full h-10 bg-[#FAFAF9] text-[#0C0A09] text-[13px] font-medium rounded-[6px] hover:bg-[#D6D3D1] transition-colors duration-150 flex items-center justify-center gap-2"
                     >
                       <Download className="w-4 h-4" />
-                      DOWNLOAD COMPRESSED IMAGE
+                      Download compressed image
                     </a>
                     <button
                       onClick={handleReset}
-                      className="w-full h-10 bg-transparent text-[#A8A29E] hover:text-[#FAFAF9] border border-[#292524] hover:border-[#A8A29E] font-mono text-[12px] uppercase tracking-[0.05em] rounded-[6px] transition-colors duration-150 flex items-center justify-center gap-2"
+                      className="w-full h-10 bg-transparent text-[#A8A29E] hover:text-[#FAFAF9] border border-[#292524] hover:border-[#A8A29E] text-[13px] font-medium rounded-[6px] transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer"
                     >
                       <RotateCcw className="w-4 h-4" />
-                      COMPRESS ANOTHER IMAGE
+                      Compress another image
                     </button>
                   </div>
                 ) : (
                   <button
                     onClick={handleCompress}
                     disabled={processing}
-                    className="w-full h-10 bg-[#FAFAF9] text-[#0C0A09] font-mono text-[12px] uppercase font-medium tracking-[0.05em] rounded-[6px] hover:bg-[#D6D3D1] transition-colors duration-150 flex items-center justify-center gap-2 mt-8 cursor-pointer disabled:opacity-50"
+                    className="w-full h-10 bg-[#FAFAF9] text-[#0C0A09] text-[13px] font-medium rounded-[6px] hover:bg-[#D6D3D1] transition-colors duration-150 flex items-center justify-center gap-2 mt-8 cursor-pointer disabled:opacity-50"
                   >
                     {processing ? (
                       <>
                         <div className="w-2 h-2 rounded-full bg-[#0C0A09] pulse-dot" />
-                        PROCESSING ({progress}%)
+                        Processing ({progress}%)
                       </>
                     ) : (
                       <>
-                        COMPRESS IMAGE
+                        Compress image
                         <ArrowRight className="w-4 h-4" />
                       </>
                     )}
@@ -271,9 +271,9 @@ export default function ImageCompressorPage() {
           )}
         </div>
 
-        <footer className="bg-[#141110] border-t border-[#292524] w-full py-4 px-8 md:px-16 flex justify-between items-center mt-auto font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E]">
-          <span className="text-[#FAFAF9] font-semibold tracking-normal font-sans">DocEasy</span>
-          <span>© 2024 DOCEASY</span>
+        <footer className="bg-[#141110] border-t border-[#292524] w-full py-4 px-8 md:px-16 flex justify-between items-center mt-auto text-[12px] text-[#78716C]">
+          <span className="text-[#FAFAF9] font-medium">DocEasy</span>
+          <span>© 2024 DocEasy</span>
         </footer>
       </main>
     </div>

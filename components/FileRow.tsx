@@ -51,13 +51,13 @@ export function FileRow({
             {status === 'processing' ? (
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-[#D6D3D1] pulse-dot" />
-                <span className="font-mono text-[12px] uppercase tracking-[0.05em] text-[#57534E]">
-                  Processing • {displaySize}
+                <span className="text-[12px] text-[#78716C]">
+                  Processing • <span className="font-mono text-[#A8A29E]">{displaySize}</span>
                 </span>
               </div>
             ) : (
-              <span className="font-mono text-[12px] uppercase tracking-[0.05em] text-[#57534E]">
-                {displayType} • {displaySize} {uploadedAt ? `• ${uploadedAt}` : ''}
+              <span className="text-[12px] text-[#78716C]">
+                <span className="uppercase font-medium">{displayType}</span> • <span className="font-mono text-[#A8A29E]">{displaySize}</span> {uploadedAt ? `• ${uploadedAt}` : ''}
               </span>
             )}
           </div>
@@ -69,7 +69,7 @@ export function FileRow({
         {status === 'processing' ? (
           <button
             onClick={onDelete}
-            className="text-[12px] font-mono uppercase tracking-[0.05em] text-[#57534E] hover:text-[#FAFAF9] transition-colors duration-150 px-3 py-1.5 border border-transparent hover:border-[#292524] rounded-[6px]"
+            className="text-[12px] font-medium text-[#A8A29E] hover:text-[#FAFAF9] transition-colors duration-150 px-3 py-1.5 border border-transparent hover:border-[#292524] rounded-[6px]"
           >
             Cancel
           </button>
@@ -78,7 +78,7 @@ export function FileRow({
             {onAction && (
               <button
                 onClick={onAction}
-                className="text-[12px] font-mono uppercase tracking-[0.05em] text-[#57534E] hover:text-[#FAFAF9] transition-colors duration-150 px-3 py-1.5 border border-transparent hover:border-[#292524] rounded-[6px]"
+                className="text-[12px] font-medium text-[#A8A29E] hover:text-[#FAFAF9] transition-colors duration-150 px-3 py-1.5 border border-transparent hover:border-[#292524] rounded-[6px]"
               >
                 {actionLabel}
               </button>
@@ -86,7 +86,7 @@ export function FileRow({
             {onDownload && (
               <button
                 onClick={onDownload}
-                className="text-[12px] font-mono uppercase tracking-[0.05em] text-[#57534E] hover:text-[#FAFAF9] transition-colors duration-150 px-3 py-1.5 border border-transparent hover:border-[#292524] rounded-[6px] flex items-center gap-1.5"
+                className="text-[12px] font-medium text-[#A8A29E] hover:text-[#FAFAF9] transition-colors duration-150 px-3 py-1.5 border border-transparent hover:border-[#292524] rounded-[6px] flex items-center gap-1.5"
                 title="Download"
               >
                 <Download className="w-3.5 h-3.5 stroke-[1.5]" />
@@ -96,7 +96,7 @@ export function FileRow({
             {onDelete && (
               <button
                 onClick={onDelete}
-                className="text-[12px] font-mono uppercase tracking-[0.05em] text-[#57534E] hover:text-[#7F1D1D] transition-colors duration-150 px-3 py-1.5 border border-transparent hover:border-[#292524] rounded-[6px]"
+                className="text-[12px] font-medium text-[#A8A29E] hover:text-[#7F1D1D] transition-colors duration-150 px-3 py-1.5 border border-transparent hover:border-[#292524] rounded-[6px]"
                 title="Delete"
               >
                 <Trash2 className="w-3.5 h-3.5 stroke-[1.5]" />

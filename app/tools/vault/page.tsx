@@ -160,14 +160,14 @@ export default function VaultPage() {
         {/* Breadcrumb Header */}
         <div className="bg-[#141110] border-b border-[#292524] py-3 px-6 md:px-12">
           <div className="max-w-6xl mx-auto flex items-center justify-between">
-            <div className="flex items-center gap-2 font-mono text-[12px] uppercase tracking-[0.05em]">
+            <div className="flex items-center gap-2 text-xs">
               <Link href="/tools" className="text-[#A8A29E] hover:text-[#FAFAF9] transition-colors">
                 Tools
               </Link>
               <span className="text-[#57534E]">/</span>
               <span className="text-[#FAFAF9]">Encrypted Vault</span>
             </div>
-            <div className="flex items-center gap-2 text-xs font-mono text-[#A8A29E]">
+            <div className="flex items-center gap-2 text-xs text-[#A8A29E]">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               <span>AES-GCM 256-bit client memory</span>
             </div>
@@ -175,7 +175,7 @@ export default function VaultPage() {
         </div>
 
         {toastMessage && (
-          <div className="fixed bottom-6 right-6 z-50 bg-[#1C1917] border border-[#44403C] text-[#FAFAF9] px-4 py-3 rounded-lg shadow-2xl flex items-center gap-3 text-sm animate-in fade-in slide-in-from-bottom-2">
+          <div className="fixed bottom-6 right-6 z-50 bg-[#1C1917] border border-[#44403C] text-[#FAFAF9] px-4 py-3 rounded-[8px] shadow-2xl flex items-center gap-3 text-sm animate-in fade-in slide-in-from-bottom-2">
             <CheckCircle2 className="w-4 h-4 text-emerald-400" />
             <span>{toastMessage}</span>
           </div>
@@ -185,7 +185,7 @@ export default function VaultPage() {
           {/* Header Section */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-[#292524]">
             <div>
-              <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-[#1C1917] border border-[#292524] text-xs font-mono text-[#A8A29E] mb-3">
+              <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-[4px] bg-[#1C1917] border border-[#292524] text-xs text-[#A8A29E] mb-3">
                 <Lock className="w-3.5 h-3.5 text-[#FAFAF9]" />
                 Zero-Knowledge Local Storage
               </div>
@@ -200,7 +200,7 @@ export default function VaultPage() {
             {files.length > 0 && (
               <button
                 onClick={handlePurgeAll}
-                className="inline-flex items-center gap-2 px-4 py-2 text-xs font-mono uppercase tracking-wider text-rose-400 bg-rose-950/20 hover:bg-rose-950/40 border border-rose-900/50 rounded transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2 text-xs font-medium text-rose-400 bg-rose-950/20 hover:bg-rose-950/40 border border-rose-900/50 rounded-[6px] transition-colors"
               >
                 <Trash2 className="w-3.5 h-3.5" />
                 Purge Vault Now
@@ -210,8 +210,8 @@ export default function VaultPage() {
 
           {/* Metrics / Status Bar */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 my-8">
-            <div className="bg-[#141110] border border-[#292524] rounded-lg p-4">
-              <div className="text-xs font-mono text-[#78716C] uppercase tracking-wider mb-1 flex items-center gap-1.5">
+            <div className="bg-[#141110] border border-[#292524] rounded-[8px] p-4">
+              <div className="text-xs text-[#78716C] mb-1 flex items-center gap-1.5">
                 <HardDrive className="w-3.5 h-3.5" />
                 Encrypted Files
               </div>
@@ -223,8 +223,8 @@ export default function VaultPage() {
               </div>
             </div>
 
-            <div className="bg-[#141110] border border-[#292524] rounded-lg p-4">
-              <div className="text-xs font-mono text-[#78716C] uppercase tracking-wider mb-1 flex items-center gap-1.5">
+            <div className="bg-[#141110] border border-[#292524] rounded-[8px] p-4">
+              <div className="text-xs text-[#78716C] mb-1 flex items-center gap-1.5">
                 <Clock className="w-3.5 h-3.5" />
                 Auto-Purge TTL
               </div>
@@ -236,8 +236,8 @@ export default function VaultPage() {
               </div>
             </div>
 
-            <div className="bg-[#141110] border border-[#292524] rounded-lg p-4">
-              <div className="text-xs font-mono text-[#78716C] uppercase tracking-wider mb-1 flex items-center gap-1.5">
+            <div className="bg-[#141110] border border-[#292524] rounded-[8px] p-4">
+              <div className="text-xs text-[#78716C] mb-1 flex items-center gap-1.5">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
                 Security Mode
               </div>
@@ -263,7 +263,7 @@ export default function VaultPage() {
               handleFiles(e.dataTransfer.files)
             }}
             onClick={() => fileInputRef.current?.click()}
-            className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all ${
+            className={`border-2 border-dashed rounded-[8px] p-8 text-center cursor-pointer transition-all ${
               dragActive 
                 ? 'border-[#FAFAF9] bg-[#1C1917]' 
                 : 'border-[#292524] bg-[#141110]/50 hover:bg-[#141110] hover:border-[#44403C]'
@@ -288,7 +288,7 @@ export default function VaultPage() {
                 <p className="text-base font-medium text-[#FAFAF9]">
                   {uploading ? 'Encrypting and saving locally...' : 'Drop files here or browse to vault'}
                 </p>
-                <p className="text-xs text-[#78716C] mt-1 font-mono">
+                <p className="text-xs text-[#78716C] mt-1">
                   Any file format • Instant Web Crypto 256-bit encryption • Zero network upload
                 </p>
               </div>
@@ -296,7 +296,7 @@ export default function VaultPage() {
           </div>
 
           {/* Privacy Verification Callout */}
-          <div className="my-6 p-4 rounded-lg bg-[#141110] border border-[#292524] flex items-start gap-3 text-xs text-[#A8A29E]">
+          <div className="my-6 p-4 rounded-[8px] bg-[#141110] border border-[#292524] flex items-start gap-3 text-xs text-[#A8A29E]">
             <Info className="w-4 h-4 text-[#FAFAF9] shrink-0 mt-0.5" />
             <div>
               <span className="text-[#FAFAF9] font-medium">Verify in your browser:</span> Open DevTools Network tab. You will notice zero network traffic when dropping, viewing, or downloading files from the vault. Everything executes strictly in client memory.
@@ -307,17 +307,17 @@ export default function VaultPage() {
           <div className="mt-8">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-medium text-[#FAFAF9]">Vault Contents</h2>
-              <span className="text-xs font-mono text-[#78716C]">
+              <span className="text-xs text-[#78716C]">
                 {files.length} item{files.length === 1 ? '' : 's'} stored
               </span>
             </div>
 
             {loading ? (
-              <div className="py-12 text-center text-[#78716C] font-mono text-sm">
+              <div className="py-12 text-center text-[#78716C] text-sm">
                 Initializing local vault...
               </div>
             ) : files.length === 0 ? (
-              <div className="bg-[#141110] border border-[#292524] rounded-xl p-12 text-center">
+              <div className="bg-[#141110] border border-[#292524] rounded-[8px] p-12 text-center">
                 <Lock className="w-10 h-10 text-[#57534E] mx-auto mb-3" />
                 <h3 className="text-base font-medium text-[#FAFAF9]">Your vault is currently empty</h3>
                 <p className="text-xs text-[#78716C] mt-1 max-w-md mx-auto">
@@ -325,7 +325,7 @@ export default function VaultPage() {
                 </p>
               </div>
             ) : (
-              <div className="bg-[#141110] border border-[#292524] rounded-xl overflow-hidden">
+              <div className="bg-[#141110] border border-[#292524] rounded-[8px] overflow-hidden">
                 <div className="divide-y divide-[#292524]">
                   {files.map((f) => {
                     const remainingMs = Math.max(0, f.expiresAt - currentTime)
@@ -337,15 +337,15 @@ export default function VaultPage() {
                         className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-[#1C1917]/50 transition-colors"
                       >
                         <div className="flex items-center gap-3.5 min-w-0">
-                          <div className="w-9 h-9 rounded bg-[#1C1917] border border-[#292524] flex items-center justify-center shrink-0">
+                          <div className="w-9 h-9 rounded-[6px] bg-[#1C1917] border border-[#292524] flex items-center justify-center shrink-0">
                             <FileText className="w-4 h-4 text-[#A8A29E]" />
                           </div>
                           <div className="min-w-0">
                             <div className="text-sm font-medium text-[#FAFAF9] truncate">
                               {f.name}
                             </div>
-                            <div className="flex items-center gap-2 text-xs font-mono text-[#78716C] mt-0.5">
-                              <span>{formatBytes(f.size)}</span>
+                            <div className="flex items-center gap-2 text-xs text-[#78716C] mt-0.5">
+                              <span className="font-mono">{formatBytes(f.size)}</span>
                               <span>•</span>
                               <span>Added {new Date(f.addedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                             </div>
@@ -354,7 +354,7 @@ export default function VaultPage() {
 
                         <div className="flex items-center justify-between sm:justify-end gap-3 shrink-0">
                           {/* Auto-purge Countdown Badge */}
-                          <div className={`px-2.5 py-1 rounded text-xs font-mono flex items-center gap-1.5 border ${
+                          <div className={`px-2.5 py-1 rounded-[4px] text-xs font-mono flex items-center gap-1.5 border ${
                             isExpiringSoon
                               ? 'bg-rose-950/30 border-rose-900/50 text-rose-400'
                               : 'bg-[#1C1917] border-[#292524] text-[#A8A29E]'
@@ -367,7 +367,7 @@ export default function VaultPage() {
                             <button
                               onClick={() => handleDownload(f)}
                               disabled={decryptingId === f.id}
-                              className="px-3 py-1.5 bg-[#FAFAF9] hover:bg-[#E7E5E4] text-[#0C0A09] text-xs font-medium rounded transition-colors flex items-center gap-1.5 disabled:opacity-50"
+                              className="px-3 py-1.5 bg-[#FAFAF9] hover:bg-[#E7E5E4] text-[#0C0A09] text-xs font-medium rounded-[6px] transition-colors flex items-center gap-1.5 disabled:opacity-50"
                               title="Decrypt and download file"
                             >
                               {decryptingId === f.id ? (
@@ -380,7 +380,7 @@ export default function VaultPage() {
 
                             <button
                               onClick={() => handleDelete(f.id, f.name)}
-                              className="p-1.5 text-[#78716C] hover:text-rose-400 hover:bg-rose-950/20 rounded transition-colors"
+                              className="p-1.5 text-[#78716C] hover:text-rose-400 hover:bg-rose-950/20 rounded-[6px] transition-colors"
                               title="Purge file from vault"
                             >
                               <Trash2 className="w-4 h-4" />

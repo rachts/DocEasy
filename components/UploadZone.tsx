@@ -98,10 +98,10 @@ export function UploadZone({
       </p>
 
       <div className="border-t border-[#292524] pt-4 mt-2 w-full max-w-sm">
-        <p className="font-mono text-[12px] uppercase tracking-[0.05em] text-[#57534E]">
-          SUPPORTED: {supportedFormats} <br className="hidden sm:inline" />
-          <span className="text-[#292524] mx-1 hidden sm:inline">•</span>
-          MAX SIZE: {maxSize}
+        <p className="text-[12px] text-[#78716C]">
+          Supported: <span className="font-mono text-[#A8A29E]">{supportedFormats}</span>
+          <span className="text-[#57534E] mx-1.5">•</span>
+          Max size: <span className="font-mono text-[#A8A29E]">{maxSize}</span>
         </p>
       </div>
     </div>

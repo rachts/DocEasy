@@ -144,8 +144,8 @@ export default function PassportPhotoPage() {
               {/* Left Column: Image Payload */}
               <div className="xl:col-span-7 bg-[#1C1917] border border-[#292524] p-6 rounded-[8px]">
                 <div className="flex justify-between items-center border-b border-[#292524] pb-3 mb-4">
-                  <h2 className="font-mono text-[12px] uppercase tracking-[0.05em] text-[#57534E]">
-                    Source Portrait
+                  <h2 className="text-[13px] font-medium text-[#FAFAF9]">
+                    Source portrait
                   </h2>
                   <button
                     onClick={handleReset}
@@ -172,14 +172,14 @@ export default function PassportPhotoPage() {
 
               {/* Right Column: Passport Spec Controls */}
               <div className="xl:col-span-5 bg-[#1C1917] border border-[#292524] p-6 rounded-[8px] flex flex-col">
-                <h2 className="font-mono text-[12px] uppercase tracking-[0.05em] text-[#57534E] border-b border-[#292524] pb-3 mb-6">
-                  Biometric Standard
+                <h2 className="text-[13px] font-medium text-[#FAFAF9] border-b border-[#292524] pb-3 mb-6">
+                  Photo dimensions & style
                 </h2>
 
                 <div className="space-y-4 flex-1">
                   <div className="space-y-1.5">
-                    <label className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] block">
-                      Target Country Dimension
+                    <label className="text-[12px] font-medium text-[#FAFAF9] block">
+                      Target country standard
                     </label>
                     <select
                       value={selectedSize}
@@ -195,23 +195,23 @@ export default function PassportPhotoPage() {
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] block">
-                      Background Fill Color
+                    <label className="text-[12px] font-medium text-[#FAFAF9] block">
+                      Background color
                     </label>
                     <div className="flex gap-2">
                       {[
-                        { label: 'WHITE', color: '#ffffff' },
-                        { label: 'OFF-WHITE', color: '#f5f5f5' },
-                        { label: 'LIGHT BLUE', color: '#e0f2fe' },
+                        { label: 'White', color: '#ffffff' },
+                        { label: 'Off-white', color: '#f5f5f5' },
+                        { label: 'Light blue', color: '#e0f2fe' },
                       ].map((bg) => (
                         <button
                           key={bg.color}
                           type="button"
                           onClick={() => setBackgroundColor(bg.color)}
-                          className={`flex-1 py-2 font-mono text-[11px] uppercase tracking-[0.05em] border rounded-[4px] transition-colors ${
+                          className={`flex-1 py-2 text-[12px] font-medium border rounded-[4px] transition-colors cursor-pointer ${
                             backgroundColor === bg.color
-                              ? 'bg-[#FAFAF9] text-[#0C0A09] border-[#FAFAF9] font-medium'
-                              : 'bg-[#141110] text-[#A8A29E] border-[#292524]'
+                              ? 'bg-[#FAFAF9] text-[#0C0A09] border-[#FAFAF9]'
+                              : 'bg-[#141110] text-[#A8A29E] border-[#292524] hover:text-[#FAFAF9]'
                           }`}
                         >
                           {bg.label}
@@ -226,33 +226,33 @@ export default function PassportPhotoPage() {
                     <a
                       href={downloadUrl}
                       download={resultFileName}
-                      className="w-full h-10 bg-[#FAFAF9] text-[#0C0A09] font-mono text-[12px] uppercase font-medium tracking-[0.05em] rounded-[6px] hover:bg-[#D6D3D1] transition-colors duration-150 flex items-center justify-center gap-2"
+                      className="w-full h-10 bg-[#FAFAF9] text-[#0C0A09] text-[13px] font-medium rounded-[6px] hover:bg-[#D6D3D1] transition-colors duration-150 flex items-center justify-center gap-2"
                     >
                       <Download className="w-4 h-4" />
-                      DOWNLOAD PASSPORT PHOTO
+                      Download passport photo
                     </a>
                     <button
                       onClick={handleReset}
-                      className="w-full h-10 bg-transparent text-[#A8A29E] hover:text-[#FAFAF9] border border-[#292524] hover:border-[#A8A29E] font-mono text-[12px] uppercase tracking-[0.05em] rounded-[6px] transition-colors duration-150 flex items-center justify-center gap-2"
+                      className="w-full h-10 bg-transparent text-[#A8A29E] hover:text-[#FAFAF9] border border-[#292524] hover:border-[#A8A29E] text-[13px] font-medium rounded-[6px] transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer"
                     >
                       <RotateCcw className="w-4 h-4" />
-                      PROCESS ANOTHER PHOTO
+                      Process another photo
                     </button>
                   </div>
                 ) : (
                   <button
                     onClick={handleProcess}
                     disabled={processing}
-                    className="w-full h-10 bg-[#FAFAF9] text-[#0C0A09] font-mono text-[12px] uppercase font-medium tracking-[0.05em] rounded-[6px] hover:bg-[#D6D3D1] transition-colors duration-150 flex items-center justify-center gap-2 mt-8 cursor-pointer disabled:opacity-50"
+                    className="w-full h-10 bg-[#FAFAF9] text-[#0C0A09] text-[13px] font-medium rounded-[6px] hover:bg-[#D6D3D1] transition-colors duration-150 flex items-center justify-center gap-2 mt-8 cursor-pointer disabled:opacity-50"
                   >
                     {processing ? (
                       <>
                         <div className="w-2 h-2 rounded-full bg-[#0C0A09] pulse-dot" />
-                        PROCESSING ({progress}%)
+                        Processing ({progress}%)
                       </>
                     ) : (
                       <>
-                        GENERATE PASSPORT PHOTO
+                        Generate passport photo
                         <ArrowRight className="w-4 h-4" />
                       </>
                     )}
@@ -263,9 +263,9 @@ export default function PassportPhotoPage() {
           )}
         </div>
 
-        <footer className="bg-[#141110] border-t border-[#292524] w-full py-4 px-8 md:px-16 flex justify-between items-center mt-auto font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E]">
-          <span className="text-[#FAFAF9] font-semibold tracking-normal font-sans">DocEasy</span>
-          <span>© 2024 DOCEASY</span>
+        <footer className="bg-[#141110] border-t border-[#292524] w-full py-4 px-8 md:px-16 flex justify-between items-center mt-auto text-[12px] text-[#78716C]">
+          <span className="text-[#FAFAF9] font-medium">DocEasy</span>
+          <span>© 2024 DocEasy</span>
         </footer>
       </main>
     </div>

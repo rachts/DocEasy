@@ -146,7 +146,6 @@
   *, *::before, *::after {
     border-color: var(--border);
     outline-color: var(--ring);
-    box-shadow: none !important;
   }
   
   html {
@@ -203,9 +202,18 @@
   }
   
   input:focus, textarea:focus, select:focus {
-    outline: none !important;
-    border-color: #A8A29E !important;
-    box-shadow: none !important;
+    outline: none;
+    border-color: #A8A29E;
+  }
+
+  /* 3-State Interactive Elements: default, hover, focus-visible */
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: 2px solid #FAFAF9 !important;
+    outline-offset: 2px !important;
   }
   
   /* Selection styling */

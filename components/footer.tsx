@@ -64,10 +64,10 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Column 2: PDF TOOLS (lg:col-span-2) */}
+          {/* Column 2: PDF tools (lg:col-span-2) */}
           <div className="lg:col-span-2 space-y-4">
-            <h3 className="font-mono text-[12px] uppercase tracking-widest text-[#57534E] font-medium whitespace-nowrap">
-              PDF TOOLS
+            <h3 className="text-[12px] font-medium tracking-wide text-[#78716C] whitespace-nowrap">
+              PDF tools
             </h3>
             <ul className="space-y-3 text-[14px] font-normal">
               <li>
@@ -100,8 +100,8 @@ export function Footer() {
 
           {/* Column 3: IMAGE & AI (lg:col-span-2) */}
           <div className="lg:col-span-2 space-y-4">
-            <h3 className="font-mono text-[12px] uppercase tracking-widest text-[#57534E] font-medium whitespace-nowrap">
-              IMAGE & AI
+            <h3 className="text-[12px] font-medium tracking-wide text-[#78716C] whitespace-nowrap">
+              Image & AI
             </h3>
             <ul className="space-y-3 text-[14px] font-normal">
               <li>
@@ -135,7 +135,7 @@ export function Footer() {
                 </Link>
               </li>
               <li className="pt-1">
-                <Link href="/tools" className="group/link flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-widest text-[#57534E] hover:text-[#FAFAF9] transition-colors duration-150 whitespace-nowrap">
+                <Link href="/tools" className="group/link flex items-center gap-1.5 text-[12px] font-medium text-[#78716C] hover:text-[#FAFAF9] transition-colors duration-150 whitespace-nowrap">
                   <span>All 12 tools</span>
                   <ArrowRight className="w-3 h-3 transition-transform duration-150 group-hover/link:translate-x-1" />
                 </Link>
@@ -145,8 +145,8 @@ export function Footer() {
 
           {/* Column 4: SUPPORT (lg:col-span-2) */}
           <div className="lg:col-span-2 space-y-4">
-            <h3 className="font-mono text-[12px] uppercase tracking-widest text-[#57534E] font-medium whitespace-nowrap">
-              SUPPORT
+            <h3 className="text-[12px] font-medium tracking-wide text-[#78716C] whitespace-nowrap">
+              Support
             </h3>
             <ul className="space-y-3 text-[14px] font-normal">
               <li>
@@ -174,8 +174,8 @@ export function Footer() {
 
           {/* Column 5: LEGAL (lg:col-span-2) */}
           <div className="lg:col-span-2 space-y-4">
-            <h3 className="font-mono text-[12px] uppercase tracking-widest text-[#57534E] font-medium whitespace-nowrap">
-              LEGAL
+            <h3 className="text-[12px] font-medium tracking-wide text-[#78716C] whitespace-nowrap">
+              Legal
             </h3>
             <ul className="space-y-3 text-[14px] font-normal">
               <li>
@@ -204,19 +204,19 @@ export function Footer() {
 
         {/* Bottom Bar (py-6) */}
         <div className="pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <div className="font-mono text-[13px] text-[#57534E]">
+          <div className="text-[13px] text-[#78716C]">
             © 2024 DocEasy. All rights reserved.
           </div>
-          <div className="flex items-center gap-4 font-mono text-[12px] uppercase tracking-wider text-[#57534E]">
-            <Link href="/privacy" className="hover:text-[#A8A29E] transition-colors duration-150">
+          <div className="flex items-center gap-4 text-[13px] text-[#78716C]">
+            <Link href="/privacy" className="hover:text-[#FAFAF9] transition-colors duration-150">
               Privacy
             </Link>
             <span>·</span>
-            <Link href="/terms" className="hover:text-[#A8A29E] transition-colors duration-150">
+            <Link href="/terms" className="hover:text-[#FAFAF9] transition-colors duration-150">
               Terms
             </Link>
             <span>·</span>
-            <Link href="/status" className="hover:text-[#A8A29E] transition-colors duration-150">
+            <Link href="/status" className="hover:text-[#FAFAF9] transition-colors duration-150">
               Status
             </Link>
           </div>

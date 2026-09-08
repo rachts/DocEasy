@@ -131,7 +131,7 @@ export function LandingPage() {
           <div className="flex flex-col text-left">
             <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-[4px] bg-[#141110] border border-[#292524] w-fit mb-6">
               <span className="w-1.5 h-1.5 rounded-full bg-[#FAFAF9]" />
-              <span className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#A8A29E]">
+              <span className="text-[12px] font-medium text-[#A8A29E]">
                 100% Client-Side WebAssembly Architecture
               </span>
             </div>
@@ -147,27 +147,27 @@ export function LandingPage() {
             <div className="mt-10 flex flex-col sm:flex-row gap-4 items-start">
               <Link
                 href="/tools/compress"
-                className="h-10 px-6 bg-[#FAFAF9] text-[#0C0A09] text-[13px] font-medium rounded-[6px] hover:bg-[#D6D3D1] transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer"
+                className="h-10 px-6 bg-[#FAFAF9] text-[#0C0A09] text-[13px] font-medium rounded-[6px] hover:bg-[#D6D3D1] focus-visible:ring-2 focus-visible:ring-[#FAFAF9] transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer"
               >
                 Start processing
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 href="/about"
-                className="h-10 px-6 bg-transparent text-[#FAFAF9] border border-[#292524] text-[13px] font-medium rounded-[6px] hover:bg-[#1C1917] hover:border-[#A8A29E] transition-colors duration-150 flex items-center justify-center cursor-pointer"
+                className="h-10 px-6 bg-transparent text-[#FAFAF9] border border-[#292524] text-[13px] font-medium rounded-[6px] hover:bg-[#1C1917] hover:border-[#A8A29E] focus-visible:ring-2 focus-visible:ring-[#FAFAF9] transition-colors duration-150 flex items-center justify-center cursor-pointer"
               >
                 View architecture
               </Link>
             </div>
 
-            {/* Monospace Stats Row (mt-16 above, mb-24 below) */}
+            {/* Hero Stats Row (mt-16 above, mb-24 below) */}
             <div className="mt-16 mb-24 pt-6 border-t border-[#292524]">
-              <div className="font-mono text-[12px] uppercase tracking-[0.05em] text-[#A8A29E] flex flex-wrap items-center gap-3">
-                <span>Up to ~80% smaller</span>
+              <div className="text-[13px] text-[#A8A29E] flex flex-wrap items-center gap-3">
+                <span>Up to <span className="font-mono text-[#FAFAF9]">~80%</span> smaller</span>
                 <span className="text-[#57534E]">•</span>
                 <span>Zero server uploads</span>
                 <span className="text-[#57534E]">•</span>
-                <span>{allTools.length} browser tools</span>
+                <span><span className="font-mono text-[#FAFAF9]">{allTools.length}</span> browser tools</span>
               </div>
             </div>
           </div>
@@ -177,7 +177,7 @@ export function LandingPage() {
         <section id="tools" className="px-6 md:px-16 py-24 max-w-6xl mx-auto scroll-mt-20">
           <div className="border-b border-[#292524] pb-6 mb-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
-              <span className="font-mono text-[11px] text-[#57534E] block mb-1">
+              <span className="text-[12px] font-medium text-[#78716C] block mb-1">
                 All tools
               </span>
               <h2 className="text-3xl font-medium tracking-tight text-[#FAFAF9]">
@@ -197,7 +197,7 @@ export function LandingPage() {
                   <button
                     key={key}
                     onClick={() => setSelectedCategory(key)}
-                    className={`font-mono text-[11px] px-3 py-1.5 rounded-[4px] transition-colors cursor-pointer ${
+                    className={`text-[12px] font-medium px-3 py-1.5 rounded-[4px] transition-colors cursor-pointer ${
                       selectedCategory === key
                         ? 'bg-[#1C1917] text-[#FAFAF9] border border-[#292524]'
                         : 'text-[#57534E] hover:text-[#A8A29E] border border-transparent'
@@ -264,13 +264,12 @@ export function LandingPage() {
               How It Works
             </h2>
             <p className="text-xl md:text-2xl text-[#A8A29E] leading-relaxed max-w-4xl tracking-tight">
-              <span className="text-[#FAFAF9] font-medium">Upload</span> your file{' '}
+              <span className="text-[#FAFAF9] font-medium">Select</span> your file{' '}
               <span className="text-[#57534E] mx-2">→</span>{' '}
-              <span className="text-[#FAFAF9] font-medium">Process</span> instantly in your browser{' '}
+              <span className="text-[#FAFAF9] font-medium">Process</span> locally in your browser{' '}
               <span className="text-[#57534E] mx-2">→</span>{' '}
-              <span className="text-[#FAFAF9] font-medium">Download</span> securely.{' '}
-              <span className="text-[#A8A29E]">Files deleted in </span>
-              <span className="text-[#FAFAF9] font-medium">2 hours</span>.
+              <span className="text-[#FAFAF9] font-medium">Save</span> directly to your device.{' '}
+              <span className="text-[#A8A29E]">Zero server uploads.</span>
             </p>
           </div>
         </section>

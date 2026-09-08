@@ -172,8 +172,8 @@ export default function ConvertPage() {
               {/* Payload Details */}
               <div className="xl:col-span-8 bg-[#1C1917] border border-[#292524] p-6 rounded-[8px]">
                 <div className="flex justify-between items-center border-b border-[#292524] pb-3 mb-4">
-                  <h2 className="font-mono text-[12px] uppercase tracking-[0.05em] text-[#57534E]">
-                    Source Document
+                  <h2 className="text-[13px] font-medium text-[#FAFAF9]">
+                    Source document
                   </h2>
                   <button
                     onClick={handleReset}
@@ -201,8 +201,8 @@ export default function ConvertPage() {
 
               {/* Target Format Selector */}
               <div className="xl:col-span-4 bg-[#1C1917] border border-[#292524] p-6 rounded-[8px] flex flex-col">
-                <h2 className="font-mono text-[12px] uppercase tracking-[0.05em] text-[#57534E] border-b border-[#292524] pb-3 mb-6">
-                  Target Format
+                <h2 className="text-[13px] font-medium text-[#FAFAF9] border-b border-[#292524] pb-3 mb-6">
+                  Target format
                 </h2>
 
                 <div className="space-y-3 flex-1">
@@ -228,7 +228,7 @@ export default function ConvertPage() {
                       />
                       <div>
                         <span className="text-[14px] text-[#FAFAF9] block font-medium">{fmt.label}</span>
-                        <span className="font-mono text-[11px] text-[#57534E] block mt-0.5">{fmt.desc}</span>
+                        <span className="text-[12px] text-[#78716C] block mt-0.5">{fmt.desc}</span>
                       </div>
                     </label>
                   ))}
@@ -239,33 +239,33 @@ export default function ConvertPage() {
                     <a
                       href={downloadUrl}
                       download={resultFileName}
-                      className="w-full h-10 bg-[#FAFAF9] text-[#0C0A09] font-mono text-[12px] uppercase font-medium tracking-[0.05em] rounded-[6px] hover:bg-[#D6D3D1] transition-colors duration-150 flex items-center justify-center gap-2"
+                      className="w-full h-10 bg-[#FAFAF9] text-[#0C0A09] text-[13px] font-medium rounded-[6px] hover:bg-[#D6D3D1] transition-colors duration-150 flex items-center justify-center gap-2"
                     >
                       <Download className="w-4 h-4" />
-                      DOWNLOAD {targetFormat.toUpperCase()} FILE
+                      Download {targetFormat.toUpperCase()} file
                     </a>
                     <button
                       onClick={handleReset}
-                      className="w-full h-10 bg-transparent text-[#A8A29E] hover:text-[#FAFAF9] border border-[#292524] hover:border-[#A8A29E] font-mono text-[12px] uppercase tracking-[0.05em] rounded-[6px] transition-colors duration-150 flex items-center justify-center gap-2"
+                      className="w-full h-10 bg-transparent text-[#A8A29E] hover:text-[#FAFAF9] border border-[#292524] hover:border-[#A8A29E] text-[13px] font-medium rounded-[6px] transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer"
                     >
                       <RotateCcw className="w-4 h-4" />
-                      CONVERT ANOTHER FILE
+                      Convert another file
                     </button>
                   </div>
                 ) : (
                   <button
                     onClick={handleConvert}
                     disabled={processing}
-                    className="w-full h-10 bg-[#FAFAF9] text-[#0C0A09] font-mono text-[12px] uppercase font-medium tracking-[0.05em] rounded-[6px] hover:bg-[#D6D3D1] transition-colors duration-150 flex items-center justify-center gap-2 mt-8 cursor-pointer disabled:opacity-50"
+                    className="w-full h-10 bg-[#FAFAF9] text-[#0C0A09] text-[13px] font-medium rounded-[6px] hover:bg-[#D6D3D1] transition-colors duration-150 flex items-center justify-center gap-2 mt-8 cursor-pointer disabled:opacity-50"
                   >
                     {processing ? (
                       <>
                         <div className="w-2 h-2 rounded-full bg-[#0C0A09] pulse-dot" />
-                        CONVERTING ({progress}%)
+                        Converting ({progress}%)
                       </>
                     ) : (
                       <>
-                        EXECUTE CONVERSION
+                        Convert file
                         <ArrowRight className="w-4 h-4" />
                       </>
                     )}
@@ -276,13 +276,13 @@ export default function ConvertPage() {
           )}
         </div>
 
-        <footer className="bg-[#141110] border-t border-[#292524] w-full py-4 px-8 md:px-16 flex justify-between items-center mt-auto font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E]">
-          <span className="text-[#FAFAF9] font-semibold tracking-normal font-sans">DocEasy</span>
+        <footer className="bg-[#141110] border-t border-[#292524] w-full py-4 px-8 md:px-16 flex justify-between items-center mt-auto text-[12px] text-[#78716C]">
+          <span className="text-[#FAFAF9] font-medium">DocEasy</span>
           <div className="flex gap-6">
-            <Link href="/privacy" className="hover:text-[#FAFAF9] transition-colors">PRIVACY</Link>
-            <Link href="/terms" className="hover:text-[#FAFAF9] transition-colors">TERMS</Link>
+            <Link href="/privacy" className="hover:text-[#FAFAF9] transition-colors">Privacy</Link>
+            <Link href="/terms" className="hover:text-[#FAFAF9] transition-colors">Terms</Link>
           </div>
-          <span>© 2024 DOCEASY</span>
+          <span>© 2024 DocEasy</span>
         </footer>
       </main>
     </div>

@@ -61,8 +61,8 @@ export function CommandMenu() {
           <Search className="w-4 h-4 text-[#57534E] mr-3 shrink-0" />
           <Command.Input 
             autoFocus 
-            placeholder="TYPE COMMAND OR JUMP TO PROTOCOL..." 
-            className="flex h-12 w-full bg-transparent text-[14px] outline-none placeholder:text-[#57534E] placeholder:font-mono placeholder:text-[11px] placeholder:uppercase border-0 text-[#FAFAF9]" 
+            placeholder="Type a command or search tools..." 
+            className="flex h-12 w-full bg-transparent text-[14px] outline-none placeholder:text-[#57534E] placeholder:text-[13px] border-0 text-[#FAFAF9]" 
           />
           <button 
             onClick={() => setOpen(false)} 
@@ -73,11 +73,11 @@ export function CommandMenu() {
         </div>
 
         <Command.List className="max-h-[380px] overflow-y-auto p-2">
-          <Command.Empty className="py-8 text-center font-mono text-[12px] uppercase text-[#57534E]">
-            No matching tooling protocols found.
+          <Command.Empty className="py-8 text-center text-[13px] text-[#57534E]">
+            No matching tools found.
           </Command.Empty>
           
-          <Command.Group heading="PDF Tools" className="text-[11px] font-mono uppercase tracking-[0.05em] text-[#57534E] px-2 py-1.5">
+          <Command.Group heading="PDF tools" className="text-[12px] font-medium text-[#78716C] px-2 py-1.5">
             <Command.Item 
               onSelect={() => runCommand(() => router.push('/tools/compress'))}
               className="flex items-center gap-3 rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
@@ -117,7 +117,7 @@ export function CommandMenu() {
 
           <Command.Separator className="h-px bg-[#292524] my-2" />
 
-          <Command.Group heading="Image Tools" className="text-[11px] font-mono uppercase tracking-[0.05em] text-[#57534E] px-2 py-1.5">
+          <Command.Group heading="Image tools" className="text-[12px] font-medium text-[#78716C] px-2 py-1.5">
             <Command.Item 
               onSelect={() => runCommand(() => router.push('/tools/image-compressor'))}
               className="flex items-center gap-3 rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
@@ -150,7 +150,7 @@ export function CommandMenu() {
 
           <Command.Separator className="h-px bg-[#292524] my-2" />
 
-          <Command.Group heading="Analysis & Vault" className="text-[11px] font-mono uppercase tracking-[0.05em] text-[#57534E] px-2 py-1.5">
+          <Command.Group heading="Analysis & vault" className="text-[12px] font-medium text-[#78716C] px-2 py-1.5">
             <Command.Item 
               onSelect={() => runCommand(() => router.push('/tools/pdf-summarizer'))}
               className="flex items-center gap-3 rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
@@ -176,7 +176,7 @@ export function CommandMenu() {
 
           <Command.Separator className="h-px bg-[#292524] my-2" />
 
-          <Command.Group heading="SYSTEM ARCHITECTURE & LEGAL" className="text-[11px] font-mono uppercase tracking-[0.05em] text-[#57534E] px-2 py-1.5">
+          <Command.Group heading="Navigation" className="text-[12px] font-medium text-[#78716C] px-2 py-1.5">
             <Command.Item 
               onSelect={() => runCommand(() => router.push('/security'))}
               className="flex items-center gap-3 rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"

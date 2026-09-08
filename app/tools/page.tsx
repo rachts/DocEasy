@@ -163,7 +163,7 @@ export default function ToolsPage() {
                   <button
                     key={key}
                     onClick={() => setSelectedCategory(key)}
-                    className={`font-mono text-[11px] px-3 py-1.5 rounded-[4px] transition-colors cursor-pointer ${
+                    className={`text-[12px] font-medium px-3 py-1.5 rounded-[4px] transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-[#FAFAF9] focus-visible:outline-offset-2 ${
                       selectedCategory === key
                         ? 'bg-[#1C1917] text-[#FAFAF9] border border-[#292524]'
                         : 'text-[#57534E] hover:text-[#A8A29E] border border-transparent'
@@ -212,7 +212,7 @@ export default function ToolsPage() {
                   </p>
                 </div>
 
-                <div className="pt-4 border-t border-[#292524] flex items-center justify-between font-mono text-[11px] text-[#57534E] group-hover:text-[#FAFAF9] transition-colors">
+                <div className="pt-4 border-t border-[#292524] flex items-center justify-between text-[12px] font-medium text-[#57534E] group-hover:text-[#FAFAF9] transition-colors">
                   <span>Open tool</span>
                   <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                 </div>

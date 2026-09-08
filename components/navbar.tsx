@@ -267,17 +267,17 @@ export function Navbar() {
             onClick={() => {
               window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true }))
             }}
-            className="p-1.5 text-[#57534E] hover:text-[#FAFAF9] rounded-[4px] transition-colors flex items-center gap-2 font-mono text-[11px] cursor-pointer"
+            className="p-1.5 text-[#57534E] hover:text-[#FAFAF9] rounded-[4px] transition-colors flex items-center gap-2 text-[12px] cursor-pointer"
             title="Search tools (⌘K)"
           >
             <Search className="w-4 h-4" />
-            <span className="hidden lg:inline border border-[#292524] bg-[#141110] px-1.5 py-0.5 rounded text-[10px] text-[#57534E]">
+            <span className="hidden lg:inline border border-[#292524] bg-[#141110] px-1.5 py-0.5 rounded text-[10px] font-mono text-[#57534E]">
               ⌘K
             </span>
           </button>
 
           {/* Lang Selector */}
-          <div className="hidden sm:flex items-center gap-1 font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] hover:text-[#A8A29E] transition-colors cursor-pointer px-1.5 py-1">
+          <div className="hidden sm:flex items-center gap-1 text-[12px] font-medium text-[#78716C] hover:text-[#FAFAF9] transition-colors cursor-pointer px-1.5 py-1">
             <Globe className="w-3.5 h-3.5" />
             <span>EN</span>
           </div>
@@ -314,7 +314,7 @@ export function Navbar() {
       {mobileMenuOpen && (
         <div className="fixed inset-0 top-[56px] bg-[#0C0A09] z-40 md:hidden flex flex-col p-6 overflow-y-auto border-b border-[#292524] animate-in fade-in-0 slide-in-from-top-2 duration-150">
           <div className="flex flex-col space-y-4 pt-2">
-            <div className="text-[11px] font-mono text-[#78716C] pb-1 border-b border-[#292524]">
+            <div className="text-[11px] font-medium text-[#78716C] pb-1 border-b border-[#292524]">
               Navigation
             </div>
             <Link

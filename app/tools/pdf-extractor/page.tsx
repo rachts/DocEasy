@@ -132,9 +132,9 @@ export default function PDFExtractorPage() {
                   <button
                     onClick={handleExtract}
                     disabled={extracting}
-                    className="h-10 px-6 bg-[#FAFAF9] text-[#0C0A09] font-mono text-[12px] uppercase font-medium tracking-[0.05em] rounded-[6px] hover:bg-[#D6D3D1] transition-colors duration-150 flex items-center gap-2 cursor-pointer disabled:opacity-50"
+                    className="h-10 px-6 bg-[#FAFAF9] text-[#0C0A09] text-[13px] font-medium rounded-[6px] hover:bg-[#D6D3D1] transition-colors duration-150 flex items-center gap-2 cursor-pointer disabled:opacity-50"
                   >
-                    {extracting ? 'EXTRACTING...' : 'EXTRACT TEXT'}
+                    {extracting ? 'Extracting...' : 'Extract text'}
                     <ArrowRight className="w-4 h-4" />
                   </button>
                 )}
@@ -144,22 +144,22 @@ export default function PDFExtractorPage() {
               {resultText && (
                 <div className="bg-[#1C1917] border border-[#292524] p-6 rounded-[8px] space-y-4">
                   <div className="flex justify-between items-center border-b border-[#292524] pb-3">
-                    <h2 className="font-mono text-[12px] uppercase tracking-[0.05em] text-[#57534E]">
-                      Extracted Text Stream
+                    <h2 className="text-[13px] font-medium text-[#FAFAF9]">
+                      Extracted text
                     </h2>
                     <div className="flex gap-3">
                       <button
                         onClick={handleCopy}
-                        className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#FAFAF9] bg-[#141110] border border-[#292524] hover:border-[#A8A29E] px-3 py-1.5 rounded-[4px] transition-colors flex items-center gap-1.5"
+                        className="text-[12px] font-medium text-[#FAFAF9] bg-[#141110] border border-[#292524] hover:border-[#A8A29E] px-3 py-1.5 rounded-[4px] transition-colors flex items-center gap-1.5 cursor-pointer"
                       >
                         {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
-                        {copied ? 'COPIED' : 'COPY ALL'}
+                        {copied ? 'Copied' : 'Copy all'}
                       </button>
                       <button
                         onClick={handleReset}
-                        className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] hover:text-[#FAFAF9] px-3 py-1.5 transition-colors"
+                        className="text-[12px] font-medium text-[#78716C] hover:text-[#FAFAF9] px-3 py-1.5 transition-colors cursor-pointer"
                       >
-                        NEW EXTRACTION
+                        New extraction
                       </button>
                     </div>
                   </div>
@@ -173,9 +173,9 @@ export default function PDFExtractorPage() {
           )}
         </div>
 
-        <footer className="bg-[#141110] border-t border-[#292524] w-full py-4 px-8 md:px-16 flex justify-between items-center mt-auto font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E]">
-          <span className="text-[#FAFAF9] font-semibold tracking-normal font-sans">DocEasy</span>
-          <span>© 2024 DOCEASY</span>
+        <footer className="bg-[#141110] border-t border-[#292524] w-full py-4 px-8 md:px-16 flex justify-between items-center mt-auto text-[12px] text-[#78716C]">
+          <span className="text-[#FAFAF9] font-medium">DocEasy</span>
+          <span>© 2024 DocEasy</span>
         </footer>
       </main>
     </div>

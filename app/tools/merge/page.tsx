@@ -236,8 +236,8 @@ export default function MergePDFPage() {
           </div>
 
           {error && (
-            <div className="p-4 bg-[#1C1917] border border-[#7F1D1D] rounded-[6px] text-[13px] font-mono text-[#FAFAF9]">
-              [ERROR]: {error}
+            <div className="p-4 bg-[#1C1917] border border-[#7F1D1D] rounded-[6px] text-[13px] text-[#FAFAF9]">
+              Error: {error}
             </div>
           )}
 
@@ -246,7 +246,7 @@ export default function MergePDFPage() {
             onFileSelect={handleFileSelect}
             accept=".pdf,.png,.jpg,.jpeg,.webp,.avif"
             supportedFormats="PDF, PNG, JPG, WEBP, AVIF"
-            title={files.length > 0 ? "Add Another PDF or Image" : "Drop PDF or Image Files Here"}
+            title={files.length > 0 ? "Add another PDF or image" : "Drop PDF or image files here"}
             subtitle="Click or drag additional documents or images to append"
           />
 
@@ -254,14 +254,14 @@ export default function MergePDFPage() {
           {files.length > 0 && (
             <div className="bg-[#1C1917] border border-[#292524] p-6 rounded-[8px] flex flex-col gap-6">
               <div className="flex justify-between items-center border-b border-[#292524] pb-3">
-                <h2 className="font-mono text-[12px] uppercase tracking-[0.05em] text-[#57534E]">
-                  Merge Sequence ({files.length} {files.length === 1 ? 'FILE' : 'FILES'})
+                <h2 className="text-[13px] font-medium text-[#FAFAF9]">
+                  Merge sequence ({files.length} {files.length === 1 ? 'file' : 'files'})
                 </h2>
                 <button
                   onClick={handleReset}
-                  className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] hover:text-[#FAFAF9] transition-colors"
+                  className="text-[12px] text-[#78716C] hover:text-[#FAFAF9] transition-colors"
                 >
-                  Clear All
+                  Clear all
                 </button>
               </div>
 
@@ -274,10 +274,10 @@ export default function MergePDFPage() {
                       className="flex items-center justify-between p-4 border border-[#292524] bg-[#141110] rounded-[6px]"
                     >
                       <div className="flex items-center gap-4 min-w-0">
-                        <span className="font-mono text-[12px] font-medium text-[#57534E] w-6">
+                        <span className="font-mono text-[12px] font-medium text-[#78716C] w-6">
                           #{index + 1}
                         </span>
-                        <div className="w-10 h-10 bg-[#1C1917] border border-[#292524] flex items-center justify-center rounded-[4px] shrink-0">
+                        <div className="w-10 h-10 bg-[#1C1917] border border-[#292524] flex items-center justify-center rounded-[6px] shrink-0">
                           {isImg ? (
                             <ImageIcon className="w-4 h-4 text-[#D97706] stroke-[1.5]" />
                           ) : (
@@ -289,11 +289,11 @@ export default function MergePDFPage() {
                             <span className="text-[14px] text-[#FAFAF9] truncate max-w-sm md:max-w-md">
                               {f.name}
                             </span>
-                            <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-[#292524] text-[#A8A29E] uppercase">
+                            <span className="text-[11px] px-1.5 py-0.5 rounded bg-[#292524] text-[#A8A29E]">
                               {isImg ? 'IMAGE' : 'PDF'}
                             </span>
                           </div>
-                          <span className="font-mono text-[11px] text-[#57534E]">
+                          <span className="font-mono text-[12px] text-[#78716C]">
                             {(f.size / (1024 * 1024)).toFixed(2)} MB
                           </span>
                         </div>
@@ -303,22 +303,22 @@ export default function MergePDFPage() {
                         <button
                           onClick={() => moveUp(index)}
                           disabled={index === 0}
-                          className="p-1.5 text-[#57534E] hover:text-[#FAFAF9] disabled:opacity-20 transition-colors"
-                          title="Move Up"
+                          className="p-1.5 text-[#78716C] hover:text-[#FAFAF9] disabled:opacity-20 transition-colors"
+                          title="Move up"
                         >
                           <ArrowUp className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => moveDown(index)}
                           disabled={index === files.length - 1}
-                          className="p-1.5 text-[#57534E] hover:text-[#FAFAF9] disabled:opacity-20 transition-colors"
-                          title="Move Down"
+                          className="p-1.5 text-[#78716C] hover:text-[#FAFAF9] disabled:opacity-20 transition-colors"
+                          title="Move down"
                         >
                           <ArrowDown className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => removeFile(index)}
-                          className="p-1.5 text-[#57534E] hover:text-[#7F1D1D] transition-colors ml-2"
+                          className="p-1.5 text-[#78716C] hover:text-[#EF4444] transition-colors ml-2"
                           title="Remove"
                         >
                           <X className="w-4 h-4" />
@@ -334,17 +334,17 @@ export default function MergePDFPage() {
                   <a
                     href={downloadUrl}
                     download={`merged_document_${Date.now()}.pdf`}
-                    className="flex-1 h-10 bg-[#FAFAF9] text-[#0C0A09] font-mono text-[12px] uppercase font-medium tracking-[0.05em] rounded-[6px] hover:bg-[#D6D3D1] transition-colors duration-150 flex items-center justify-center gap-2"
+                    className="flex-1 h-10 bg-[#FAFAF9] text-[#0C0A09] text-[13px] font-medium rounded-[6px] hover:bg-[#E7E5E4] transition-colors duration-150 flex items-center justify-center gap-2"
                   >
                     <Download className="w-4 h-4" />
-                    DOWNLOAD MERGED PDF
+                    Download merged PDF
                   </a>
                   <button
                     onClick={handleReset}
-                    className="h-10 px-6 bg-transparent text-[#A8A29E] hover:text-[#FAFAF9] border border-[#292524] hover:border-[#A8A29E] font-mono text-[12px] uppercase tracking-[0.05em] rounded-[6px] transition-colors duration-150 flex items-center justify-center gap-2"
+                    className="h-10 px-6 bg-transparent text-[#A8A29E] hover:text-[#FAFAF9] border border-[#292524] hover:border-[#A8A29E] text-[13px] rounded-[6px] transition-colors duration-150 flex items-center justify-center gap-2"
                   >
                     <RotateCcw className="w-4 h-4" />
-                    MERGE NEW SET
+                    Merge another set
                   </button>
                 </div>
               ) : (
@@ -352,16 +352,16 @@ export default function MergePDFPage() {
                   <button
                     onClick={handleMerge}
                     disabled={processing || files.length < 2}
-                    className="w-full sm:w-auto px-8 h-10 bg-[#FAFAF9] text-[#0C0A09] font-mono text-[12px] uppercase font-medium tracking-[0.05em] rounded-[6px] hover:bg-[#D6D3D1] transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                    className="w-full sm:w-auto px-6 h-10 bg-[#FAFAF9] text-[#0C0A09] text-[13px] font-medium rounded-[6px] hover:bg-[#E7E5E4] transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
                   >
                     {processing ? (
                       <>
                         <div className="w-2 h-2 rounded-full bg-[#0C0A09] pulse-dot" />
-                        MERGING ({progress}%)
+                        Merging ({progress}%)
                       </>
                     ) : (
                       <>
-                        MERGE {files.length} DOCUMENTS
+                        Merge {files.length} documents
                         <ArrowRight className="w-4 h-4" />
                       </>
                     )}
@@ -373,11 +373,11 @@ export default function MergePDFPage() {
         </div>
 
         {/* Footer */}
-        <footer className="bg-[#141110] border-t border-[#292524] w-full py-4 px-8 md:px-16 flex justify-between items-center mt-auto font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E]">
-          <span className="text-[#FAFAF9] font-semibold tracking-normal font-sans">DocEasy</span>
+        <footer className="bg-[#141110] border-t border-[#292524] w-full py-4 px-8 md:px-16 flex justify-between items-center mt-auto text-[12px] text-[#78716C]">
+          <span className="text-[#FAFAF9] font-medium">DocEasy</span>
           <div className="flex gap-6">
-            <Link href="/privacy" className="hover:text-[#FAFAF9] transition-colors">PRIVACY</Link>
-            <Link href="/terms" className="hover:text-[#FAFAF9] transition-colors">TERMS</Link>
+            <Link href="/privacy" className="hover:text-[#FAFAF9] transition-colors">Privacy</Link>
+            <Link href="/terms" className="hover:text-[#FAFAF9] transition-colors">Terms</Link>
           </div>
           <span>© 2024 DOCEASY</span>
         </footer>

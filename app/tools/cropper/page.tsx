@@ -95,8 +95,8 @@ export default function CropperPage() {
           </div>
 
           {error && (
-            <div className="p-4 bg-[#1C1917] border border-[#7F1D1D] rounded-[6px] text-[13px] font-mono text-[#FAFAF9]">
-              [ERROR]: {error}
+            <div className="p-4 bg-[#1C1917] border border-[#7F1D1D] rounded-[6px] text-[13px] text-[#FAFAF9]">
+              Error: {error}
             </div>
           )}
 
@@ -105,19 +105,19 @@ export default function CropperPage() {
               onFileSelect={handleFileSelect}
               accept=".png,.jpg,.jpeg,.webp"
               supportedFormats="PNG, JPG, WEBP"
-              title="Drag & Drop Image to Crop"
-              subtitle="or click to browse local storage"
+              title="Drop image to crop"
+              subtitle="or click to browse local files"
             />
           ) : (
             <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
               <div className="xl:col-span-8 bg-[#1C1917] border border-[#292524] p-6 rounded-[8px]">
                 <div className="flex justify-between items-center border-b border-[#292524] pb-3 mb-4">
-                  <h2 className="font-mono text-[12px] uppercase tracking-[0.05em] text-[#57534E]">
-                    Canvas Viewport
+                  <h2 className="text-[13px] font-medium text-[#FAFAF9]">
+                    Image preview
                   </h2>
                   <button
                     onClick={handleReset}
-                    className="text-[#57534E] hover:text-[#FAFAF9] transition-colors p-1"
+                    className="text-[#78716C] hover:text-[#FAFAF9] transition-colors p-1"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -137,8 +137,8 @@ export default function CropperPage() {
               </div>
 
               <div className="xl:col-span-4 bg-[#1C1917] border border-[#292524] p-6 rounded-[8px] flex flex-col">
-                <h2 className="font-mono text-[12px] uppercase tracking-[0.05em] text-[#57534E] border-b border-[#292524] pb-3 mb-6">
-                  Scale Dimensions: {Math.round(scale * 100)}%
+                <h2 className="text-[13px] font-medium text-[#FAFAF9] border-b border-[#292524] pb-3 mb-6">
+                  Scale: {Math.round(scale * 100)}%
                 </h2>
 
                 <div className="space-y-4 flex-1">
@@ -151,10 +151,10 @@ export default function CropperPage() {
                     onChange={(e) => setScale(Number(e.target.value))}
                     className="w-full accent-[#FAFAF9] bg-[#141110] h-2 rounded cursor-pointer"
                   />
-                  <div className="flex justify-between font-mono text-[11px] text-[#57534E]">
-                    <span>0.2X</span>
-                    <span>1.0X</span>
-                    <span>2.0X</span>
+                  <div className="flex justify-between font-mono text-[12px] text-[#78716C]">
+                    <span>0.2x</span>
+                    <span>1.0x</span>
+                    <span>2.0x</span>
                   </div>
                 </div>
 
@@ -162,25 +162,25 @@ export default function CropperPage() {
                   <div className="mt-8 space-y-3">
                     <button
                       onClick={handleDownload}
-                      className="w-full h-10 bg-[#FAFAF9] text-[#0C0A09] font-mono text-[12px] uppercase font-medium tracking-[0.05em] rounded-[6px] hover:bg-[#D6D3D1] transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer"
+                      className="w-full h-10 bg-[#FAFAF9] text-[#0C0A09] text-[13px] font-medium rounded-[6px] hover:bg-[#E7E5E4] transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer"
                     >
                       <Download className="w-4 h-4" />
-                      DOWNLOAD CROPPED IMAGE
+                      Download cropped image
                     </button>
                     <button
                       onClick={handleReset}
-                      className="w-full h-10 bg-transparent text-[#A8A29E] hover:text-[#FAFAF9] border border-[#292524] hover:border-[#A8A29E] font-mono text-[12px] uppercase tracking-[0.05em] rounded-[6px] transition-colors duration-150 flex items-center justify-center gap-2"
+                      className="w-full h-10 bg-transparent text-[#A8A29E] hover:text-[#FAFAF9] border border-[#292524] hover:border-[#A8A29E] text-[13px] rounded-[6px] transition-colors duration-150 flex items-center justify-center gap-2"
                     >
                       <RotateCcw className="w-4 h-4" />
-                      CROP ANOTHER IMAGE
+                      Crop another image
                     </button>
                   </div>
                 ) : (
                   <button
                     onClick={handleCrop}
-                    className="w-full h-10 bg-[#FAFAF9] text-[#0C0A09] font-mono text-[12px] uppercase font-medium tracking-[0.05em] rounded-[6px] hover:bg-[#D6D3D1] transition-colors duration-150 flex items-center justify-center gap-2 mt-8 cursor-pointer"
+                    className="w-full h-10 bg-[#FAFAF9] text-[#0C0A09] text-[13px] font-medium rounded-[6px] hover:bg-[#E7E5E4] transition-colors duration-150 flex items-center justify-center gap-2 mt-8 cursor-pointer"
                   >
-                    APPLY CROP
+                    Crop image
                     <ArrowRight className="w-4 h-4" />
                   </button>
                 )}
@@ -189,9 +189,9 @@ export default function CropperPage() {
           )}
         </div>
 
-        <footer className="bg-[#141110] border-t border-[#292524] w-full py-4 px-8 md:px-16 flex justify-between items-center mt-auto font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E]">
-          <span className="text-[#FAFAF9] font-semibold tracking-normal font-sans">DocEasy</span>
-          <span>© 2024 DOCEASY</span>
+        <footer className="bg-[#141110] border-t border-[#292524] w-full py-4 px-8 md:px-16 flex justify-between items-center mt-auto text-[12px] text-[#78716C]">
+          <span className="text-[#FAFAF9] font-medium">DocEasy</span>
+          <span>© 2024 DocEasy</span>
         </footer>
       </main>
     </div>

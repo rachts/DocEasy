@@ -113,17 +113,17 @@ export default function PDFMakerPage() {
           </div>
 
           {error && (
-            <div className="p-4 bg-[#1C1917] border border-[#7F1D1D] rounded-[6px] text-[13px] font-mono text-[#FAFAF9]">
-              [ERROR]: {error}
+            <div className="p-4 bg-[#1C1917] border border-[#7F1D1D] rounded-[6px] text-[13px] text-[#FAFAF9]">
+              Error: {error}
             </div>
           )}
 
           {/* Template Selectors */}
-          <div className="flex gap-2 border-b border-[#292524] pb-4 font-mono text-[11px] uppercase tracking-[0.05em]">
+          <div className="flex gap-2 border-b border-[#292524] pb-4 text-[13px]">
             {[
-              { id: 'invoice', label: 'COMMERCIAL INVOICE', icon: FileText },
-              { id: 'certificate', label: 'CERTIFICATE', icon: Award },
-              { id: 'resume', label: 'CURRICULUM VITAE', icon: Briefcase },
+              { id: 'invoice', label: 'Commercial invoice', icon: FileText },
+              { id: 'certificate', label: 'Certificate', icon: Award },
+              { id: 'resume', label: 'Curriculum vitae', icon: Briefcase },
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -131,51 +131,51 @@ export default function PDFMakerPage() {
                   setActiveTab(tab.id as any)
                   setDownloadUrl(null)
                 }}
-                className={`px-4 py-2 rounded-[4px] border transition-colors flex items-center gap-2 ${
+                className={`px-4 py-2 rounded-[6px] border text-[13px] transition-colors flex items-center gap-2 ${
                   activeTab === tab.id
                     ? 'bg-[#FAFAF9] text-[#0C0A09] border-[#FAFAF9] font-medium'
-                    : 'bg-[#141110] text-[#57534E] border-[#292524] hover:text-[#FAFAF9]'
+                    : 'bg-[#141110] text-[#78716C] border-[#292524] hover:text-[#FAFAF9] hover:border-[#44403C]'
                 }`}
               >
-                <tab.icon className="w-3.5 h-3.5" />
+                <tab.icon className="w-4 h-4" />
                 {tab.label}
               </button>
             ))}
           </div>
 
           {/* Form Content */}
-          <div className="bg-[#1C1917] border border-[#292524] p-8 rounded-[8px]">
+          <div className="bg-[#1C1917] border border-[#292524] p-6 md:p-8 rounded-[8px]">
             {activeTab === 'invoice' && (
               <div className="space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <label className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] block">
-                      Invoice Serial Number
+                    <label className="text-[12px] font-medium text-[#A8A29E] block">
+                      Invoice number
                     </label>
                     <input
                       type="text"
                       value={invoiceData.invoiceNumber}
                       onChange={(e) => setInvoiceData({ ...invoiceData, invoiceNumber: e.target.value })}
-                      className="w-full h-11 bg-[#141110] border border-[#292524] rounded-[6px] px-3.5 text-[14px] text-[#FAFAF9] focus:border-[#A8A29E] focus:outline-none"
+                      className="w-full h-10 bg-[#141110] border border-[#292524] rounded-[6px] px-3.5 text-[14px] text-[#FAFAF9] focus:border-[#A8A29E] focus:outline-none"
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] block">
-                      Issue Date
+                    <label className="text-[12px] font-medium text-[#A8A29E] block">
+                      Issue date
                     </label>
                     <input
                       type="date"
                       value={invoiceData.date}
                       onChange={(e) => setInvoiceData({ ...invoiceData, date: e.target.value })}
-                      className="w-full h-11 bg-[#141110] border border-[#292524] rounded-[6px] px-3.5 text-[14px] text-[#FAFAF9] focus:border-[#A8A29E] focus:outline-none"
+                      className="w-full h-10 bg-[#141110] border border-[#292524] rounded-[6px] px-3.5 text-[14px] text-[#FAFAF9] focus:border-[#A8A29E] focus:outline-none"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <label className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] block">
-                      Issuer Entity (From)
+                    <label className="text-[12px] font-medium text-[#A8A29E] block">
+                      From (issuer)
                     </label>
                     <textarea
                       rows={3}
@@ -185,8 +185,8 @@ export default function PDFMakerPage() {
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] block">
-                      Client Entity (To)
+                    <label className="text-[12px] font-medium text-[#A8A29E] block">
+                      To (client)
                     </label>
                     <textarea
                       rows={3}
@@ -202,36 +202,36 @@ export default function PDFMakerPage() {
             {activeTab === 'certificate' && (
               <div className="space-y-6">
                 <div className="space-y-1.5">
-                  <label className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] block">
-                    Recipient Full Name
+                  <label className="text-[12px] font-medium text-[#A8A29E] block">
+                    Recipient full name
                   </label>
                   <input
                     type="text"
                     value={certificateData.recipientName}
                     onChange={(e) => setCertificateData({ ...certificateData, recipientName: e.target.value })}
-                    className="w-full h-11 bg-[#141110] border border-[#292524] rounded-[6px] px-3.5 text-[14px] text-[#FAFAF9] focus:border-[#A8A29E] focus:outline-none"
+                    className="w-full h-10 bg-[#141110] border border-[#292524] rounded-[6px] px-3.5 text-[14px] text-[#FAFAF9] focus:border-[#A8A29E] focus:outline-none"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] block">
-                    Credential / Program Title
+                  <label className="text-[12px] font-medium text-[#A8A29E] block">
+                    Course or credential title
                   </label>
                   <input
                     type="text"
                     value={certificateData.courseName}
                     onChange={(e) => setCertificateData({ ...certificateData, courseName: e.target.value })}
-                    className="w-full h-11 bg-[#141110] border border-[#292524] rounded-[6px] px-3.5 text-[14px] text-[#FAFAF9] focus:border-[#A8A29E] focus:outline-none"
+                    className="w-full h-10 bg-[#141110] border border-[#292524] rounded-[6px] px-3.5 text-[14px] text-[#FAFAF9] focus:border-[#A8A29E] focus:outline-none"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] block">
-                    Authorized Signatory / Instructor
+                  <label className="text-[12px] font-medium text-[#A8A29E] block">
+                    Authorized signatory
                   </label>
                   <input
                     type="text"
                     value={certificateData.instructorName}
                     onChange={(e) => setCertificateData({ ...certificateData, instructorName: e.target.value })}
-                    className="w-full h-11 bg-[#141110] border border-[#292524] rounded-[6px] px-3.5 text-[14px] text-[#FAFAF9] focus:border-[#A8A29E] focus:outline-none"
+                    className="w-full h-10 bg-[#141110] border border-[#292524] rounded-[6px] px-3.5 text-[14px] text-[#FAFAF9] focus:border-[#A8A29E] focus:outline-none"
                   />
                 </div>
               </div>
@@ -241,43 +241,43 @@ export default function PDFMakerPage() {
               <div className="space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div className="space-y-1.5">
-                    <label className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] block">
-                      Full Name
+                    <label className="text-[12px] font-medium text-[#A8A29E] block">
+                      Full name
                     </label>
                     <input
                       type="text"
                       value={resumeData.name}
                       onChange={(e) => setResumeData({ ...resumeData, name: e.target.value })}
-                      className="w-full h-11 bg-[#141110] border border-[#292524] rounded-[6px] px-3.5 text-[14px] text-[#FAFAF9] focus:border-[#A8A29E] focus:outline-none"
+                      className="w-full h-10 bg-[#141110] border border-[#292524] rounded-[6px] px-3.5 text-[14px] text-[#FAFAF9] focus:border-[#A8A29E] focus:outline-none"
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] block">
-                      Email
+                    <label className="text-[12px] font-medium text-[#A8A29E] block">
+                      Email address
                     </label>
                     <input
                       type="email"
                       value={resumeData.email}
                       onChange={(e) => setResumeData({ ...resumeData, email: e.target.value })}
-                      className="w-full h-11 bg-[#141110] border border-[#292524] rounded-[6px] px-3.5 text-[14px] text-[#FAFAF9] focus:border-[#A8A29E] focus:outline-none"
+                      className="w-full h-10 bg-[#141110] border border-[#292524] rounded-[6px] px-3.5 text-[14px] text-[#FAFAF9] focus:border-[#A8A29E] focus:outline-none"
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] block">
-                      Phone
+                    <label className="text-[12px] font-medium text-[#A8A29E] block">
+                      Phone number
                     </label>
                     <input
                       type="text"
                       value={resumeData.phone}
                       onChange={(e) => setResumeData({ ...resumeData, phone: e.target.value })}
-                      className="w-full h-11 bg-[#141110] border border-[#292524] rounded-[6px] px-3.5 text-[14px] text-[#FAFAF9] focus:border-[#A8A29E] focus:outline-none"
+                      className="w-full h-10 bg-[#141110] border border-[#292524] rounded-[6px] px-3.5 text-[14px] text-[#FAFAF9] focus:border-[#A8A29E] focus:outline-none"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] block">
-                    Professional Summary
+                  <label className="text-[12px] font-medium text-[#A8A29E] block">
+                    Professional summary
                   </label>
                   <textarea
                     rows={2}
@@ -288,8 +288,8 @@ export default function PDFMakerPage() {
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] block">
-                    Experience Records
+                  <label className="text-[12px] font-medium text-[#A8A29E] block">
+                    Experience
                   </label>
                   <textarea
                     rows={4}
@@ -306,17 +306,17 @@ export default function PDFMakerPage() {
                 <a
                   href={downloadUrl}
                   download={`${activeTab}_document.pdf`}
-                  className="flex-1 h-10 bg-[#FAFAF9] text-[#0C0A09] font-mono text-[12px] uppercase font-medium tracking-[0.05em] rounded-[6px] hover:bg-[#D6D3D1] transition-colors duration-150 flex items-center justify-center gap-2"
+                  className="flex-1 h-10 bg-[#FAFAF9] text-[#0C0A09] text-[13px] font-medium rounded-[6px] hover:bg-[#E7E5E4] transition-colors duration-150 flex items-center justify-center gap-2"
                 >
                   <Download className="w-4 h-4" />
-                  DOWNLOAD COMPILED PDF
+                  Download PDF
                 </a>
                 <button
                   onClick={handleReset}
-                  className="h-10 px-6 bg-transparent text-[#A8A29E] hover:text-[#FAFAF9] border border-[#292524] hover:border-[#A8A29E] font-mono text-[12px] uppercase tracking-[0.05em] rounded-[6px] transition-colors duration-150 flex items-center justify-center gap-2"
+                  className="h-10 px-6 bg-transparent text-[#A8A29E] hover:text-[#FAFAF9] border border-[#292524] hover:border-[#A8A29E] text-[13px] rounded-[6px] transition-colors duration-150 flex items-center justify-center gap-2"
                 >
                   <RotateCcw className="w-4 h-4" />
-                  EDIT PARAMETERS
+                  Edit details
                 </button>
               </div>
             ) : (
@@ -324,16 +324,16 @@ export default function PDFMakerPage() {
                 <button
                   onClick={handleGenerate}
                   disabled={generating}
-                  className="w-full sm:w-auto px-8 h-10 bg-[#FAFAF9] text-[#0C0A09] font-mono text-[12px] uppercase font-medium tracking-[0.05em] rounded-[6px] hover:bg-[#D6D3D1] transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                  className="w-full sm:w-auto px-6 h-10 bg-[#FAFAF9] text-[#0C0A09] text-[13px] font-medium rounded-[6px] hover:bg-[#E7E5E4] transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
                 >
                   {generating ? (
                     <>
                       <div className="w-2 h-2 rounded-full bg-[#0C0A09] pulse-dot" />
-                      COMPILING PDF...
+                      Creating PDF...
                     </>
                   ) : (
                     <>
-                      GENERATE {activeTab.toUpperCase()} PDF
+                      Create PDF
                       <ArrowRight className="w-4 h-4" />
                     </>
                   )}
@@ -343,9 +343,9 @@ export default function PDFMakerPage() {
           </div>
         </div>
 
-        <footer className="bg-[#141110] border-t border-[#292524] w-full py-4 px-8 md:px-16 flex justify-between items-center mt-auto font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E]">
-          <span className="text-[#FAFAF9] font-semibold tracking-normal font-sans">DocEasy</span>
-          <span>© 2024 DOCEASY</span>
+        <footer className="bg-[#141110] border-t border-[#292524] w-full py-4 px-8 md:px-16 flex justify-between items-center mt-auto text-[12px] text-[#78716C]">
+          <span className="text-[#FAFAF9] font-medium">DocEasy</span>
+          <span>© 2024 DocEasy</span>
         </footer>
       </main>
     </div>
