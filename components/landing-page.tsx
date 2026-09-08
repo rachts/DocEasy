@@ -4,6 +4,7 @@ import React, { useState, useMemo } from 'react'
 import Link from 'next/link'
 import { Navbar } from '@/components/navbar'
 import { Footer } from '@/components/footer'
+import { PrivacyProofScene } from '@/components/privacy-proof-scene'
 import { 
   Minimize2, 
   ArrowLeftRight, 
@@ -226,6 +227,11 @@ export function LandingPage() {
                 <span>Try with your own file</span>
                 <ArrowRight className="w-3 h-3" />
               </Link>
+            </div>
+
+            {/* Interactive Scroll-Scrubbed Privacy Proof Scene */}
+            <div className="mt-8">
+              <PrivacyProofScene />
             </div>
           </div>
         </section>
