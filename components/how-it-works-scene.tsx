@@ -32,7 +32,7 @@ const STEPS = [
     headline: 'Instant export with immediate memory release',
     description:
       'Save your processed document directly to your filesystem. Session storage and temporary buffers are immediately freed.',
-    tag: 'Zero Retention Guarantee',
+    tag: 'Zero Persistent Retention',
     color: '#F59E0B', // Amber
   },
 ]

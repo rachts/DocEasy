@@ -65,7 +65,7 @@ fs.copyFileSync(faviconIco, path.join(appDir, 'favicon.ico'))
 const manifestContent = JSON.stringify({
   name: "DocEasy",
   short_name: "DocEasy",
-  description: "100% Client-Side WebAssembly Document & Image Toolkit",
+  description: "Client-First Document & Image Toolkit",
   start_url: "/",
   display: "standalone",
   background_color: "#0C0A09",

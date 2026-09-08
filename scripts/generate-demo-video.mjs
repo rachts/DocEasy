@@ -15,7 +15,7 @@ const states = [
   {
     name: '01_idle',
     title: 'Drop PDF here or browse local files',
-    sub: 'Process instantly in browser memory • Zero server uploads',
+    sub: 'Process instantly in browser memory • Client-first processing',
     badge: 'AES-GCM Local Memory',
     status: 'idle',
     networkTraffic: '0 requests • 0 B transferred',

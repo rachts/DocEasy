@@ -152,13 +152,13 @@ const html = `<!DOCTYPE html>
 
     <div class="badge">
       <div class="pulse"></div>
-      <span>100% Client-Side WebAssembly</span>
+      <span>Client-First Architecture</span>
     </div>
   </div>
 
   <div class="content headline">
     <h1>Document tools that respect your privacy.</h1>
-    <p>Zero server uploads. Everything executes locally in your browser memory via WebAssembly and Web Crypto AES-GCM.</p>
+    <p>Local-first processing with zero unnecessary uploads. Client operations run in browser memory, heavy tasks execute ephemerally.</p>
   </div>
 
   <div class="bottom-row">
