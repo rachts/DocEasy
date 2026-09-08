@@ -3,7 +3,7 @@ import { Navbar } from '@/components/navbar'
 import { Footer } from '@/components/footer'
 
 export const metadata = {
-  title: 'Privacy Protocol | DocEasy',
+  title: 'Privacy Protocol',
   description: 'DocEasy privacy protocol and data minimization guarantees.',
 }
 
