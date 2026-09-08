@@ -179,7 +179,7 @@ export function LandingPage() {
                 <span className="text-[#57534E]">•</span>
                 <span>0s server retention</span>
                 <span className="text-[#57534E]">•</span>
-                <span>12 browser tools</span>
+                <span>{allTools.length} browser tools</span>
                 <span className="text-[#57534E]">•</span>
                 <span className="text-[#57534E]">WASM ISOLATED</span>
               </div>

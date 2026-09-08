@@ -249,9 +249,9 @@ export function Navbar() {
               PROCESS
             </Link>
 
-            {/* VAULT (/dashboard) */}
+            {/* VAULT (/tools/vault) */}
             <Link 
-              href="/dashboard" 
+              href="/tools/vault" 
               className="font-mono text-[12px] uppercase tracking-[0.05em] text-[#57534E] hover:text-[#A8A29E] transition-colors duration-150"
             >
               VAULT
@@ -339,7 +339,7 @@ export function Navbar() {
               PRIVACY MANIFESTO
             </Link>
             <Link
-              href="/dashboard"
+              href="/tools/vault"
               onClick={() => setMobileMenuOpen(false)}
               className="font-mono text-[14px] uppercase tracking-[0.05em] text-[#A8A29E] hover:text-[#FAFAF9] py-2 border-b border-[#292524]/60"
             >
