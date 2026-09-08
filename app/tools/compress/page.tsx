@@ -139,13 +139,13 @@ export default function CompressPDFPage() {
         {/* Breadcrumb Top Bar */}
         <header className="bg-[#141110] border-b border-[#292524] h-[56px] flex justify-between items-center px-8 md:px-16 sticky top-0 z-30">
           <div className="flex items-center gap-2 text-[12px]">
-            <Link href="/tools" className="text-[#78716C] hover:text-[#FAFAF9] transition-colors">
+            <Link href="/tools" className="text-[#A8A29E] hover:text-[#FAFAF9] transition-colors">
               Tools
             </Link>
-            <span className="text-[#44403C]">/</span>
+            <span className="text-[#57534E]">/</span>
             <span className="text-[#FAFAF9]">PDF Compressor</span>
           </div>
-          <div className="hidden md:flex text-[12px] text-[#78716C]">
+          <div className="hidden md:flex text-[12px] text-[#A8A29E]">
             Zero server uploads
           </div>
         </header>
@@ -188,8 +188,9 @@ export default function CompressPDFPage() {
                   </h2>
                   <button
                     onClick={handleReset}
-                    className="text-[#78716C] hover:text-[#FAFAF9] transition-colors p-1"
+                    className="text-[#A8A29E] hover:text-[#FAFAF9] transition-colors p-1"
                     title="Remove file"
+                    aria-label="Remove file"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -204,7 +205,7 @@ export default function CompressPDFPage() {
                       <p className="text-[15px] font-medium text-[#FAFAF9] truncate max-w-md">
                         {file.name}
                       </p>
-                      <p className="font-mono text-[12px] text-[#78716C] mt-0.5">
+                      <p className="font-mono text-[12px] text-[#A8A29E] mt-0.5">
                         {formatBytes(file.size)}
                       </p>
                     </div>
@@ -219,15 +220,15 @@ export default function CompressPDFPage() {
                     </div>
                     <div className="grid grid-cols-3 gap-4">
                       <div>
-                        <span className="text-[12px] text-[#78716C] block">Original</span>
+                        <span className="text-[12px] text-[#A8A29E] block">Original</span>
                         <span className="font-mono text-[14px] text-[#FAFAF9] font-medium">{formatBytes(metrics.originalSize)}</span>
                       </div>
                       <div>
-                        <span className="text-[12px] text-[#78716C] block">Compressed</span>
+                        <span className="text-[12px] text-[#A8A29E] block">Compressed</span>
                         <span className="font-mono text-[14px] text-[#FAFAF9] font-medium">{formatBytes(metrics.compressedSize)}</span>
                       </div>
                       <div>
-                        <span className="text-[12px] text-[#78716C] block">Reduction</span>
+                        <span className="text-[12px] text-[#A8A29E] block">Reduction</span>
                         <span className="font-mono text-[14px] text-[#FAFAF9] font-medium">-{metrics.reductionPercent}%</span>
                       </div>
                     </div>
@@ -258,7 +259,7 @@ export default function CompressPDFPage() {
                     />
                     <div>
                       <span className="text-[14px] text-[#FAFAF9] block font-medium">Extreme compression</span>
-                      <span className="text-[12px] text-[#78716C] block mt-0.5">Lowest file size, downscaled assets</span>
+                      <span className="text-[12px] text-[#A8A29E] block mt-0.5">Lowest file size, downscaled assets</span>
                     </div>
                   </label>
 
@@ -278,7 +279,7 @@ export default function CompressPDFPage() {
                     />
                     <div>
                       <span className="text-[14px] text-[#FAFAF9] block font-medium">Recommended quality</span>
-                      <span className="text-[12px] text-[#78716C] block mt-0.5">Balanced quality and high efficiency</span>
+                      <span className="text-[12px] text-[#A8A29E] block mt-0.5">Balanced quality and high efficiency</span>
                     </div>
                   </label>
 
@@ -298,7 +299,7 @@ export default function CompressPDFPage() {
                     />
                     <div>
                       <span className="text-[14px] text-[#FAFAF9] block font-medium">Low compression</span>
-                      <span className="text-[12px] text-[#78716C] block mt-0.5">Maximum quality, minimal alterations</span>
+                      <span className="text-[12px] text-[#A8A29E] block mt-0.5">Maximum quality, minimal alterations</span>
                     </div>
                   </label>
                 </div>
@@ -346,7 +347,7 @@ export default function CompressPDFPage() {
         </div>
 
         {/* Footer */}
-        <footer className="bg-[#141110] border-t border-[#292524] w-full py-4 px-8 md:px-16 flex justify-between items-center mt-auto text-[12px] text-[#78716C]">
+        <footer className="bg-[#141110] border-t border-[#292524] w-full py-4 px-8 md:px-16 flex justify-between items-center mt-auto text-[12px] text-[#A8A29E]">
           <span className="text-[#FAFAF9] font-medium">DocEasy</span>
           <div className="flex gap-6">
             <Link href="/privacy" className="hover:text-[#FAFAF9] transition-colors">Privacy</Link>

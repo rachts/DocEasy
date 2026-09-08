@@ -62,7 +62,7 @@ export function Sidebar({ currentPath }: SidebarProps) {
             DocEasy
           </span>
         </Link>
-        <span className="text-[12px] text-[#78716C] block mt-1">
+        <span className="text-[12px] text-[#A8A29E] block mt-1">
           Editorial toolkit
         </span>
       </div>
@@ -91,7 +91,7 @@ export function Sidebar({ currentPath }: SidebarProps) {
                   : 'pl-[18px] text-[#A8A29E] hover:text-[#FAFAF9] hover:bg-[#141110]'
               }`}
             >
-              <item.icon className={`w-4 h-4 shrink-0 stroke-[1.5] ${active ? 'text-[#FAFAF9]' : 'text-[#78716C]'}`} />
+              <item.icon className={`w-4 h-4 shrink-0 stroke-[1.5] ${active ? 'text-[#FAFAF9]' : 'text-[#A8A29E]'}`} />
               <span className="truncate">{item.label}</span>
             </Link>
           )
@@ -104,14 +104,14 @@ export function Sidebar({ currentPath }: SidebarProps) {
           href="/contact"
           className="flex items-center gap-3 text-[13px] text-[#A8A29E] hover:text-[#FAFAF9] hover:bg-[#141110] pl-[18px] py-2 rounded-[4px] transition-colors duration-150"
         >
-          <HelpCircle className="w-4 h-4 shrink-0 stroke-[1.5] text-[#78716C]" />
+          <HelpCircle className="w-4 h-4 shrink-0 stroke-[1.5] text-[#A8A29E]" />
           <span>Help</span>
         </Link>
         <button
           onClick={handleLogout}
           className="w-full flex items-center gap-3 text-[13px] text-[#A8A29E] hover:text-[#FAFAF9] hover:bg-[#141110] pl-[18px] py-2 rounded-[4px] transition-colors duration-150 text-left cursor-pointer"
         >
-          <LogOut className="w-4 h-4 shrink-0 stroke-[1.5] text-[#78716C]" />
+          <LogOut className="w-4 h-4 shrink-0 stroke-[1.5] text-[#A8A29E]" />
           <span>Log out</span>
         </button>
       </div>

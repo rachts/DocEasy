@@ -31,42 +31,49 @@ export function Footer() {
               <Link 
                 href="https://github.com/rachts/DocEasy" 
                 target="_blank" 
+                rel="noopener noreferrer"
+                aria-label="GitHub repository"
                 className="w-9 h-9 rounded-[6px] bg-[#141110] border border-[#292524] hover:border-[#57534E] flex items-center justify-center text-[#57534E] hover:text-[#FAFAF9] transition-colors duration-150"
                 title="GitHub"
               >
-                <Github className="w-4 h-4 stroke-[1.5]" />
+                <Github className="w-4 h-4 stroke-[1.5]" aria-hidden="true" />
               </Link>
               <Link 
-                href="https://linkedin.com/in/rachit-tiwari" 
+                href="https://www.linkedin.com/in/rachitkrtiwari/" 
                 target="_blank" 
+                rel="noopener noreferrer"
+                aria-label="LinkedIn profile"
                 className="w-9 h-9 rounded-[6px] bg-[#141110] border border-[#292524] hover:border-[#57534E] flex items-center justify-center text-[#57534E] hover:text-[#FAFAF9] transition-colors duration-150"
                 title="LinkedIn"
               >
-                <Linkedin className="w-4 h-4 stroke-[1.5]" />
+                <Linkedin className="w-4 h-4 stroke-[1.5]" aria-hidden="true" />
               </Link>
               <Link 
                 href="https://x.com/rachts" 
                 target="_blank" 
+                rel="noopener noreferrer"
+                aria-label="X (Twitter) profile"
                 className="w-9 h-9 rounded-[6px] bg-[#141110] border border-[#292524] hover:border-[#57534E] flex items-center justify-center text-[#57534E] hover:text-[#FAFAF9] transition-colors duration-150"
                 title="X / Twitter"
               >
-                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+                <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                   <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                 </svg>
               </Link>
               <Link 
                 href="mailto:rachit@doceasy.app" 
+                aria-label="Email support"
                 className="w-9 h-9 rounded-[6px] bg-[#141110] border border-[#292524] hover:border-[#57534E] flex items-center justify-center text-[#57534E] hover:text-[#FAFAF9] transition-colors duration-150"
                 title="Email"
               >
-                <Mail className="w-4 h-4 stroke-[1.5]" />
+                <Mail className="w-4 h-4 stroke-[1.5]" aria-hidden="true" />
               </Link>
             </div>
           </div>
 
           {/* Column 2: PDF tools (lg:col-span-2) */}
           <div className="lg:col-span-2 space-y-4">
-            <h3 className="text-[12px] font-medium tracking-wide text-[#78716C] whitespace-nowrap">
+            <h3 className="text-[12px] font-medium tracking-wide text-[#A8A29E] whitespace-nowrap">
               PDF tools
             </h3>
             <ul className="space-y-3 text-[14px] font-normal">
@@ -100,7 +107,7 @@ export function Footer() {
 
           {/* Column 3: IMAGE & AI (lg:col-span-2) */}
           <div className="lg:col-span-2 space-y-4">
-            <h3 className="text-[12px] font-medium tracking-wide text-[#78716C] whitespace-nowrap">
+            <h3 className="text-[12px] font-medium tracking-wide text-[#A8A29E] whitespace-nowrap">
               Image & AI
             </h3>
             <ul className="space-y-3 text-[14px] font-normal">
@@ -135,7 +142,7 @@ export function Footer() {
                 </Link>
               </li>
               <li className="pt-1">
-                <Link href="/tools" className="group/link flex items-center gap-1.5 text-[12px] font-medium text-[#78716C] hover:text-[#FAFAF9] transition-colors duration-150 whitespace-nowrap">
+                <Link href="/tools" className="group/link flex items-center gap-1.5 text-[12px] font-medium text-[#A8A29E] hover:text-[#FAFAF9] transition-colors duration-150 whitespace-nowrap">
                   <span>All 12 tools</span>
                   <ArrowRight className="w-3 h-3 transition-transform duration-150 group-hover/link:translate-x-1" />
                 </Link>
@@ -145,7 +152,7 @@ export function Footer() {
 
           {/* Column 4: SUPPORT (lg:col-span-2) */}
           <div className="lg:col-span-2 space-y-4">
-            <h3 className="text-[12px] font-medium tracking-wide text-[#78716C] whitespace-nowrap">
+            <h3 className="text-[12px] font-medium tracking-wide text-[#A8A29E] whitespace-nowrap">
               Support
             </h3>
             <ul className="space-y-3 text-[14px] font-normal">
@@ -174,7 +181,7 @@ export function Footer() {
 
           {/* Column 5: LEGAL (lg:col-span-2) */}
           <div className="lg:col-span-2 space-y-4">
-            <h3 className="text-[12px] font-medium tracking-wide text-[#78716C] whitespace-nowrap">
+            <h3 className="text-[12px] font-medium tracking-wide text-[#A8A29E] whitespace-nowrap">
               Legal
             </h3>
             <ul className="space-y-3 text-[14px] font-normal">
@@ -204,10 +211,10 @@ export function Footer() {
 
         {/* Bottom Bar (py-6) */}
         <div className="pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <div className="text-[13px] text-[#78716C]">
+          <div className="text-[13px] text-[#A8A29E]">
             © 2024 DocEasy. All rights reserved.
           </div>
-          <div className="flex items-center gap-4 text-[13px] text-[#78716C]">
+          <div className="flex items-center gap-4 text-[13px] text-[#A8A29E]">
             <Link href="/privacy" className="hover:text-[#FAFAF9] transition-colors duration-150">
               Privacy
             </Link>

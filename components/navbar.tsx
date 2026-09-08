@@ -267,6 +267,7 @@ export function Navbar() {
             onClick={() => {
               window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true }))
             }}
+            aria-label="Search tools (⌘K)"
             className="p-1.5 text-[#57534E] hover:text-[#FAFAF9] rounded-[4px] transition-colors flex items-center gap-2 text-[12px] cursor-pointer"
             title="Search tools (⌘K)"
           >

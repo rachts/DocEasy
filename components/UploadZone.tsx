@@ -79,6 +79,7 @@ export function UploadZone({
         ref={fileInputRef}
         type="file"
         accept={accept}
+        aria-label="Upload document file input"
         onChange={handleInputChange}
         className="hidden"
       />
@@ -86,7 +87,7 @@ export function UploadZone({
       <div className={`w-12 h-12 rounded-[6px] border border-[#292524] bg-[#1C1917] flex items-center justify-center mb-4 group-hover:border-[#A8A29E] transition-all duration-150 ${
         isDragging ? 'scale-110 border-[#FAFAF9]' : ''
       }`}>
-        <Upload className="w-5 h-5 text-[#A8A29E] group-hover:text-[#FAFAF9] stroke-[1.5] transition-colors duration-150" />
+        <Upload className="w-5 h-5 text-[#A8A29E] group-hover:text-[#FAFAF9] stroke-[1.5] transition-colors duration-150" aria-hidden="true" />
       </div>
 
       <h2 className="text-2xl md:text-3xl font-medium tracking-[-0.01em] text-[#FAFAF9] mb-1">
@@ -98,7 +99,7 @@ export function UploadZone({
       </p>
 
       <div className="border-t border-[#292524] pt-4 mt-2 w-full max-w-md">
-        <p className="text-[12px] text-[#78716C] flex items-center justify-center gap-2 flex-wrap">
+        <p className="text-[12px] text-[#A8A29E] flex items-center justify-center gap-2 flex-wrap">
           <span>Supported: <span className="font-mono text-[#A8A29E]">{supportedFormats}</span></span>
           <span className="text-[#57534E]">•</span>
           <span>Max size: <span className="font-mono text-[#A8A29E]">{maxSize}</span></span>

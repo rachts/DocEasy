@@ -178,7 +178,7 @@ export function LandingPage() {
           <div className="bg-[#141110] border border-[#292524] rounded-[8px] p-6 md:p-8">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-[#292524] mb-6">
               <div>
-                <span className="text-[12px] font-medium text-[#78716C] block mb-1">
+                <span className="text-[12px] font-medium text-[#A8A29E] block mb-1">
                   Verifiable proof
                 </span>
                 <h2 className="text-2xl md:text-3xl font-medium tracking-tight text-[#FAFAF9]">
@@ -210,7 +210,7 @@ export function LandingPage() {
               </video>
             </div>
 
-            <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#78716C]">
+            <div className="mt-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#A8A29E]">
               <div className="flex items-center gap-2">
                 <span>Demo workflow:</span>
                 <span className="font-mono text-[#FAFAF9]">2.4 MB</span>
@@ -234,7 +234,7 @@ export function LandingPage() {
         <section id="tools" className="px-6 md:px-16 py-24 max-w-6xl mx-auto scroll-mt-20">
           <div className="border-b border-[#292524] pb-6 mb-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
-              <span className="text-[12px] font-medium text-[#78716C] block mb-1">
+              <span className="text-[12px] font-medium text-[#A8A29E] block mb-1">
                 All tools
               </span>
               <h2 className="text-3xl font-medium tracking-tight text-[#FAFAF9]">
@@ -257,7 +257,7 @@ export function LandingPage() {
                     className={`text-[12px] font-medium px-3 py-1.5 rounded-[4px] transition-colors cursor-pointer ${
                       selectedCategory === key
                         ? 'bg-[#1C1917] text-[#FAFAF9] border border-[#292524]'
-                        : 'text-[#57534E] hover:text-[#A8A29E] border border-transparent'
+                        : 'text-[#A8A29E] hover:text-[#FAFAF9] border border-transparent'
                     }`}
                   >
                     {label}
@@ -266,13 +266,13 @@ export function LandingPage() {
               </div>
 
               <div className="relative">
-                <Search className="w-3.5 h-3.5 text-[#57534E] absolute left-3 top-1/2 -translate-y-1/2" />
+                <Search className="w-3.5 h-3.5 text-[#A8A29E] absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   placeholder="Filter tools..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="bg-[#141110] border border-[#292524] focus:border-[#A8A29E] text-[#FAFAF9] placeholder:text-[#57534E] text-[13px] pl-8 pr-3 py-1.5 rounded-[6px] outline-none w-36 sm:w-44 transition-colors"
+                  className="bg-[#141110] border border-[#292524] focus:border-[#A8A29E] text-[#FAFAF9] placeholder:text-[#A8A29E] text-[13px] pl-8 pr-3 py-1.5 rounded-[6px] outline-none w-36 sm:w-44 transition-colors"
                 />
               </div>
             </div>
@@ -307,7 +307,7 @@ export function LandingPage() {
             ))}
 
             {filteredTools.length === 0 && (
-              <div className="text-center py-12 text-[13px] text-[#78716C]">
+              <div className="text-center py-12 text-[13px] text-[#A8A29E]">
                 No tools matched &ldquo;{searchQuery}&rdquo; in {selectedCategory.toLowerCase()} category.
               </div>
             )}
@@ -322,9 +322,9 @@ export function LandingPage() {
             </h2>
             <p className="text-xl md:text-2xl text-[#A8A29E] leading-relaxed max-w-4xl tracking-tight">
               <span className="text-[#FAFAF9] font-medium">Select</span> your file{' '}
-              <span className="text-[#57534E] mx-2">→</span>{' '}
+              <span className="text-[#A8A29E] mx-2">→</span>{' '}
               <span className="text-[#FAFAF9] font-medium">Process</span> locally in your browser{' '}
-              <span className="text-[#57534E] mx-2">→</span>{' '}
+              <span className="text-[#A8A29E] mx-2">→</span>{' '}
               <span className="text-[#FAFAF9] font-medium">Save</span> directly to your device.{' '}
               <span className="text-[#A8A29E]">Zero server uploads.</span>
             </p>
@@ -346,13 +346,13 @@ export function LandingPage() {
               </h2>
             </div>
             
-            <div className="mt-8 text-[12px] text-[#78716C] flex flex-wrap items-center gap-3">
+            <div className="mt-8 text-[12px] text-[#A8A29E] flex flex-wrap items-center gap-3">
               <span>Last audited: 2024-08-30</span>
-              <span className="text-[#292524]">·</span>
+              <span className="text-[#57534E]">·</span>
               <Link 
                 href="https://github.com/rachts/DocEasy" 
                 target="_blank"
-                className="text-[#A8A29E] hover:text-[#FAFAF9] transition-colors underline underline-offset-4"
+                className="text-[#FAFAF9] hover:text-[#A8A29E] transition-colors underline underline-offset-4"
               >
                 Open source on GitHub
               </Link>
