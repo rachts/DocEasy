@@ -4,6 +4,8 @@ import React, { useState, useMemo } from 'react'
 import Link from 'next/link'
 import { Navbar } from '@/components/navbar'
 import { Footer } from '@/components/footer'
+import { FormatMarquee } from '@/components/format-marquee'
+import { ToolsBentoGrid } from '@/components/tools-bento-grid'
 import { 
   ArrowLeftRight, 
   Award, 
@@ -188,43 +190,14 @@ export default function ToolsPage() {
           </div>
         </section>
 
-        {/* Tools Grid */}
+        {/* Supported Formats Marquee */}
+        <div className="mb-10">
+          <FormatMarquee />
+        </div>
+
+        {/* Tools Bento Grid with 3D Tilt & Spring Pop */}
         <div className="px-6 md:px-12 pb-24 max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {filteredTools.map((tool) => (
-              <Link
-                key={tool.title}
-                href={tool.href}
-                className="group bg-[#1C1917] border border-[#292524] hover:border-[#A8A29E] rounded-[8px] p-6 flex flex-col justify-between transition-colors duration-150"
-              >
-                <div>
-                  <div className="flex items-center justify-between mb-5">
-                    <div className="w-10 h-10 rounded-[5px] bg-[#141110] border border-[#292524] group-hover:border-[#A8A29E] flex items-center justify-center transition-colors duration-150">
-                      <tool.icon className="w-5 h-5 text-[#A8A29E] group-hover:text-[#FAFAF9] stroke-[1.5] transition-colors duration-150" />
-                    </div>
-                  </div>
-
-                  <h3 className="text-[17px] font-medium text-[#FAFAF9] mb-2">
-                    {tool.title}
-                  </h3>
-                  <p className="text-[13.5px] text-[#A8A29E] leading-relaxed mb-6">
-                    {tool.description}
-                  </p>
-                </div>
-
-                <div className="pt-4 border-t border-[#292524] flex items-center justify-between text-[12px] font-medium text-[#57534E] group-hover:text-[#FAFAF9] transition-colors">
-                  <span>Open tool</span>
-                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-                </div>
-              </Link>
-            ))}
-          </div>
-
-          {filteredTools.length === 0 && (
-            <div className="text-center py-16 text-[13px] text-[#78716C]">
-              No tools found matching &ldquo;{searchQuery}&rdquo;. Press ⌘K to search.
-            </div>
-          )}
+          <ToolsBentoGrid tools={filteredTools} searchQuery={searchQuery} />
         </div>
       </main>
 
