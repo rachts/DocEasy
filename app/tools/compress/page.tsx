@@ -1,10 +1,11 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Sidebar } from '@/components/Sidebar'
 import { ProgressBar } from '@/components/ProgressBar'
 import { UploadZone } from '@/components/UploadZone'
+import { getAndClearPendingDroppedFile } from '@/lib/global-file-stash'
 import { 
   FileText, 
   X, 
@@ -46,6 +47,13 @@ export default function CompressPDFPage() {
     setMetrics(null)
     setError('')
   }
+
+  useEffect(() => {
+    const pending = getAndClearPendingDroppedFile()
+    if (pending) {
+      handleFileSelect(pending)
+    }
+  }, [])
 
   const handleCompress = async () => {
     if (!file) return

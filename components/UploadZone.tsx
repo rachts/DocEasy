@@ -1,7 +1,8 @@
 'use client'
 
-import React, { useRef, useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Upload, AlertCircle, X } from 'lucide-react'
+import { useGlobalDrop } from './global-drop-context'
 
 interface UploadZoneProps {
   onFileSelect: (file: File) => void
@@ -15,8 +16,8 @@ interface UploadZoneProps {
 
 export function UploadZone({
   onFileSelect,
-  accept = '.pdf,.docx,.txt,.png,.jpg,.jpeg,.webp',
-  supportedFormats = 'PDF, DOCX, TXT, PNG, JPG',
+  accept = '.pdf,image/*',
+  supportedFormats = 'PDF, PNG, JPG, WebP',
   maxSize = '50MB',
   title = 'Drop files here',
   subtitle = 'or click to browse local storage',
@@ -25,6 +26,13 @@ export function UploadZone({
   const [isDragging, setIsDragging] = useState(false)
   const [rejectionError, setRejectionError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const globalDrop = useGlobalDrop()
+
+  useEffect(() => {
+    if (globalDrop) {
+      return globalDrop.registerDropHandler(validateAndSelect)
+    }
+  }, [globalDrop])
 
   const validateAndSelect = (file: File) => {
     // 1. Check file size limit (50MB = 50 * 1024 * 1024 bytes)
