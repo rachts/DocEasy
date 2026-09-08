@@ -29,96 +29,84 @@ export default function ToolsPage() {
       description: 'Reduce PDF file size while maintaining quality via WebAssembly quantization.',
       icon: Minimize2,
       href: '/tools/compress',
-      category: 'PDF',
-      tag: 'WASM'
+      category: 'PDF'
     },
     {
       title: 'PDF Converter',
       description: 'Convert Word, Excel, Images, and Text files into standard PDF format.',
       icon: ArrowLeftRight,
       href: '/tools/convert',
-      category: 'PDF',
-      tag: 'LAYOUT FIDELITY'
+      category: 'PDF'
     },
     {
       title: 'PDF Merger',
       description: 'Combine multiple PDF files or raster images into one clean sequence.',
       icon: Merge,
       href: '/tools/merge',
-      category: 'PDF',
-      tag: 'LOSSLESS'
+      category: 'PDF'
     },
     {
       title: 'PDF Maker',
       description: 'Generate formatted documents from structured templates (Invoice, Certificate, CV).',
       icon: Award,
       href: '/tools/pdf-maker',
-      category: 'PDF',
-      tag: 'TEMPLATES'
+      category: 'PDF'
     },
     {
       title: 'PDF Extractor',
       description: 'Extract raw text streams, table matrices, and embedded image assets.',
       icon: FileSearch,
       href: '/tools/pdf-extractor',
-      category: 'PDF',
-      tag: 'STREAM PARSER'
+      category: 'PDF'
     },
     {
       title: 'PDF Summarizer',
       description: 'Extract key summaries and semantic insights from long document files.',
       icon: Sparkles,
       href: '/tools/pdf-summarizer',
-      category: 'INTELLIGENCE',
-      tag: 'WASM OCR'
+      category: 'INTELLIGENCE'
     },
     {
       title: 'Image Compressor',
       description: 'Lossless & lossy raster compression for PNG, JPG, and WebP assets.',
       icon: Minimize2,
       href: '/tools/image-compressor',
-      category: 'IMAGE',
-      tag: 'SIMD QUANT'
+      category: 'IMAGE'
     },
     {
       title: 'Image Converter',
       description: 'Cross-convert between universal image format standards with ICC preservation.',
       icon: ArrowLeftRight,
       href: '/tools/image-converter',
-      category: 'IMAGE',
-      tag: 'ICC PROFILES'
+      category: 'IMAGE'
     },
     {
       title: 'Passport Photo Editor',
       description: 'Standard biometric aspect presets, automatic cropping, and background clean.',
       icon: User,
       href: '/tools/passport-photo',
-      category: 'IMAGE',
-      tag: 'BIOMETRIC'
+      category: 'IMAGE'
     },
     {
       title: 'Smart Image Cropper',
       description: 'Interactive canvas bounding, locked aspect scaling, and lossless downloads.',
       icon: Crop,
       href: '/tools/cropper',
-      category: 'IMAGE',
-      tag: 'CANVAS 2D'
+      category: 'IMAGE'
     },
     {
       title: 'Resume & ATS Analyzer',
       description: 'Audit ATS parsing compatibility, score keyword density, and inspect structure.',
       icon: FileText,
       href: '/tools/analysis',
-      category: 'INTELLIGENCE',
-      tag: 'ATS ENGINE'
+      category: 'INTELLIGENCE'
     },
     {
       title: 'Encrypted File Vault',
       description: 'Private client-encrypted session history with automatic 2-hour TTL auto-purge.',
       icon: Lock,
       href: '/tools/vault',
-      category: 'INTELLIGENCE',
-      tag: 'EPHEMERAL'
+      category: 'INTELLIGENCE'
     },
   ]
 
@@ -127,8 +115,7 @@ export default function ToolsPage() {
       const matchesCategory = selectedCategory === 'ALL' || tool.category === selectedCategory
       const matchesSearch = searchQuery === '' ||
         tool.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        tool.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        tool.tag.toLowerCase().includes(searchQuery.toLowerCase())
+        tool.description.toLowerCase().includes(searchQuery.toLowerCase())
       return matchesCategory && matchesSearch
     })
   }, [tools, selectedCategory, searchQuery])
@@ -210,9 +197,6 @@ export default function ToolsPage() {
                     <div className="w-10 h-10 rounded-[5px] bg-[#141110] border border-[#292524] group-hover:border-[#A8A29E] flex items-center justify-center transition-colors duration-150">
                       <tool.icon className="w-5 h-5 text-[#A8A29E] group-hover:text-[#FAFAF9] stroke-[1.5] transition-colors duration-150" />
                     </div>
-                    <span className="font-mono text-[10px] uppercase tracking-[0.05em] text-[#57534E] bg-[#141110] border border-[#292524] px-2 py-0.5 rounded">
-                      {tool.tag}
-                    </span>
                   </div>
 
                   <h3 className="text-[17px] font-medium text-[#FAFAF9] mb-2">
@@ -223,8 +207,8 @@ export default function ToolsPage() {
                   </p>
                 </div>
 
-                <div className="pt-4 border-t border-[#292524] flex items-center justify-between font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] group-hover:text-[#FAFAF9] transition-colors">
-                  <span>LAUNCH ROUTINE</span>
+                <div className="pt-4 border-t border-[#292524] flex items-center justify-between font-mono text-[11px] text-[#57534E] group-hover:text-[#FAFAF9] transition-colors">
+                  <span>Open tool</span>
                   <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                 </div>
               </Link>

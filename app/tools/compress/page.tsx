@@ -143,10 +143,8 @@ export default function CompressPDFPage() {
             <span className="text-[#292524]">/</span>
             <span className="text-[#FAFAF9]">COMPRESS PDF</span>
           </div>
-          <div className="hidden md:flex gap-6 font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E]">
-            <span>ENGINE: CLIENT WASM</span>
-            <span>•</span>
-            <span>AES-256 ISOLATION</span>
+          <div className="hidden md:flex text-[12px] text-[#78716C]">
+            Zero server uploads
           </div>
         </header>
 

@@ -80,53 +80,38 @@ export function CommandMenu() {
           <Command.Group heading="PDF UTILITIES" className="text-[11px] font-mono uppercase tracking-[0.05em] text-[#57534E] px-2 py-1.5">
             <Command.Item 
               onSelect={() => runCommand(() => router.push('/tools/compress'))}
-              className="flex items-center justify-between rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
+              className="flex items-center gap-3 rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
             >
-              <div className="flex items-center gap-3">
-                <Minimize2 className="w-4 h-4 text-[#A8A29E]" />
-                <span>Compress PDF Document</span>
-              </div>
-              <span className="font-mono text-[10px] uppercase text-[#57534E]">WASM</span>
+              <Minimize2 className="w-4 h-4 text-[#A8A29E]" />
+              <span>Compress PDF Document</span>
             </Command.Item>
             <Command.Item 
               onSelect={() => runCommand(() => router.push('/tools/convert'))}
-              className="flex items-center justify-between rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
+              className="flex items-center gap-3 rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
             >
-              <div className="flex items-center gap-3">
-                <ArrowLeftRight className="w-4 h-4 text-[#A8A29E]" />
-                <span>Format Matrix Converter</span>
-              </div>
-              <span className="font-mono text-[10px] uppercase text-[#57534E]">DOCX / PDF</span>
+              <ArrowLeftRight className="w-4 h-4 text-[#A8A29E]" />
+              <span>Format Matrix Converter</span>
             </Command.Item>
             <Command.Item 
               onSelect={() => runCommand(() => router.push('/tools/merge'))}
-              className="flex items-center justify-between rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
+              className="flex items-center gap-3 rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
             >
-              <div className="flex items-center gap-3">
-                <Merge className="w-4 h-4 text-[#A8A29E]" />
-                <span>PDF Document Merger</span>
-              </div>
-              <span className="font-mono text-[10px] uppercase text-[#57534E]">LOSSLESS</span>
+              <Merge className="w-4 h-4 text-[#A8A29E]" />
+              <span>PDF Document Merger</span>
             </Command.Item>
             <Command.Item 
               onSelect={() => runCommand(() => router.push('/tools/pdf-maker'))}
-              className="flex items-center justify-between rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
+              className="flex items-center gap-3 rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
             >
-              <div className="flex items-center gap-3">
-                <Award className="w-4 h-4 text-[#A8A29E]" />
-                <span>PDF Template Maker</span>
-              </div>
-              <span className="font-mono text-[10px] uppercase text-[#57534E]">TEMPLATES</span>
+              <Award className="w-4 h-4 text-[#A8A29E]" />
+              <span>PDF Template Maker</span>
             </Command.Item>
             <Command.Item 
               onSelect={() => runCommand(() => router.push('/tools/pdf-extractor'))}
-              className="flex items-center justify-between rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
+              className="flex items-center gap-3 rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
             >
-              <div className="flex items-center gap-3">
-                <FileSearch className="w-4 h-4 text-[#A8A29E]" />
-                <span>PDF Stream & Table Extractor</span>
-              </div>
-              <span className="font-mono text-[10px] uppercase text-[#57534E]">PARSER</span>
+              <FileSearch className="w-4 h-4 text-[#A8A29E]" />
+              <span>PDF Stream & Table Extractor</span>
             </Command.Item>
           </Command.Group>
 
@@ -135,43 +120,31 @@ export function CommandMenu() {
           <Command.Group heading="IMAGE & RASTER UTILITIES" className="text-[11px] font-mono uppercase tracking-[0.05em] text-[#57534E] px-2 py-1.5">
             <Command.Item 
               onSelect={() => runCommand(() => router.push('/tools/image-compressor'))}
-              className="flex items-center justify-between rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
+              className="flex items-center gap-3 rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
             >
-              <div className="flex items-center gap-3">
-                <Minimize2 className="w-4 h-4 text-[#A8A29E]" />
-                <span>Image Compressor</span>
-              </div>
-              <span className="font-mono text-[10px] uppercase text-[#57534E]">SIMD QUANT</span>
+              <Minimize2 className="w-4 h-4 text-[#A8A29E]" />
+              <span>Image Compressor</span>
             </Command.Item>
             <Command.Item 
               onSelect={() => runCommand(() => router.push('/tools/image-converter'))}
-              className="flex items-center justify-between rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
+              className="flex items-center gap-3 rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
             >
-              <div className="flex items-center gap-3">
-                <ArrowLeftRight className="w-4 h-4 text-[#A8A29E]" />
-                <span>Image Format Converter</span>
-              </div>
-              <span className="font-mono text-[10px] uppercase text-[#57534E]">WEBP / PNG</span>
+              <ArrowLeftRight className="w-4 h-4 text-[#A8A29E]" />
+              <span>Image Format Converter</span>
             </Command.Item>
             <Command.Item 
               onSelect={() => runCommand(() => router.push('/tools/passport-photo'))}
-              className="flex items-center justify-between rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
+              className="flex items-center gap-3 rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
             >
-              <div className="flex items-center gap-3">
-                <User className="w-4 h-4 text-[#A8A29E]" />
-                <span>Passport Photo Editor</span>
-              </div>
-              <span className="font-mono text-[10px] uppercase text-[#57534E]">BIOMETRIC</span>
+              <User className="w-4 h-4 text-[#A8A29E]" />
+              <span>Passport Photo Editor</span>
             </Command.Item>
             <Command.Item 
               onSelect={() => runCommand(() => router.push('/tools/cropper'))}
-              className="flex items-center justify-between rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
+              className="flex items-center gap-3 rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
             >
-              <div className="flex items-center gap-3">
-                <Crop className="w-4 h-4 text-[#A8A29E]" />
-                <span>Smart Image Cropper</span>
-              </div>
-              <span className="font-mono text-[10px] uppercase text-[#57534E]">CANVAS</span>
+              <Crop className="w-4 h-4 text-[#A8A29E]" />
+              <span>Smart Image Cropper</span>
             </Command.Item>
           </Command.Group>
 
@@ -180,33 +153,24 @@ export function CommandMenu() {
           <Command.Group heading="INTELLIGENCE & STORAGE" className="text-[11px] font-mono uppercase tracking-[0.05em] text-[#57534E] px-2 py-1.5">
             <Command.Item 
               onSelect={() => runCommand(() => router.push('/tools/pdf-summarizer'))}
-              className="flex items-center justify-between rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
+              className="flex items-center gap-3 rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
             >
-              <div className="flex items-center gap-3">
-                <Sparkles className="w-4 h-4 text-[#A8A29E]" />
-                <span>PDF Summarizer</span>
-              </div>
-              <span className="font-mono text-[10px] uppercase text-[#57534E]">KEYWORD RANK</span>
+              <Sparkles className="w-4 h-4 text-[#A8A29E]" />
+              <span>PDF Summarizer</span>
             </Command.Item>
             <Command.Item 
               onSelect={() => runCommand(() => router.push('/tools/analysis'))}
-              className="flex items-center justify-between rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
+              className="flex items-center gap-3 rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
             >
-              <div className="flex items-center gap-3">
-                <FileText className="w-4 h-4 text-[#A8A29E]" />
-                <span>Resume & ATS Structure Analyzer</span>
-              </div>
-              <span className="font-mono text-[10px] uppercase text-[#57534E]">ATS SCORE</span>
+              <FileText className="w-4 h-4 text-[#A8A29E]" />
+              <span>Resume & ATS Structure Analyzer</span>
             </Command.Item>
             <Command.Item 
               onSelect={() => runCommand(() => router.push('/tools/vault'))}
-              className="flex items-center justify-between rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
+              className="flex items-center gap-3 rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
             >
-              <div className="flex items-center gap-3">
-                <Lock className="w-4 h-4 text-[#A8A29E]" />
-                <span>Local Session Vault</span>
-              </div>
-              <span className="font-mono text-[10px] uppercase text-[#57534E]">2H TTL</span>
+              <Lock className="w-4 h-4 text-[#A8A29E]" />
+              <span>Local Session Vault</span>
             </Command.Item>
           </Command.Group>
 

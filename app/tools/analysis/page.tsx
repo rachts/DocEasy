@@ -79,8 +79,8 @@ export default function AnalysisPage() {
             <span className="text-[#292524]">/</span>
             <span className="text-[#FAFAF9]">INTELLIGENCE & ANALYSIS</span>
           </div>
-          <div className="hidden md:flex gap-6 font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E]">
-            <span>STRUCTURE PARSER V1.8</span>
+          <div className="hidden md:flex text-[12px] text-[#78716C]">
+            Runs locally in your browser
           </div>
         </header>
 

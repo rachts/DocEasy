@@ -29,96 +29,84 @@ export function LandingPage() {
       description: 'Reduce file size without quality loss using high-efficiency WebAssembly algorithms.',
       href: '/tools/compress',
       icon: Minimize2,
-      category: 'PDF',
-      tag: 'UP TO ~80% SMALLER'
+      category: 'PDF'
     },
     {
       name: 'Format Converter',
       description: 'Instantly switch between DOCX, PDF, Markdown, and plain text with exact layout fidelity.',
       href: '/tools/convert',
       icon: ArrowLeftRight,
-      category: 'PDF',
-      tag: 'CROSS-FORMAT'
+      category: 'PDF'
     },
     {
       name: 'Document Merger',
       description: 'Combine multiple PDF or image documents into a unified sequence with zero upload delay.',
       href: '/tools/merge',
       icon: Merge,
-      category: 'PDF',
-      tag: 'LOSSLESS'
+      category: 'PDF'
     },
     {
       name: 'PDF Maker',
       description: 'Generate structured PDFs from templates (Invoice, Certificate, Resume, CV).',
       href: '/tools/pdf-maker',
       icon: Award,
-      category: 'PDF',
-      tag: 'TEMPLATES'
+      category: 'PDF'
     },
     {
       name: 'PDF Extractor',
       description: 'Isolate raw text streams, table matrices, and embedded vector assets.',
       href: '/tools/pdf-extractor',
       icon: FileSearch,
-      category: 'PDF',
-      tag: 'PARSER'
+      category: 'PDF'
     },
     {
       name: 'PDF Summarizer',
       description: 'Summarize long documents and extract key insights directly in your browser.',
       href: '/tools/pdf-summarizer',
       icon: Sparkles,
-      category: 'INTELLIGENCE',
-      tag: 'LOCAL OCR'
+      category: 'INTELLIGENCE'
     },
     {
       name: 'Image Compressor',
       description: 'Compress PNG, JPG, and WebP assets with real-time compression ratio preview.',
       href: '/tools/image-compressor',
       icon: Minimize2,
-      category: 'IMAGE',
-      tag: 'SIMD QUANT'
+      category: 'IMAGE'
     },
     {
       name: 'Image Converter',
       description: 'Transform between modern web image formats with ICC color profile preservation.',
       href: '/tools/image-converter',
       icon: ArrowLeftRight,
-      category: 'IMAGE',
-      tag: 'RASTER ENGINE'
+      category: 'IMAGE'
     },
     {
       name: 'Passport Photo Editor',
       description: 'Biometric standard crop presets, background normalization, and face alignment.',
       href: '/tools/passport-photo',
       icon: User,
-      category: 'IMAGE',
-      tag: 'BIOMETRIC'
+      category: 'IMAGE'
     },
     {
       name: 'Smart Image Cropper',
       description: 'Interactive canvas bounding, custom aspect ratio locks, and lossless exports.',
       href: '/tools/cropper',
       icon: Crop,
-      category: 'IMAGE',
-      tag: 'CANVAS 2D'
+      category: 'IMAGE'
     },
     {
       name: 'Resume & ATS Analyzer',
       description: 'Parse keyword density, formatting compliance, and structural ATS scores privately.',
       href: '/tools/analysis',
       icon: FileText,
-      category: 'INTELLIGENCE',
-      tag: 'ATS ENGINE'
+      category: 'INTELLIGENCE'
     },
     {
       name: 'Encrypted File Vault',
       description: 'Ephemeral client-encrypted session storage with automatic 2-hour TTL auto-purge.',
       href: '/tools/vault',
       icon: Lock,
-      category: 'INTELLIGENCE',
-      tag: 'ZERO-KNOWLEDGE'
+      category: 'INTELLIGENCE'
     },
   ]
 
@@ -180,8 +168,6 @@ export function LandingPage() {
                 <span>Zero server uploads</span>
                 <span className="text-[#57534E]">•</span>
                 <span>{allTools.length} browser tools</span>
-                <span className="text-[#57534E]">•</span>
-                <span className="text-[#57534E]">WASM ISOLATED</span>
               </div>
             </div>
           </div>
@@ -253,12 +239,6 @@ export function LandingPage() {
                 </div>
 
                 <div className="flex items-center gap-3 shrink-0 ml-4">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.05em] text-[#57534E] border border-[#292524] bg-[#141110] px-2 py-0.5 rounded hidden lg:inline">
-                    {tool.tag}
-                  </span>
-                  <span className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] hidden sm:inline">
-                    LAUNCH
-                  </span>
                   <ArrowRight className="w-4 h-4 text-[#57534E] group-hover:text-[#FAFAF9] transition-colors duration-150 group-hover:translate-x-0.5" />
                 </div>
               </Link>

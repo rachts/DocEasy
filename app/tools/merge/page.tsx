@@ -217,10 +217,8 @@ export default function MergePDFPage() {
             <span className="text-[#292524]">/</span>
             <span className="text-[#FAFAF9]">DOCUMENT MERGER</span>
           </div>
-          <div className="hidden md:flex gap-6 font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E]">
-            <span>PAGE STITCHING ENGINE</span>
-            <span>•</span>
-            <span>ZERO CLOUD RETENTION</span>
+          <div className="hidden md:flex text-[12px] text-[#78716C]">
+            Zero server uploads
           </div>
         </header>
 

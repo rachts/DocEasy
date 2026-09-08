@@ -136,8 +136,8 @@ export default function ConvertPage() {
             <span className="text-[#292524]">/</span>
             <span className="text-[#FAFAF9]">FORMAT CONVERTER</span>
           </div>
-          <div className="hidden md:flex gap-6 font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E]">
-            <span>FORMAT MATRIX: DOCX / PDF / MD / TXT / IMG</span>
+          <div className="hidden md:flex text-[12px] text-[#78716C]">
+            Runs locally in your browser
           </div>
         </header>
 
