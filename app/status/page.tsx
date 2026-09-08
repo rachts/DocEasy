@@ -5,17 +5,17 @@ import { CheckCircle, Activity, Server, ShieldCheck } from 'lucide-react'
 
 export const metadata = {
   title: 'System Status | DocEasy',
-  description: 'Real-time operational status of DocEasy services and WASM runtime.',
+  description: 'Real-time operational status of DocEasy services and hybrid runtime.',
   openGraph: {
     title: 'System Status | DocEasy',
-    description: 'Real-time operational status of DocEasy services and WASM runtime. 100% client-side operation.',
+    description: 'Real-time operational status of DocEasy services and hybrid runtime.',
     url: '/status',
     images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'DocEasy System Status' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'System Status | DocEasy',
-    description: 'Real-time operational status of DocEasy services and WASM runtime. 100% client-side operation.',
+    description: 'Real-time operational status of DocEasy services and hybrid runtime.',
     images: ['/og-image.png'],
   },
 }
@@ -23,11 +23,12 @@ export const metadata = {
 export default function StatusPage() {
   const services = [
     { name: 'Browser WebAssembly Runtime', status: 'Operational', latency: 'Local', uptime: '100%' },
-    { name: 'PDF Compression Pipeline', status: 'Operational', latency: 'Local WASM', uptime: '100%' },
+    { name: 'Client-Side PDF Engine', status: 'Operational', latency: 'Local WASM', uptime: '100%' },
     { name: 'Format Converter Pipeline', status: 'Operational', latency: 'Local WASM', uptime: '100%' },
     { name: 'Canvas & Raster Image Engine', status: 'Operational', latency: 'Local Canvas', uptime: '100%' },
-    { name: 'Encrypted Vault Storage', status: 'Operational', latency: 'Client Memory', uptime: '100%' },
-    { name: 'Client-Side Text Summarizer', status: 'Operational', latency: 'Local JS', uptime: '100%' },
+    { name: 'Ephemeral Compression API (Ghostscript/qpdf)', status: 'Operational', latency: 'Server API', uptime: '99.9%' },
+    { name: 'Client Session Vault (AES-GCM)', status: 'Operational', latency: 'Client Memory', uptime: '100%' },
+    { name: 'Cloud Vault & Auth (Supabase RLS)', status: 'Operational', latency: 'Cloud API', uptime: '99.9%' },
   ]
 
   return (
@@ -78,7 +79,7 @@ export default function StatusPage() {
               Architecture guarantee
             </div>
             <p className="text-[#78716C] leading-relaxed">
-              Because 100% of processing happens client-side in your browser, DocEasy core tools remain fully operational even during widespread cloud disruptions or offline conditions.
+              DocEasy leverages a privacy-first hybrid architecture: core utilities run 100% locally in your browser, while optional server-side acceleration (Ghostscript/qpdf) handles heavy compression tasks with immediate ephemeral cleanup. Cloud storage is authenticated and protected by Postgres RLS.
             </p>
           </div>
         </section>

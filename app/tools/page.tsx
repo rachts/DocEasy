@@ -147,7 +147,7 @@ export default function ToolsPage() {
                 Document & Image Tools
               </h1>
               <p className="text-[16px] text-[#A8A29E] mt-2 max-w-2xl leading-relaxed">
-                Everything runs locally in your browser. The optional vault uses client-side session memory, auto-purged after 2 hours. Nothing ever touches our servers.
+                Core tools process directly in your browser with client-side isolation. Heavy PDF tasks use ephemeral server workers with immediate cleanup, and optional cloud storage is secured with authenticated RLS.
               </p>
             </div>
 

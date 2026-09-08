@@ -118,7 +118,7 @@ export default function NotFound() {
             DocEasy
           </span>
           <span className="text-xs text-[#A8A29E] hidden sm:inline">
-            · 100% Private Document Tools
+            · Privacy-First Document Tools
           </span>
         </Link>
         <div className="flex items-center gap-4 text-xs text-[#A8A29E]">
@@ -145,7 +145,7 @@ export default function NotFound() {
             This document or tool doesn&apos;t exist.
           </h1>
           <p className="text-[15px] text-[#A8A29E] mt-3 leading-relaxed">
-            The page you requested may have been moved or does not exist. All 12 DocEasy client-side processing tools remain fully operational in your browser below.
+            The page you requested may have been moved or does not exist. All 12 DocEasy document processing tools remain fully operational below.
           </p>
           <div className="flex items-center gap-3 mt-6">
             <Link
@@ -169,10 +169,10 @@ export default function NotFound() {
         <div className="mt-16 pt-10 border-t border-[#292524]">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-lg font-medium text-[#FAFAF9] tracking-tight">
-              All 12 client-side tools
+              All 12 document tools
             </h2>
             <span className="text-xs text-[#A8A29E]">
-              Zero server uploads · Runs 100% in your browser
+              Client-first tools · Private browser execution
             </span>
           </div>
 

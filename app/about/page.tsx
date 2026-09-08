@@ -5,17 +5,17 @@ import { ArrowLeft, ArrowRight, Github, Linkedin, Mail, ShieldCheck, Terminal, C
 
 export const metadata = {
   title: 'Architecture & Security Manifesto | DocEasy',
-  description: 'Learn about the technical architecture and team behind DocEasy.',
+  description: 'Learn about the technical architecture and team behind DocEasy. Privacy-first hybrid processing.',
   openGraph: {
     title: 'Architecture & Security Manifesto | DocEasy',
-    description: 'Learn about the technical architecture and team behind DocEasy. 100% client-side document processing.',
+    description: 'Learn about the technical architecture and team behind DocEasy. Privacy-first hybrid processing.',
     url: '/about',
     images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'DocEasy Architecture' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Architecture & Security Manifesto | DocEasy',
-    description: 'Learn about the technical architecture and team behind DocEasy. 100% client-side document processing.',
+    description: 'Learn about the technical architecture and team behind DocEasy. Privacy-first hybrid processing.',
     images: ['/og-image.png'],
   },
 }
@@ -43,15 +43,15 @@ export default function AboutPage() {
             Security Architecture & Manifesto
           </h1>
           <p className="text-[16px] text-[#A8A29E] mt-4 max-w-3xl leading-relaxed">
-            Everything runs locally in your browser. The optional vault uses client-side session memory, auto-purged after 2 hours. Nothing ever touches our servers.
+            Core tools run locally in your browser using WebAssembly and HTML5 Canvas. Heavy PDF compression tasks utilize isolated ephemeral server pipelines (Ghostscript/qpdf) with immediate cleanup. Authenticated users can optionally save files to a secure cloud vault backed by Supabase Postgres RLS.
           </p>
 
           <div className="mt-8 text-[13px] text-[#A8A29E] flex flex-wrap gap-4 border-y border-[#292524] py-4">
-            <span>Zero cloud storage</span>
+            <span>Client-first execution</span>
             <span className="text-[#57534E]">•</span>
-            <span>Client-side memory isolation</span>
+            <span>Ephemeral Ghostscript/qpdf acceleration</span>
             <span className="text-[#57534E]">•</span>
-            <span>Local WebAssembly processing</span>
+            <span>Auth-gated cloud vault</span>
           </div>
         </section>
 
@@ -61,21 +61,21 @@ export default function AboutPage() {
             <div className="p-6 bg-[#1C1917] border border-[#292524] rounded-[8px] space-y-3">
               <h2 className="text-xl font-medium text-[#FAFAF9]">WebAssembly Core</h2>
               <p className="text-[14px] text-[#A8A29E] leading-relaxed">
-                Native C/C++ compiled binaries execute PDF linearization and SIMD image compression with bare-metal speed without server handoffs.
+                Client-side tools execute directly in browser memory via WASM and Canvas threads for zero-exposure standard document processing.
               </p>
             </div>
 
             <div className="p-6 bg-[#1C1917] border border-[#292524] rounded-[8px] space-y-3">
-              <h2 className="text-xl font-medium text-[#FAFAF9]">Ephemeral Retention</h2>
+              <h2 className="text-xl font-medium text-[#FAFAF9]">Ephemeral Server Pipelines</h2>
               <p className="text-[14px] text-[#A8A29E] leading-relaxed">
-                All uploaded byte buffers are stored in isolated volatile memory and wiped upon download or session termination.
+                When heavy compression is selected, Ghostscript and qpdf process files on temporary server buffers that are wiped immediately upon stream completion.
               </p>
             </div>
 
             <div className="p-6 bg-[#1C1917] border border-[#292524] rounded-[8px] space-y-3">
-              <h2 className="text-xl font-medium text-[#FAFAF9]">Zero Telemetry</h2>
+              <h2 className="text-xl font-medium text-[#FAFAF9]">Secure Cloud Vault</h2>
               <p className="text-[14px] text-[#A8A29E] leading-relaxed">
-                No analytics trackers, document profiling, or metadata scraping. Your intellectual property never leaves your device.
+                Optional cloud storage requires email authentication and is protected by Supabase Postgres Row Level Security (RLS) so only you access your saved files.
               </p>
             </div>
           </div>

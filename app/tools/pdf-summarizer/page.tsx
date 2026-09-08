@@ -197,7 +197,7 @@ export default function PdfSummarizerPage() {
 
   const handleDownload = () => {
     if (!result || !file) return
-    const content = `# Document Summary: ${file.name}\n\n## Executive Summary\n${result.summary}\n\n## Key Takeaways\n${result.keyPoints.map(p => `- ${p}`).join('\n')}\n\n---\nGenerated locally with DocEasy PDF Summarizer (zero server uploads).\n`
+    const content = `# Document Summary: ${file.name}\n\n## Executive Summary\n${result.summary}\n\n## Key Takeaways\n${result.keyPoints.map(p => `- ${p}`).join('\n')}\n\n---\nGenerated locally with DocEasy PDF Summarizer (client-side processing).\n`
     const blob = new Blob([content], { type: 'text/markdown;charset=utf-8' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
@@ -233,7 +233,7 @@ export default function PdfSummarizerPage() {
                 PDF Summarizer
               </h1>
               <p className="text-[13px] text-[#A8A29E]">
-                Extractive document summarization powered by keyword frequency ranking. 100% client-side.
+                Extractive document summarization powered by keyword frequency ranking. Runs client-side in browser memory.
               </p>
             </div>
           </div>
@@ -250,15 +250,15 @@ export default function PdfSummarizerPage() {
               }}
               maxSize={50 * 1024 * 1024}
               label="Drop your PDF or document here"
-              sublabel="Client-side text parsing and keyword ranking. Zero server uploads."
+              sublabel="Client-side text parsing and keyword ranking directly in browser memory."
             />
 
             <div className="rounded-[6px] border border-[#292524] bg-[#141110] p-4 flex items-start gap-3">
               <ShieldCheck className="w-5 h-5 text-[#D97706] shrink-0 mt-0.5" />
               <div className="text-[13px]">
-                <span className="text-[#FAFAF9] font-medium">100% Private Document Intelligence: </span>
+                <span className="text-[#FAFAF9] font-medium">Private Document Intelligence: </span>
                 <span className="text-[#A8A29E]">
-                  Your document never leaves your machine. Text is extracted locally using WebAssembly and ranked by keyword importance in browser memory. Check your browser Network tab to verify zero network requests.
+                  This tool runs locally in your browser. Text is extracted with client-side WebAssembly and ranked by keyword importance in browser memory without sending document contents to external AI models.
                 </span>
               </div>
             </div>

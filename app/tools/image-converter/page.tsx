@@ -232,7 +232,7 @@ export default function ImageConverterPage() {
               Image Converter
             </h1>
             <p className="text-[#A8A29E] text-sm md:text-base mt-2 max-w-2xl leading-relaxed">
-              Convert PNG, JPG, WebP, and AVIF formats directly in your browser using hardware-accelerated Canvas. Fast, lossless or quality-adjusted, zero server uploads.
+              Convert PNG, JPG, WebP, and AVIF formats directly in your browser using hardware-accelerated Canvas. Fast, lossless or quality-adjusted with client-side execution.
             </p>
           </div>
 
@@ -293,7 +293,7 @@ export default function ImageConverterPage() {
                     Drop an image here or browse files
                   </p>
                   <p className="text-xs text-[#78716C] mt-1 font-mono">
-                    Supports PNG, JPG, WebP, AVIF, BMP, SVG • 100% Client-side
+                    Supports PNG, JPG, WebP, AVIF, BMP, SVG • Client-side processing
                   </p>
                 </div>
               </div>
@@ -399,7 +399,7 @@ export default function ImageConverterPage() {
                 {/* Convert CTA */}
                 <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
                   <div className="text-xs font-mono text-[#78716C]">
-                    Zero network activity • Rendered via in-memory Canvas
+                    In-memory processing • Rendered via Canvas
                   </div>
 
                   <button

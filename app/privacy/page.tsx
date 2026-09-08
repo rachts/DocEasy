@@ -4,17 +4,17 @@ import { Footer } from '@/components/footer'
 
 export const metadata = {
   title: 'Privacy Protocol',
-  description: 'DocEasy privacy protocol and data minimization guarantees.',
+  description: 'DocEasy privacy protocol and data minimization guarantees for our hybrid architecture.',
   openGraph: {
     title: 'Privacy Protocol | DocEasy',
-    description: 'DocEasy privacy protocol and data minimization guarantees. 100% client-side document processing.',
+    description: 'DocEasy privacy protocol and data minimization guarantees for our hybrid architecture.',
     url: '/privacy',
     images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'DocEasy Privacy Protocol' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Privacy Protocol | DocEasy',
-    description: 'DocEasy privacy protocol and data minimization guarantees. 100% client-side document processing.',
+    description: 'DocEasy privacy protocol and data minimization guarantees for our hybrid architecture.',
     images: ['/og-image.png'],
   },
 }
@@ -41,7 +41,7 @@ export default function PrivacyPolicyPage() {
             Privacy Policy & Guarantees
           </h1>
           <p className="text-[16px] text-[#A8A29E] mb-6 max-w-3xl leading-relaxed">
-            Everything runs locally in your browser. The optional vault uses client-side session memory, auto-purged after 2 hours. Nothing ever touches our servers.
+            DocEasy is built around data minimization. Core utilities run directly in your browser without transmitting your files. When heavy server-side processing is requested (such as Ghostscript/qpdf compression), files are processed in ephemeral containers and wiped immediately upon completion. If you choose to create an account, your cloud vault files are encrypted and protected by Supabase Postgres Row Level Security.
           </p>
           <p className="text-[13px] text-[#78716C] mb-12 border-b border-[#292524] pb-4">
             Last updated: October 2024
@@ -49,23 +49,30 @@ export default function PrivacyPolicyPage() {
 
           <div className="space-y-8">
             <div className="p-6 bg-[#1C1917] border border-[#292524] rounded-[8px] space-y-2">
-              <h2 className="text-xl font-medium text-[#FAFAF9]">Client-side execution</h2>
+              <h2 className="text-xl font-medium text-[#FAFAF9]">1. Client-Side Execution for Core Tools</h2>
               <p className="text-[15px] text-[#A8A29E] leading-relaxed">
-                All document parsing, formatting, rasterization, and compression operations run locally within your browser context via sandboxed WebAssembly execution threads. Byte buffers are never streamed to third parties.
+                Standard document conversions, PDF merging, text extraction, sentence summarization, image compression, cropping, and passport photo generation execute locally within your browser context via sandboxed WebAssembly and HTML5 Canvas. Byte buffers never leave your machine for these operations.
               </p>
             </div>
 
             <div className="p-6 bg-[#1C1917] border border-[#292524] rounded-[8px] space-y-2">
-              <h2 className="text-xl font-medium text-[#FAFAF9]">Client-side session storage & auto-purge</h2>
+              <h2 className="text-xl font-medium text-[#FAFAF9]">2. Ephemeral Server-Side Processing</h2>
               <p className="text-[15px] text-[#A8A29E] leading-relaxed">
-                The optional Encrypted File Vault stores your files exclusively within your local browser session using Web Crypto AES-GCM (256-bit) encryption. Stored items are automatically purged after 2 hours or when you clear your session. No user accounts, authentication, or remote server buckets exist on our platform.
+                For intensive PDF tasks requiring deep compression (e.g. Ghostscript and qpdf linearization up to 250MB), files are routed through isolated server API endpoints. These temporary files exist only for the duration of execution and are purged from disk and memory immediately once the compressed file is streamed back to you. We never train AI models or profile documents.
               </p>
             </div>
 
             <div className="p-6 bg-[#1C1917] border border-[#292524] rounded-[8px] space-y-2">
-              <h2 className="text-xl font-medium text-[#FAFAF9]">No telemetry harvesting</h2>
+              <h2 className="text-xl font-medium text-[#FAFAF9]">3. Storage Options: Local Session Vault vs. Cloud Vault</h2>
               <p className="text-[15px] text-[#A8A29E] leading-relaxed">
-                We do not inject third-party ad pixels, session replay recording scripts, or behavioral trackers. Anonymized performance signals are restricted to error diagnostics.
+                Unauthenticated users can use the client-side Encrypted Vault, which stores files strictly in browser session memory with Web Crypto AES-GCM (256-bit) and auto-purges after 2 hours. Users who desire multi-device access can optionally sign up with an email and password to use our Cloud Vault, where files are stored in Supabase with strict Postgres Row Level Security (RLS) and retained until the user deletes them.
+              </p>
+            </div>
+
+            <div className="p-6 bg-[#1C1917] border border-[#292524] rounded-[8px] space-y-2">
+              <h2 className="text-xl font-medium text-[#FAFAF9]">4. No Telemetry Harvesting</h2>
+              <p className="text-[15px] text-[#A8A29E] leading-relaxed">
+                We do not inject third-party ad pixels, session replay recording scripts, or behavioral trackers. Anonymized performance signals are restricted to essential operational diagnostics.
               </p>
             </div>
           </div>

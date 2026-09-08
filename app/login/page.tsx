@@ -156,7 +156,7 @@ export default function LoginPage() {
           <span>•</span>
           <Link href="/terms" className="hover:text-[#A8A29E] transition-colors">Terms</Link>
           <span>•</span>
-          <span>Zero Server Retention</span>
+          <span>Postgres RLS Security</span>
         </div>
       </div>
     </div>

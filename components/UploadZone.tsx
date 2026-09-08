@@ -174,7 +174,7 @@ export function UploadZone({
         </p>
         <div className="mt-3 flex items-center justify-center gap-2 text-[12px] text-[#A8A29E]">
           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-          <span>Check your network tab — zero uploads</span>
+          <span>Private document processing • Client-first</span>
         </div>
       </div>
     </div>

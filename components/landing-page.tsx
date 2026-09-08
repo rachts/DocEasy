@@ -132,7 +132,7 @@ export function LandingPage() {
             <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-[4px] bg-[#141110] border border-[#292524] w-fit mb-6">
               <span className="w-1.5 h-1.5 rounded-full bg-[#FAFAF9]" />
               <span className="text-[12px] font-medium text-[#A8A29E]">
-                100% Client-Side WebAssembly Architecture
+                Privacy-First Hybrid Architecture
               </span>
             </div>
 
@@ -141,7 +141,7 @@ export function LandingPage() {
             </h1>
             
             <p className="text-[15px] md:text-[17px] text-[#A8A29E] mt-6 max-w-2xl leading-relaxed">
-              Everything runs locally in your browser. The optional vault uses client-side session memory, auto-purged after 2 hours. Nothing ever touches our servers.
+              Core tools run locally in your browser with zero unnecessary server uploads. Heavy PDF tasks use ephemeral server pipelines that purge immediately, and the optional cloud vault is protected by authenticated encryption.
             </p>
 
             <div className="mt-10 flex flex-col sm:flex-row gap-4 items-start">
@@ -165,9 +165,9 @@ export function LandingPage() {
               <div className="text-[13px] text-[#A8A29E] flex flex-wrap items-center gap-3">
                 <span>Up to <span className="font-mono text-[#FAFAF9]">~80%</span> smaller</span>
                 <span className="text-[#57534E]">•</span>
-                <span>Zero server uploads</span>
+                <span>Client-first processing</span>
                 <span className="text-[#57534E]">•</span>
-                <span><span className="font-mono text-[#FAFAF9]">{allTools.length}</span> browser tools</span>
+                <span><span className="font-mono text-[#FAFAF9]">{allTools.length}</span> tools available</span>
               </div>
             </div>
           </div>
@@ -185,14 +185,14 @@ export function LandingPage() {
                   Drop → Process → Download in action
                 </h2>
                 <p className="text-[14px] text-[#A8A29E] mt-1.5">
-                  Watch client-side WebAssembly compression in real-time. Zero network uploads.
+                  Watch client-side WebAssembly compression in real-time. Document bytes process directly in browser memory.
                 </p>
               </div>
 
               {/* Network verification callout */}
               <div className="inline-flex items-center gap-2.5 px-3 py-2 rounded-[6px] bg-[#1C1917] border border-[#292524] text-[12px] text-[#FAFAF9] shrink-0">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                <span className="font-medium">Check your network tab — zero uploads</span>
+                <span className="font-medium">Client-side processing in action</span>
               </div>
             </div>
 
@@ -326,7 +326,7 @@ export function LandingPage() {
               <span className="text-[#FAFAF9] font-medium">Process</span> locally in your browser{' '}
               <span className="text-[#A8A29E] mx-2">→</span>{' '}
               <span className="text-[#FAFAF9] font-medium">Save</span> directly to your device.{' '}
-              <span className="text-[#A8A29E]">Zero server uploads.</span>
+              <span className="text-[#A8A29E]">Client-first privacy.</span>
             </p>
           </div>
         </section>
@@ -336,16 +336,20 @@ export function LandingPage() {
           <div className="max-w-6xl mx-auto flex flex-col text-left">
             <div className="flex flex-col gap-2 max-w-3xl">
               <h2 className="text-3xl sm:text-4xl font-medium text-[#FAFAF9] tracking-tight leading-tight">
-                We don&apos;t store.
+                We don&apos;t store without consent.
               </h2>
               <h2 className="text-3xl sm:text-4xl font-medium text-[#FAFAF9] tracking-tight leading-tight">
-                We don&apos;t track.
+                We don&apos;t track your files.
               </h2>
               <h2 className="text-3xl sm:text-4xl font-medium text-[#FAFAF9] tracking-tight leading-tight">
-                We don&apos;t ask for your email.
+                No email needed for core tools.
               </h2>
             </div>
             
+            <p className="mt-4 text-[14px] text-[#A8A29E] max-w-2xl leading-relaxed">
+              Core tools run 100% locally in your browser. Heavy compression uses ephemeral processing with immediate cleanup. Cloud vault sync requires an authenticated account.
+            </p>
+
             <div className="mt-8 text-[12px] text-[#A8A29E] flex flex-wrap items-center gap-3">
               <span>Last audited: 2024-08-30</span>
               <span className="text-[#57534E]">·</span>

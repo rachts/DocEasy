@@ -23,7 +23,7 @@ export function Footer() {
             </Link>
 
             <p className="text-[14px] font-normal text-[#A8A29E] leading-relaxed max-w-sm">
-              Client-side document and image toolkit. Process files locally in your browser with zero server uploads.
+              Privacy-first document and image toolkit. Client-first processing with optional server acceleration and secure authenticated cloud vault.
             </p>
 
             {/* Social Icons (36x36px container, border #292524, radius 6px, hover border #57534E, icon 16px #57534E hover #FAFAF9) */}

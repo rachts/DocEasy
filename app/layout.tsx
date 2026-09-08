@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     default: "DocEasy | Privacy-First Document & Image Tools",
     template: "%s | DocEasy"
   },
-  description: "Fast, privacy-focused document processing with zero server retention. Compress PDFs, convert formats, and edit documents locally in your browser.",
+  description: "Fast, privacy-first document and image processing with a hybrid architecture. Client-side tools for instant local workflows, optional server acceleration, and an encrypted vault.",
   keywords: ["PDF compressor", "image converter", "merge PDF", "private document tools", "browser PDF processing", "privacy manifesto"],
   authors: [{ name: "DocEasy" }],
   creator: "DocEasy",
@@ -52,20 +52,20 @@ export const metadata: Metadata = {
     url: "https://doceasy.app",
     siteName: "DocEasy",
     title: "DocEasy | Privacy-First Document & Image Tools",
-    description: "Fast, privacy-focused document processing with zero server retention. Compress PDFs, convert formats, and edit documents locally in your browser.",
+    description: "Fast, privacy-first document and image processing with a hybrid architecture. Client-side tools for instant local workflows, optional server acceleration, and an encrypted vault.",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "DocEasy — 100% Client-Side WebAssembly Document Toolkit",
+        alt: "DocEasy — Privacy-First Hybrid Document & Image Toolkit",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
     title: "DocEasy | Privacy-First Document & Image Tools",
-    description: "Fast, privacy-focused document processing with zero server retention. Compress PDFs, convert formats, and edit documents locally in your browser.",
+    description: "Fast, privacy-first document and image processing with a hybrid architecture. Client-side tools for instant local workflows, optional server acceleration, and an encrypted vault.",
     images: ["/og-image.png"],
     creator: "@doceasy",
   },

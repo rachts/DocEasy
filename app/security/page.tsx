@@ -5,17 +5,17 @@ import { ShieldCheck, Cpu, Lock, Terminal } from 'lucide-react'
 
 export const metadata = {
   title: 'Security Architecture | DocEasy',
-  description: 'DocEasy Security model and WebAssembly isolation overview.',
+  description: 'DocEasy Security model and architecture overview: client-side sandboxing, ephemeral server workers, and authenticated cloud storage.',
   openGraph: {
     title: 'Security Architecture | DocEasy',
-    description: 'DocEasy Security model and WebAssembly isolation overview. 100% client-side zero server uploads.',
+    description: 'DocEasy Security model and architecture overview: client-side sandboxing, ephemeral server workers, and authenticated cloud storage.',
     url: '/security',
     images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'DocEasy Security' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Security Architecture | DocEasy',
-    description: 'DocEasy Security model and WebAssembly isolation overview. 100% client-side zero server uploads.',
+    description: 'DocEasy Security model and architecture overview: client-side sandboxing, ephemeral server workers, and authenticated cloud storage.',
     images: ['/og-image.png'],
   },
 }
@@ -25,17 +25,17 @@ export default function SecurityPage() {
     {
       icon: Cpu,
       title: 'WebAssembly Memory Isolation',
-      description: 'Document bytes are processed directly inside isolated browser WASM threads. Execution operations run with sandboxed memory constraints without touching external networks.'
+      description: 'Document bytes are processed directly inside isolated browser WASM threads for core tools. Execution runs within client sandboxes without transmitting files.'
     },
     {
       icon: Lock,
-      title: 'Zero Data Retention (TTL 0s)',
-      description: 'We do not retain, index, train on, or store user documents on our infrastructure. Once the browser process completes, the allocated memory buffer is freed immediately.'
+      title: 'Ephemeral Server Processing',
+      description: 'Heavy compression pipelines (Ghostscript/qpdf) run in isolated containers. Temporary buffers exist only for execution and are purged immediately upon stream completion.'
     },
     {
       icon: ShieldCheck,
-      title: 'Client-Side Session Encryption',
-      description: 'The optional encrypted vault uses Web Crypto AES-GCM with 256-bit keys stored in sessionStorage. Encrypted files remain in browser memory, auto-purge after 2 hours, and never touch remote servers.'
+      title: 'Dual Vault Architecture',
+      description: 'Choose between an unauthenticated client session vault (Web Crypto AES-GCM 256-bit, 2-hour auto-purge) or an authenticated cloud vault protected by Supabase Postgres Row Level Security.'
     },
     {
       icon: Terminal,
@@ -58,7 +58,7 @@ export default function SecurityPage() {
               Security Architecture
             </h1>
             <p className="text-[16px] text-[#A8A29E] mt-3 leading-relaxed">
-              DocEasy is engineered from first principles with client-side isolation to guarantee total privacy and verifiable security.
+              DocEasy is engineered from first principles with client-side isolation, ephemeral processing, and authenticated vault security.
             </p>
           </div>
 

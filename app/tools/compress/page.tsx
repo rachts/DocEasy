@@ -146,7 +146,7 @@ export default function CompressPDFPage() {
             <span className="text-[#FAFAF9]">PDF Compressor</span>
           </div>
           <div className="hidden md:flex text-[12px] text-[#A8A29E]">
-            Zero server uploads
+            Client-first processing
           </div>
         </header>
 

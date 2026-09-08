@@ -221,7 +221,7 @@ export default function MergePDFPage() {
             <span className="text-[#FAFAF9]">PDF Merger</span>
           </div>
           <div className="hidden md:flex text-[12px] text-[#78716C]">
-            Zero server uploads
+            Client-side processing
           </div>
         </header>
 
