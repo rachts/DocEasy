@@ -87,6 +87,7 @@ Desktop.ini
 # Testing, Coverage & Linters
 # ------------------------------------------------------------------------------
 coverage/
+reports/
 .nyc_output/
 playwright-report/
 test-results/

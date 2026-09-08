@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Navbar } from '@/components/navbar'
 import { Footer } from '@/components/footer'
 import { PrivacyProofScene } from '@/components/privacy-proof-scene'
+import { HeroWebGLScene } from '@/components/hero-webgl-scene'
 import { 
   Minimize2, 
   ArrowLeftRight, 
@@ -128,8 +129,9 @@ export function LandingPage() {
 
       <main className="flex-1 pt-[56px]">
         {/* 1. Hero Section (pt-32, pb-24 for generous negative space) */}
-        <section className="px-6 md:px-16 pt-32 pb-24 max-w-6xl mx-auto">
-          <div className="flex flex-col text-left">
+        <section className="relative px-6 md:px-16 pt-32 pb-24 max-w-6xl mx-auto overflow-hidden">
+          <HeroWebGLScene />
+          <div className="relative z-10 flex flex-col text-left">
             <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-[4px] bg-[#141110] border border-[#292524] w-fit mb-6">
               <span className="w-1.5 h-1.5 rounded-full bg-[#FAFAF9]" />
               <span className="text-[12px] font-medium text-[#A8A29E]">
