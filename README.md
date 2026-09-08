@@ -1,109 +1,158 @@
-# DocEasy
+# DocEasy — 100% Client-Side WebAssembly Document Toolkit
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/tiwarirachit-2107s-projects/v0-docu-ease-app-build)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Next.js 16](https://img.shields.io/badge/Next.js-16.2.9-black?style=flat-square&logo=next.js)](https://nextjs.org/)
+[![WebAssembly](https://img.shields.io/badge/WebAssembly-Core-654FF0?style=flat-square&logo=webassembly)](https://webassembly.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-06B6D4?style=flat-square&logo=tailwindcss)](https://tailwindcss.com/)
+[![Web Crypto](https://img.shields.io/badge/Security-AES--GCM%20256-10B981?style=flat-square)](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API)
+[![Zero Server Uploads](https://img.shields.io/badge/Privacy-Zero%20Uploads-emerald?style=flat-square)](https://doceasy.app/privacy)
+[![License: MIT](https://img.shields.io/badge/License-MIT-FAFAF9?style=flat-square)](LICENSE)
 
-DocEasy is a professional-grade, cloud-integrated document and image manipulation platform. It provides a suite of powerful tools designed to simplify the way you interact with files, all accessible from an intuitive and modern web interface.
+DocEasy is a high-performance, client-side document and image processing toolkit deployed on Vercel. Engineered with **100% local in-browser processing** via WebAssembly, HTML5 Canvas, and the Web Crypto API, DocEasy processes sensitive files directly on your device.
 
-## 🌟 Project Overview
+> **Zero server uploads. Zero cloud retention. Zero telemetry.**  
+> Verify directly in your browser: open the DevTools Network tab while processing any document — zero bytes leave your machine.
 
-DocEasy bridges the gap between desktop-class document manipulation and seamless web accessibility. Whether you need to compress large PDFs, extract critical text, merge documents, or securely analyze resumes against industry standards, DocEasy provides a unified, beautifully designed dashboard to handle it all without compromising privacy or performance.
+---
 
-## ✨ Features
+## 🎬 Live Demo & Preview
 
-* **Industrial PDF Compression**: Significantly reduce PDF file sizes securely. Features intelligent routing between browser-side and server-side compression engines for payloads up to 250MB.
-* **PDF Manipulation Suite**: Merge, extract text, and confidently manage your multi-page documents.
-* **Document Analysis Engine**: Deep analysis tools including Resume Parsing, ATS scoring, and PDF summarization.
-* **Image Processing**: Compress, convert, and crop images quickly entirely on the client-side.
-* **Personal Dashboard**: A central hub to track and manage all active assets, see real-time storage metrics, and "pin" important documents for permanent storage.
-* **Supabase Cloud Integration**: Integrated Row-Level Security (RLS) PostgreSQL database for tracking analytics, storing metrics, and highly-secure Supabase Storage integration for document processing persistence.
-* **Robust Authentication**: Powered by Supabase Auth with standard Email registration and a seamless **Continue with Google** OAuth integration.
+![DocEasy Demo Workflow](public/demo.gif)
 
-## 🛠 Technology Stack
+*Drop PDF → Compress locally in WebAssembly thread (up to ~80% reduction) → Download compressed output. 0 bytes uploaded to servers.*
 
-- **Framework**: [Next.js 16 (App Router)](https://nextjs.org/)
-- **Language**: TypeScript
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/) & [shadcn/ui](https://ui.shadcn.com/)
-- **Backend & Database**: [Supabase](https://supabase.com/) (Auth, Postgres, Storage)
-- **Document Processing**: `pdf-lib`, `pdfjs-dist`, `Ghostscript`, `qpdf`
-- **Deployment**: [Vercel](https://vercel.com/)
+---
 
-## 🚀 Installation
+## 🏛 Why Client-Side?
+
+Document processors have traditionally sent user files to remote cloud servers for conversion, compression, and analysis. This creates enormous security vulnerabilities, latency, and compliance headaches. DocEasy executes 100% in the client:
+
+| Traditional Cloud Toolkits | DocEasy Client-Side Architecture |
+| :--- | :--- |
+| **Server-Side Uploads:** Raw files sent over internet to third-party servers. | **Zero Network Egress:** Document byte buffers never leave your browser memory. |
+| **Data Retention Risk:** Files stored in temporary cloud storage buckets. | **Ephemeral Session Memory:** Data resides in volatile RAM and is cleared on tab close. |
+| **Compliance Liability:** Demands complex BAA, GDPR, and HIPAA vendor agreements. | **Compliance by Design:** No server-side processing means zero PII exposure. |
+| **Network Bottleneck:** Upload and download speeds depend on bandwidth. | **Bare-Metal Speed:** Native WebAssembly execution executes with near-instant speed. |
+| **Infrastructure Costs:** High CPU/RAM bills for server-side PDF rasterization. | **Decentralized Compute:** Execution workload distributes across client devices. |
+
+---
+
+## 📐 Architecture Diagram
+
+```
++-------------------------------------------------------------------------------+
+|                            BROWSER CLIENT SANDBOX                             |
+|                                                                               |
+|  [ User Document ]                                                            |
+|         │                                                                     |
+|         ▼                                                                     |
+|  [ File API / Drag & Drop ] ─── ArrayBuffer (Local Volatile Memory)          |
+|                                         │                                     |
+|         ┌───────────────────────────────┴───────────────────────────────┐     |
+|         │                                                               │     |
+|         ▼                                                               ▼     |
+|  ┌───────────────┐   ┌────────────────────────┐   ┌────────────────────────┐  |
+|  │ WebAssembly   │   │ HTML5 Canvas 2D        │   │ Web Crypto API         │  |
+|  │ PDF Engine    │   │ Image Engine           │   │ (AES-GCM-256)          │  |
+|  ├───────────────┤   ├────────────────────────┤   ├────────────────────────┤  |
+|  │ • Compress    │   │ • Image Converter      │   │ • Encrypted Vault      │  |
+|  │ • Merge       │   │ • Passport Photo       │   │ • Session Storage      │  |
+|  │ • Extract     │   │ • Image Compressor     │   │ • Auto-Purge TTL (2h)  │  |
+|  │ • Convert     │   │ • Aspect Cropper       │   │ • Ephemeral Keys       │  |
+|  └───────┬───────┘   └───────────┬────────────┘   └───────────┬────────────┘  |
+|          │                       │                            │               |
+|          └───────────────────────┼────────────────────────────┘               |
+|                                  ▼                                            |
+|                       [ Local Blob / ObjectURL ]                              |
+|                                  │                                            |
+|                                  ▼                                            |
+|                       [ Instant Client Download ]                             |
+|                                                                               |
++-------------------------------------------------------------------------------+
+                                  │
+                                  X  (NO OUTBOUND NETWORK CALLS)
+                                  │
+                          [ Remote Servers ]
+```
+
+---
+
+## 🛠 Feature Matrix (12 Verified Working Tools)
+
+DocEasy features exactly 12 production-ready, fully client-side tools:
+
+| # | Tool Name | Route | Status | Supported Formats | Engine |
+| :---: | :--- | :--- | :---: | :--- | :--- |
+| 1 | **PDF Compressor** | `/tools/compress` | Operational | PDF, PNG, JPG | Client WebAssembly + Stream Quantization |
+| 2 | **Format Converter** | `/tools/convert` | Operational | PDF, DOCX, Markdown, Text, Images | Client Parser + Canvas Renderer |
+| 3 | **PDF Merger** | `/tools/merge` | Operational | PDF, PNG, JPG, WebP | PDF-Lib + Canvas Image Rasterization |
+| 4 | **PDF Maker** | `/tools/pdf-maker` | Operational | Invoice, Certificate, Resume, CV → PDF | Template Engine + Native PDFKit |
+| 5 | **PDF Extractor** | `/tools/pdf-extractor` | Operational | PDF → TXT, Metadata | Browser Stream Parser |
+| 6 | **PDF Summarizer** | `/tools/pdf-summarizer` | Operational | PDF, TXT → Ranked Summary | Client Sentence Frequency TF Scorer |
+| 7 | **Image Compressor** | `/tools/image-compressor` | Operational | PNG, JPG, WebP | Canvas Lossy/Lossless Quantization |
+| 8 | **Image Converter** | `/tools/image-converter` | Operational | PNG, JPG, WebP, AVIF | HTML5 Canvas `toBlob` Pipeline |
+| 9 | **Passport Photo Editor** | `/tools/passport-photo` | Operational | PNG, JPG → Standard Passport Sizes | Canvas Preset Normalizer (US, UK, Schengen, etc.) |
+| 10 | **Image Cropper** | `/tools/cropper` | Operational | PNG, JPG, WebP | Interactive Canvas Aspect Ratio Lock |
+| 11 | **Resume Analyzer** | `/tools/analysis` | Operational | PDF, DOCX, TXT | Client ATS Pattern Scorer & Keyword Matcher |
+| 12 | **Encrypted Vault** | `/tools/vault` | Operational | Any Document / Image | Web Crypto AES-GCM (2-hour TTL Auto-Purge) |
+
+---
+
+## 🔒 Security & Privacy Guarantees
+
+- **No Remote Telemetry**: Zero analytics pixels, zero session recorders, zero document profiling.
+- **Client Session Encryption**: The optional Encrypted Vault generates a 256-bit AES-GCM cryptographic key stored solely in the browser's `sessionStorage`.
+- **Automatic 2-Hour TTL Purge**: Vault records automatically expire and are purged from memory after 2 hours or upon closing the session.
+- **Inspectable Traffic**: Check DevTools Network tab during any operation to confirm zero network payload transfer.
+
+---
+
+## 🚀 Local Development
 
 ### Prerequisites
-- Node.js 18.x or higher
-- npm, yarn, or pnpm
-- A Supabase account
+- Node.js 18.x, 20.x, or 22.x+
+- npm, pnpm, or yarn
 
-### Setup Instructions
+### Quick Start
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/tiwarirachit-2107/doceasy.git
-   cd doceasy
-   ```
+```bash
+# 1. Clone the repository
+git clone https://github.com/rachts/DocEasy.git
+cd DocEasy
 
-2. **Install dependencies:**
-   ```bash
-   npm install
-   ```
+# 2. Install dependencies
+npm install
 
-3. **Configure Environment Variables:**
-   Copy the example environment file and fill in your Supabase credentials:
-   ```bash
-   cp .env.example .env.local
-   ```
+# 3. Start development server
+npm run dev
 
-4. **Initialize the Database:**
-   Follow the instructions in `SUPABASE_SETUP.md` to run the required SQL scripts in your Supabase dashboard. This sets up the `files`, `ai_jobs`, and `events` tables alongside their corresponding RLS policies.
-
-5. **Start the Development Server:**
-   ```bash
-   npm run dev
-   ```
-   The application will be available at `http://localhost:3000`.
-
-## 💻 Usage
-
-- **Uploading Files**: Navigate to any tool via the sidebar and drag-and-drop your files.
-- **Compression**: Use the Universal Compressor. Large files automatically stream to the server for processing, while smaller files are processed directly in your browser.
-- **Dashboard**: Access the Vault to view your history, download previous results, or pin files.
-
-## 🏗 Architecture
-
-DocEasy uses a hybrid processing architecture:
-1. **Client-Side (Browser)**: Lightweight tasks (image compression, basic PDF manipulation) are executed entirely in the browser using WebAssembly and Canvas APIs to ensure zero-latency processing and maximum privacy.
-2. **Server-Side (Node.js API)**: Heavy workloads bypass the standard Next.js proxy via custom middleware and stream directly to disk using the Web Streams API, ensuring O(1) memory complexity during processing.
-3. **Database (Supabase)**: All metadata and temporary storage links are securely managed in PostgreSQL with strictly enforced Row Level Security (RLS).
-
-## 📂 Folder Structure
-
-```
-├── app/                  # Next.js App Router pages and API routes
-├── components/           # Reusable React components (UI, Layouts)
-├── lib/                  # Core logic, services, and utilities
-├── public/               # Static assets
-├── supabase/             # Database migrations and configurations
-├── .env.example          # Environment variable template
-├── next.config.mjs       # Next.js configuration
-├── proxy.ts              # Custom middleware and proxy bypass
-└── package.json          # Project dependencies
+# 4. Open browser
+open http://localhost:3000
 ```
 
-## 🌍 Deployment
+### Production Build
 
-DocEasy is optimized for Vercel deployment. 
+```bash
+# Create optimized production build
+npm run build
 
-1. Push your code to a GitHub repository.
-2. Import the project into Vercel.
-3. Add the required environment variables (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, etc.) in the Vercel dashboard.
-4. Deploy!
+# Run production server locally
+npm run start
+```
 
-Ensure that your production environment has access to Ghostscript and qpdf binaries for the advanced PDF compression fallback engines to function correctly.
+---
+
+## 🧰 Tech Stack
+
+- **Framework**: Next.js 16 (Turbopack, App Router, React 19)
+- **Runtime**: WebAssembly + Modern Browser Web APIs
+- **Typography & Design**: Warm Industrial Palette (`#0C0A09`, `#141110`, `#1C1917`, `#292524`, `#FAFAF9`)
+- **Icons**: Lucide React
+- **Cryptography**: Web Crypto API (SubtleCrypto AES-GCM 256-bit)
+- **Deployment**: Vercel Edge Network
+
+---
 
 ## 📄 License
 
-This project is licensed under the MIT License. See the LICENSE file for details.
-
----
-Designed and built by **Rachit Tiwari**.
+DocEasy is open source software licensed under the [MIT License](LICENSE).
