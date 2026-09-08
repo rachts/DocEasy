@@ -50,9 +50,9 @@ export default function PrivacyPolicyPage() {
               <span className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] block">
                 SECTION 02
               </span>
-              <h2 className="text-xl font-medium text-[#FAFAF9]">Ephemeral Storage TTL</h2>
+              <h2 className="text-xl font-medium text-[#FAFAF9]">Client-Side Session Storage & Auto-Purge</h2>
               <p className="text-[15px] text-[#A8A29E] leading-relaxed">
-                If an authenticated user chooses to synchronize processed files, the object is placed in an encrypted volatile bucket with an automated 2-hour TTL expiration policy.
+                The optional Encrypted File Vault stores your files exclusively within your local browser session using Web Crypto AES-GCM (256-bit) encryption. Stored items are automatically purged after 2 hours or when you clear your session. No user accounts, authentication, or remote server buckets exist on our platform.
               </p>
             </div>
 
