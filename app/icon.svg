@@ -1,11 +1,11 @@
-<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <mask id="cutout">
-      <rect width="32" height="32" fill="white" />
-      <path d="M 0 11.5 L 15 11.5 L 15 6 L 25 16 L 15 26 L 15 20.5 L 0 20.5 Z" fill="black" />
-    </mask>
-  </defs>
-  <path d="M 7 3 C 5.895 3 5 3.895 5 5 L 5 27 C 5 28.105 5.895 29 7 29 L 25 29 C 26.105 29 27 28.105 27 27 L 27 11 L 19 3 L 7 3 Z" fill="#4F46E5" mask="url(#cutout)" />
-  <path d="M 19 3 L 19 9 C 19 10.105 19.895 11 21 11 L 27 11 Z" fill="#4F46E5" />
-  <path d="M 2 11.5 L 6 11.5 L 6 20.5 L 2 20.5 C 1.447 20.5 1 20.052 1 19.5 L 1 12.5 C 1 11.947 1.447 11.5 2 11.5 Z" fill="#4F46E5" />
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" rx="112" fill="#0C0A09"/>
+  <rect x="24" y="24" width="464" height="464" rx="96" fill="none" stroke="#292524" stroke-width="16"/>
+  <g transform="translate(106, 86) scale(0.6)">
+    <path d="M 120 40 C 95 40 75 60 75 85 L 75 425 C 75 450 95 470 120 470 L 380 470 C 405 470 425 450 425 425 L 425 170 L 295 40 L 120 40 Z" fill="#FAFAF9" />
+    <path d="M 295 40 L 295 140 C 295 158 308 170 326 170 L 425 170 Z" fill="#D6D3D1" />
+    <line x1="140" y1="260" x2="360" y2="260" stroke="#0C0A09" stroke-width="28" stroke-linecap="round" />
+    <line x1="140" y1="330" x2="360" y2="330" stroke="#0C0A09" stroke-width="28" stroke-linecap="round" />
+    <line x1="140" y1="400" x2="260" y2="400" stroke="#0C0A09" stroke-width="28" stroke-linecap="round" />
+  </g>
 </svg>
