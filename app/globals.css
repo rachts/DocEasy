@@ -131,13 +131,6 @@
   --radius-xl: 8px;
   --radius-2xl: 8px;
   
-  --spacing-xs: 4px;
-  --spacing-sm: 8px;
-  --spacing-md: 16px;
-  --spacing-lg: 24px;
-  --spacing-xl: 64px;
-  --spacing-xxl: 96px;
-  --spacing-giant: 128px;
   --spacing-gutter: 24px;
   --spacing-margin: 64px;
 }

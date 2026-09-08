@@ -389,7 +389,7 @@ export default function MergePDFPage() {
             <Link href="/privacy" className="hover:text-[#FAFAF9] transition-colors">Privacy</Link>
             <Link href="/terms" className="hover:text-[#FAFAF9] transition-colors">Terms</Link>
           </div>
-          <span>© 2024 DOCEASY</span>
+          <span>© {new Date().getFullYear()} DocEasy. All rights reserved.</span>
         </footer>
       </main>
     </div>

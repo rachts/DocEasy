@@ -2,23 +2,52 @@
 
 import React, { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { 
   ChevronDown, 
   Search, 
   ArrowRight,
   Globe,
   Menu,
-  X
+  X,
+  LogOut,
+  User as UserIcon
 } from 'lucide-react'
 import { CommandMenu } from '@/components/command-menu'
+import { createClient } from '@/utils/supabase/client'
+import type { User } from '@supabase/supabase-js'
 
 export function Navbar() {
   const [toolsOpen, setToolsOpen] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState<string>('')
+  const [user, setUser] = useState<User | null>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const pathname = usePathname()
+  const router = useRouter()
+
+  useEffect(() => {
+    const supabase = createClient()
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setUser(user)
+    })
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+    })
+
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [])
+
+  const handleLogout = async () => {
+    const supabase = createClient()
+    await supabase.auth.signOut()
+    setUser(null)
+    router.push('/login')
+    router.refresh()
+  }
 
   const isHome = pathname === '/'
 
@@ -283,21 +312,42 @@ export function Navbar() {
             <span>EN</span>
           </div>
 
-          {/* Login Link */}
-          <Link
-            href="/login"
-            className="text-[13px] font-medium text-[#A8A29E] hover:text-[#FAFAF9] px-2 py-1.5 transition-colors hidden sm:inline-block"
-          >
-            Log in
-          </Link>
+          {/* Auth State Actions */}
+          {user ? (
+            <div className="flex items-center gap-2">
+              <Link
+                href="/dashboard"
+                className="text-[13px] font-medium text-[#A8A29E] hover:text-[#FAFAF9] px-2 py-1.5 transition-colors hidden sm:inline-block"
+              >
+                Dashboard
+              </Link>
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="h-8 md:h-9 px-3 md:px-3.5 bg-[#1C1917] border border-[#292524] text-[#FAFAF9] text-[12px] md:text-[13px] font-medium rounded-[6px] hover:bg-[#292524] hover:text-[#FAFAF9] transition-colors flex items-center justify-center shrink-0 cursor-pointer"
+              >
+                Log out
+              </button>
+            </div>
+          ) : (
+            <>
+              {/* Login Link */}
+              <Link
+                href="/login"
+                className="text-[13px] font-medium text-[#A8A29E] hover:text-[#FAFAF9] px-2 py-1.5 transition-colors hidden sm:inline-block"
+              >
+                Log in
+              </Link>
 
-          {/* Sign Up / Primary Action Button */}
-          <Link
-            href="/signup"
-            className="h-8 md:h-9 px-3.5 md:px-4 bg-[#FAFAF9] text-[#0C0A09] text-[12px] md:text-[13px] font-medium rounded-[6px] hover:bg-[#D6D3D1] transition-colors flex items-center justify-center shrink-0"
-          >
-            Sign up
-          </Link>
+              {/* Sign Up / Primary Action Button */}
+              <Link
+                href="/signup"
+                className="h-8 md:h-9 px-3.5 md:px-4 bg-[#FAFAF9] text-[#0C0A09] text-[12px] md:text-[13px] font-medium rounded-[6px] hover:bg-[#D6D3D1] transition-colors flex items-center justify-center shrink-0"
+              >
+                Sign up
+              </Link>
+            </>
+          )}
 
           {/* Mobile Menu Toggle Button */}
           <button
@@ -355,20 +405,44 @@ export function Navbar() {
             </Link>
 
             <div className="pt-6 flex gap-3">
-              <Link
-                href="/login"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex-1 h-10 bg-transparent text-[#FAFAF9] border border-[#292524] text-[13px] font-medium rounded-[6px] hover:bg-[#1C1917] flex items-center justify-center"
-              >
-                Log in
-              </Link>
-              <Link
-                href="/signup"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex-1 h-10 bg-[#FAFAF9] text-[#0C0A09] text-[13px] font-medium rounded-[6px] hover:bg-[#D6D3D1] flex items-center justify-center"
-              >
-                Sign up
-              </Link>
+              {user ? (
+                <>
+                  <Link
+                    href="/dashboard"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex-1 h-10 bg-transparent text-[#FAFAF9] border border-[#292524] text-[13px] font-medium rounded-[6px] hover:bg-[#1C1917] flex items-center justify-center"
+                  >
+                    Dashboard
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMobileMenuOpen(false)
+                      handleLogout()
+                    }}
+                    className="flex-1 h-10 bg-[#1C1917] text-[#FAFAF9] border border-[#292524] text-[13px] font-medium rounded-[6px] hover:bg-[#292524] flex items-center justify-center cursor-pointer"
+                  >
+                    Log out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/login"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex-1 h-10 bg-transparent text-[#FAFAF9] border border-[#292524] text-[13px] font-medium rounded-[6px] hover:bg-[#1C1917] flex items-center justify-center"
+                  >
+                    Log in
+                  </Link>
+                  <Link
+                    href="/signup"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex-1 h-10 bg-[#FAFAF9] text-[#0C0A09] text-[13px] font-medium rounded-[6px] hover:bg-[#D6D3D1] flex items-center justify-center"
+                  >
+                    Sign up
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>

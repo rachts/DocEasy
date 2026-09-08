@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { 
@@ -10,7 +11,8 @@ import {
   FileSearch, 
   Settings, 
   HelpCircle, 
-  LogOut 
+  LogOut,
+  LogIn 
 } from 'lucide-react'
 import { createClient } from '@/utils/supabase/client'
 
@@ -21,7 +23,22 @@ interface SidebarProps {
 export function Sidebar({ currentPath }: SidebarProps) {
   const pathname = usePathname() || currentPath || ''
   const router = useRouter()
+  const [user, setUser] = useState<any>(null)
   const supabase = createClient()
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setUser(user)
+    })
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+    })
+
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [])
 
   const navItems = [
     { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
@@ -107,13 +124,23 @@ export function Sidebar({ currentPath }: SidebarProps) {
           <HelpCircle className="w-4 h-4 shrink-0 stroke-[1.5] text-[#A8A29E]" />
           <span>Help</span>
         </Link>
-        <button
-          onClick={handleLogout}
-          className="w-full flex items-center gap-3 text-[13px] text-[#A8A29E] hover:text-[#FAFAF9] hover:bg-[#141110] pl-[18px] py-2 rounded-[4px] transition-colors duration-150 text-left cursor-pointer"
-        >
-          <LogOut className="w-4 h-4 shrink-0 stroke-[1.5] text-[#A8A29E]" />
-          <span>Log out</span>
-        </button>
+        {user ? (
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center gap-3 text-[13px] text-[#A8A29E] hover:text-[#FAFAF9] hover:bg-[#141110] pl-[18px] py-2 rounded-[4px] transition-colors duration-150 text-left cursor-pointer"
+          >
+            <LogOut className="w-4 h-4 shrink-0 stroke-[1.5] text-[#A8A29E]" />
+            <span>Log out</span>
+          </button>
+        ) : (
+          <Link
+            href="/login"
+            className="w-full flex items-center gap-3 text-[13px] text-[#A8A29E] hover:text-[#FAFAF9] hover:bg-[#141110] pl-[18px] py-2 rounded-[4px] transition-colors duration-150 text-left"
+          >
+            <LogIn className="w-4 h-4 shrink-0 stroke-[1.5] text-[#A8A29E]" />
+            <span>Log in / Sign up</span>
+          </Link>
+        )}
       </div>
     </aside>
   )

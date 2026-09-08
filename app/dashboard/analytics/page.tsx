@@ -50,7 +50,7 @@ export default async function AnalyticsPage() {
 
         <footer className="bg-[#141110] border-t border-[#292524] w-full py-4 px-8 md:px-16 flex justify-between items-center mt-auto font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E]">
           <span className="text-[#FAFAF9] font-semibold tracking-normal font-sans">DocEasy</span>
-          <span>© 2024 DOCEASY</span>
+          <span>© {new Date().getFullYear()} DocEasy. All rights reserved.</span>
         </footer>
       </main>
     </div>

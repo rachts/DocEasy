@@ -204,7 +204,7 @@ export default function CropperPage() {
 
         <footer className="bg-[#141110] border-t border-[#292524] w-full py-4 px-8 md:px-16 flex justify-between items-center mt-auto text-[12px] text-[#78716C]">
           <span className="text-[#FAFAF9] font-medium">DocEasy</span>
-          <span>© 2024 DocEasy</span>
+          <span>© {new Date().getFullYear()} DocEasy. All rights reserved.</span>
         </footer>
       </main>
     </div>

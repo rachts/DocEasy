@@ -292,7 +292,7 @@ export default function ConvertPage() {
             <Link href="/privacy" className="hover:text-[#FAFAF9] transition-colors">Privacy</Link>
             <Link href="/terms" className="hover:text-[#FAFAF9] transition-colors">Terms</Link>
           </div>
-          <span>© 2024 DocEasy</span>
+          <span>© {new Date().getFullYear()} DocEasy. All rights reserved.</span>
         </footer>
       </main>
     </div>

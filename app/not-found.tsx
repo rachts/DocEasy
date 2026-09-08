@@ -214,7 +214,7 @@ export default function NotFound() {
 
       {/* Footer */}
       <footer className="border-t border-[#292524] bg-[#141110] py-6 px-6 md:px-16 text-xs text-[#A8A29E] flex flex-col sm:flex-row items-center justify-between gap-4">
-        <span>© 2024 DocEasy. Client-side WebAssembly toolkit.</span>
+        <span>© {new Date().getFullYear()} DocEasy. All rights reserved.</span>
         <div className="flex items-center gap-4">
           <Link href="/privacy" className="hover:text-[#FAFAF9] transition-colors">
             Privacy Policy

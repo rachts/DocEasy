@@ -22,7 +22,7 @@ export function Footer() {
               </span>
             </Link>
 
-            <p className="text-[14px] font-normal text-[#A8A29E] leading-relaxed max-w-sm">
+            <p className="text-[14px] font-normal text-[#A8A29E] leading-relaxed max-w-[360px]">
               Privacy-first document and image toolkit. Client-first processing with optional server acceleration and secure authenticated cloud vault.
             </p>
 
@@ -212,7 +212,7 @@ export function Footer() {
         {/* Bottom Bar (py-6) */}
         <div className="pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
           <div className="text-[13px] text-[#A8A29E]">
-            © 2024 DocEasy. All rights reserved.
+            © {new Date().getFullYear()} DocEasy. All rights reserved.
           </div>
           <div className="flex items-center gap-4 text-[13px] text-[#A8A29E]">
             <Link href="/privacy" className="hover:text-[#FAFAF9] transition-colors duration-150">
