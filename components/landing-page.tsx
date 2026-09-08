@@ -115,7 +115,7 @@ export function LandingPage() {
     {
       name: 'Encrypted File Vault',
       description: 'Ephemeral client-encrypted session storage with automatic 2-hour TTL auto-purge.',
-      href: '/dashboard',
+      href: '/tools/vault',
       icon: Lock,
       category: 'INTELLIGENCE',
       tag: 'ZERO-KNOWLEDGE'

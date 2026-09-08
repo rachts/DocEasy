@@ -189,7 +189,7 @@ export function CommandMenu() {
               <span className="font-mono text-[10px] uppercase text-[#57534E]">ATS SCORE</span>
             </Command.Item>
             <Command.Item 
-              onSelect={() => runCommand(() => router.push('/dashboard'))}
+              onSelect={() => runCommand(() => router.push('/tools/vault'))}
               className="flex items-center justify-between rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
             >
               <div className="flex items-center gap-3">

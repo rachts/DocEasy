@@ -116,7 +116,7 @@ export default function ToolsPage() {
       title: 'Encrypted File Vault',
       description: 'Private client-encrypted session history with automatic 2-hour TTL auto-purge.',
       icon: Lock,
-      href: '/dashboard',
+      href: '/tools/vault',
       category: 'INTELLIGENCE',
       tag: 'EPHEMERAL'
     },
