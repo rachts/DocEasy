@@ -73,6 +73,7 @@ export const metadata: Metadata = {
 
 import { GlobalDropProvider } from "@/components/global-drop-context"
 import { GlobalDropOverlay } from "@/components/global-drop-overlay"
+import { LenisProvider } from "@/components/lenis-provider"
 
 export default function RootLayout({
   children,
@@ -83,10 +84,12 @@ export default function RootLayout({
     <html lang="en" className="dark" suppressHydrationWarning>
       <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans bg-[#0C0A09] text-[#FAFAF9] min-h-screen antialiased selection:bg-[#292524] selection:text-[#FAFAF9]`}>
         <ThemeProvider attribute="class" defaultTheme="dark" forcedTheme="dark" disableTransitionOnChange>
-          <GlobalDropProvider>
-            {children}
-            <GlobalDropOverlay />
-          </GlobalDropProvider>
+          <LenisProvider>
+            <GlobalDropProvider>
+              {children}
+              <GlobalDropOverlay />
+            </GlobalDropProvider>
+          </LenisProvider>
           <Analytics />
         </ThemeProvider>
       </body>

@@ -6,6 +6,8 @@ import { Navbar } from '@/components/navbar'
 import { Footer } from '@/components/footer'
 import { PrivacyProofScene } from '@/components/privacy-proof-scene'
 import { HeroWebGLScene } from '@/components/hero-webgl-scene'
+import { HeroHeadlineReveal } from '@/components/hero-headline-reveal'
+import { HowItWorksScene } from '@/components/how-it-works-scene'
 import { 
   Minimize2, 
   ArrowLeftRight, 
@@ -139,9 +141,7 @@ export function LandingPage() {
               </span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-medium tracking-tight text-[#FAFAF9] leading-[1.1] max-w-4xl">
-              Document tools that respect your privacy.
-            </h1>
+            <HeroHeadlineReveal />
             
             <p className="text-[15px] md:text-[17px] text-[#A8A29E] mt-6 max-w-2xl leading-relaxed">
               Core tools run locally in your browser with zero unnecessary server uploads. Heavy PDF tasks use ephemeral server pipelines that purge immediately, and the optional cloud vault is protected by authenticated encryption.
@@ -322,22 +322,8 @@ export function LandingPage() {
           </div>
         </section>
 
-        {/* 3. How It Works Section (id="process", Inline Sentence Flow, py-24) */}
-        <section id="process" className="px-6 md:px-16 py-24 max-w-6xl mx-auto scroll-mt-20">
-          <div className="border-t border-[#292524] pt-8">
-            <h2 className="text-3xl font-medium tracking-tight text-[#FAFAF9] mb-6">
-              How It Works
-            </h2>
-            <p className="text-xl md:text-2xl text-[#A8A29E] leading-relaxed max-w-4xl tracking-tight">
-              <span className="text-[#FAFAF9] font-medium">Select</span> your file{' '}
-              <span className="text-[#A8A29E] mx-2">→</span>{' '}
-              <span className="text-[#FAFAF9] font-medium">Process</span> locally in your browser{' '}
-              <span className="text-[#A8A29E] mx-2">→</span>{' '}
-              <span className="text-[#FAFAF9] font-medium">Save</span> directly to your device.{' '}
-              <span className="text-[#A8A29E]">Client-first privacy.</span>
-            </p>
-          </div>
-        </section>
+        {/* 3. How It Works Section (id="process", Interactive Scroll-Scrubbed) */}
+        <HowItWorksScene />
 
         {/* 4. Privacy Manifesto Section (id="manifesto", Full-width, bg #1C1917, py-24) */}
         <section id="manifesto" className="w-full bg-[#1C1917] border-y border-[#292524] py-24 px-6 md:px-16 scroll-mt-20">
