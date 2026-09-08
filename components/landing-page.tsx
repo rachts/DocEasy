@@ -30,7 +30,7 @@ export function LandingPage() {
       href: '/tools/compress',
       icon: Minimize2,
       category: 'PDF',
-      tag: 'WASM 2.4MB AVG'
+      tag: 'UP TO ~80% SMALLER'
     },
     {
       name: 'Format Converter',
@@ -175,7 +175,7 @@ export function LandingPage() {
             {/* Monospace Stats Row (mt-16 above, mb-24 below) */}
             <div className="mt-16 mb-24 pt-6 border-t border-[#292524]">
               <div className="font-mono text-[12px] uppercase tracking-[0.05em] text-[#A8A29E] flex flex-wrap items-center gap-3">
-                <span>2.4MB avg compression</span>
+                <span>Up to ~80% smaller</span>
                 <span className="text-[#57534E]">•</span>
                 <span>Zero server uploads</span>
                 <span className="text-[#57534E]">•</span>
