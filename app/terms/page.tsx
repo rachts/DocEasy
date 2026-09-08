@@ -15,12 +15,12 @@ export default function TermsOfServicePage() {
       <main className="flex-1 pt-[56px]">
         {/* Header Breadcrumb */}
         <div className="bg-[#141110] border-b border-[#292524] py-3 px-6 md:px-16">
-          <div className="max-w-4xl mx-auto flex items-center gap-2 font-mono text-[12px] uppercase tracking-[0.05em]">
-            <Link href="/" className="text-[#57534E] hover:text-[#FAFAF9] transition-colors">
-              SYSTEM
+          <div className="max-w-4xl mx-auto flex items-center gap-2 text-[12px]">
+            <Link href="/" className="text-[#A8A29E] hover:text-[#FAFAF9] transition-colors">
+              Home
             </Link>
-            <span className="text-[#292524]">/</span>
-            <span className="text-[#FAFAF9]">TERMS OF SERVICE</span>
+            <span className="text-[#57534E]">/</span>
+            <span className="text-[#FAFAF9]">Terms of Service</span>
           </div>
         </div>
 
@@ -28,36 +28,27 @@ export default function TermsOfServicePage() {
           <h1 className="text-4xl md:text-5xl font-medium tracking-tight text-[#FAFAF9] leading-tight mb-4">
             Terms of Service
           </h1>
-          <p className="font-mono text-[12px] uppercase tracking-[0.05em] text-[#57534E] mb-12 border-b border-[#292524] pb-4">
-            REVISION: 2024.10 • STANDARD OPERATIONAL TERMS
+          <p className="text-[13px] text-[#78716C] mb-12 border-b border-[#292524] pb-4">
+            Last updated: October 2024
           </p>
 
           <div className="space-y-8">
             <div className="p-6 bg-[#1C1917] border border-[#292524] rounded-[8px] space-y-2">
-              <span className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] block">
-                CLAUSE 01
-              </span>
-              <h2 className="text-xl font-medium text-[#FAFAF9]">Acceptance & Scope</h2>
+              <h2 className="text-xl font-medium text-[#FAFAF9]">Acceptance & scope</h2>
               <p className="text-[15px] text-[#A8A29E] leading-relaxed">
                 By utilizing DocEasy web utilities, you agree to comply with standard operational parameters. DocEasy is provided on an &ldquo;as is&rdquo; basis with client-side computation guarantees.
               </p>
             </div>
 
             <div className="p-6 bg-[#1C1917] border border-[#292524] rounded-[8px] space-y-2">
-              <span className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] block">
-                CLAUSE 02
-              </span>
-              <h2 className="text-xl font-medium text-[#FAFAF9]">Intellectual Property & Content</h2>
+              <h2 className="text-xl font-medium text-[#FAFAF9]">Intellectual property & content</h2>
               <p className="text-[15px] text-[#A8A29E] leading-relaxed">
                 You retain 100% intellectual property ownership of all source documents and transformed assets processed through this interface. DocEasy does not claim any license or ownership.
               </p>
             </div>
 
             <div className="p-6 bg-[#1C1917] border border-[#292524] rounded-[8px] space-y-2">
-              <span className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] block">
-                CLAUSE 03
-              </span>
-              <h2 className="text-xl font-medium text-[#FAFAF9]">Prohibited Exploitation</h2>
+              <h2 className="text-xl font-medium text-[#FAFAF9]">Prohibited use</h2>
               <p className="text-[15px] text-[#A8A29E] leading-relaxed">
                 You agree not to reverse engineer the underlying WebAssembly modules for denial-of-service attempts or malicious payload distribution.
               </p>

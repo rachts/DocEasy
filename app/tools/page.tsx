@@ -127,12 +127,12 @@ export default function ToolsPage() {
       <main className="flex-1 pt-[56px]">
         {/* Breadcrumb Header */}
         <div className="bg-[#141110] border-b border-[#292524] py-3 px-6 md:px-12">
-          <div className="max-w-6xl mx-auto flex items-center gap-2 font-mono text-[12px] uppercase tracking-[0.05em]">
-            <Link href="/" className="text-[#57534E] hover:text-[#FAFAF9] transition-colors">
-              SYSTEM
+          <div className="max-w-6xl mx-auto flex items-center gap-2 text-[12px]">
+            <Link href="/" className="text-[#A8A29E] hover:text-[#FAFAF9] transition-colors">
+              Home
             </Link>
-            <span className="text-[#292524]">/</span>
-            <span className="text-[#FAFAF9]">DOCUMENT & IMAGE TOOLS</span>
+            <span className="text-[#57534E]">/</span>
+            <span className="text-[#FAFAF9]">Tools</span>
           </div>
         </div>
 
@@ -140,8 +140,8 @@ export default function ToolsPage() {
         <section className="px-6 md:px-12 pt-12 pb-8 max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
-              <span className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] block mb-2">
-                12 ACTIVE ROUTINES
+              <span className="text-[12px] text-[#78716C] block mb-2">
+                12 tools available
               </span>
               <h1 className="text-4xl md:text-5xl font-medium tracking-tight text-[#FAFAF9]">
                 Document & Image Tools
@@ -154,17 +154,22 @@ export default function ToolsPage() {
             {/* Filter Pills & Search */}
             <div className="flex flex-wrap items-center gap-3">
               <div className="flex items-center bg-[#141110] border border-[#292524] rounded-[6px] p-1 gap-1">
-                {(['ALL', 'PDF', 'IMAGE', 'INTELLIGENCE'] as const).map((cat) => (
+                {([
+                  { key: 'ALL', label: 'All' },
+                  { key: 'PDF', label: 'PDF' },
+                  { key: 'IMAGE', label: 'Image' },
+                  { key: 'INTELLIGENCE', label: 'Intelligence' }
+                ] as const).map(({ key, label }) => (
                   <button
-                    key={cat}
-                    onClick={() => setSelectedCategory(cat)}
-                    className={`font-mono text-[11px] uppercase tracking-[0.05em] px-3 py-1.5 rounded-[4px] transition-colors cursor-pointer ${
-                      selectedCategory === cat
+                    key={key}
+                    onClick={() => setSelectedCategory(key)}
+                    className={`font-mono text-[11px] px-3 py-1.5 rounded-[4px] transition-colors cursor-pointer ${
+                      selectedCategory === key
                         ? 'bg-[#1C1917] text-[#FAFAF9] border border-[#292524]'
                         : 'text-[#57534E] hover:text-[#A8A29E] border border-transparent'
                     }`}
                   >
-                    {cat}
+                    {label}
                   </button>
                 ))}
               </div>
@@ -173,10 +178,10 @@ export default function ToolsPage() {
                 <Search className="w-3.5 h-3.5 text-[#57534E] absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
-                  placeholder="FILTER UTILITIES..."
+                  placeholder="Filter tools..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="bg-[#141110] border border-[#292524] focus:border-[#A8A29E] text-[#FAFAF9] placeholder:text-[#57534E] font-mono text-[11px] uppercase tracking-[0.05em] pl-8 pr-3 py-1.5 rounded-[6px] outline-none w-40 sm:w-48 transition-colors"
+                  className="bg-[#141110] border border-[#292524] focus:border-[#A8A29E] text-[#FAFAF9] placeholder:text-[#57534E] text-[13px] pl-8 pr-3 py-1.5 rounded-[6px] outline-none w-40 sm:w-48 transition-colors"
                 />
               </div>
             </div>
@@ -216,8 +221,8 @@ export default function ToolsPage() {
           </div>
 
           {filteredTools.length === 0 && (
-            <div className="text-center py-16 font-mono text-[12px] uppercase tracking-[0.05em] text-[#57534E]">
-              No tools found matching &ldquo;{searchQuery}&rdquo;. Press ⌘K to search global index.
+            <div className="text-center py-16 text-[13px] text-[#78716C]">
+              No tools found matching &ldquo;{searchQuery}&rdquo;. Press ⌘K to search.
             </div>
           )}
         </div>

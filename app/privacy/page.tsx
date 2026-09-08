@@ -15,52 +15,43 @@ export default function PrivacyPolicyPage() {
       <main className="flex-1 pt-[56px]">
         {/* Header Breadcrumb */}
         <div className="bg-[#141110] border-b border-[#292524] py-3 px-6 md:px-16">
-          <div className="max-w-4xl mx-auto flex items-center gap-2 font-mono text-[12px] uppercase tracking-[0.05em]">
-            <Link href="/" className="text-[#57534E] hover:text-[#FAFAF9] transition-colors">
-              SYSTEM
+          <div className="max-w-4xl mx-auto flex items-center gap-2 text-[12px]">
+            <Link href="/" className="text-[#A8A29E] hover:text-[#FAFAF9] transition-colors">
+              Home
             </Link>
-            <span className="text-[#292524]">/</span>
-            <span className="text-[#FAFAF9]">PRIVACY PROTOCOL</span>
+            <span className="text-[#57534E]">/</span>
+            <span className="text-[#FAFAF9]">Privacy Policy</span>
           </div>
         </div>
 
         <section className="py-16 md:py-24 px-6 md:px-16 max-w-4xl mx-auto">
           <h1 className="text-4xl md:text-5xl font-medium tracking-tight text-[#FAFAF9] leading-tight mb-4">
-            Privacy Protocol & Guarantees
+            Privacy Policy & Guarantees
           </h1>
           <p className="text-[16px] text-[#A8A29E] mb-6 max-w-3xl leading-relaxed">
             Everything runs locally in your browser. The optional vault uses client-side session memory, auto-purged after 2 hours. Nothing ever touches our servers.
           </p>
-          <p className="font-mono text-[12px] uppercase tracking-[0.05em] text-[#57534E] mb-12 border-b border-[#292524] pb-4">
-            EFFECTIVE REVISION: 2024.10 • STANDARD: ZERO PERMANENT LOGGING
+          <p className="text-[13px] text-[#78716C] mb-12 border-b border-[#292524] pb-4">
+            Last updated: October 2024
           </p>
 
           <div className="space-y-8">
             <div className="p-6 bg-[#1C1917] border border-[#292524] rounded-[8px] space-y-2">
-              <span className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] block">
-                SECTION 01
-              </span>
-              <h2 className="text-xl font-medium text-[#FAFAF9]">Client-Side Execution</h2>
+              <h2 className="text-xl font-medium text-[#FAFAF9]">Client-side execution</h2>
               <p className="text-[15px] text-[#A8A29E] leading-relaxed">
                 All document parsing, formatting, rasterization, and compression routines run locally within your browser context via sandboxed WebAssembly execution threads. Byte buffers are never streamed to third parties.
               </p>
             </div>
 
             <div className="p-6 bg-[#1C1917] border border-[#292524] rounded-[8px] space-y-2">
-              <span className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] block">
-                SECTION 02
-              </span>
-              <h2 className="text-xl font-medium text-[#FAFAF9]">Client-Side Session Storage & Auto-Purge</h2>
+              <h2 className="text-xl font-medium text-[#FAFAF9]">Client-side session storage & auto-purge</h2>
               <p className="text-[15px] text-[#A8A29E] leading-relaxed">
                 The optional Encrypted File Vault stores your files exclusively within your local browser session using Web Crypto AES-GCM (256-bit) encryption. Stored items are automatically purged after 2 hours or when you clear your session. No user accounts, authentication, or remote server buckets exist on our platform.
               </p>
             </div>
 
             <div className="p-6 bg-[#1C1917] border border-[#292524] rounded-[8px] space-y-2">
-              <span className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] block">
-                SECTION 03
-              </span>
-              <h2 className="text-xl font-medium text-[#FAFAF9]">No Telemetry Harvesting</h2>
+              <h2 className="text-xl font-medium text-[#FAFAF9]">No telemetry harvesting</h2>
               <p className="text-[15px] text-[#A8A29E] leading-relaxed">
                 We do not inject third-party ad pixels, session replay recording scripts, or behavioral trackers. Anonymized performance signals are restricted to error diagnostics.
               </p>

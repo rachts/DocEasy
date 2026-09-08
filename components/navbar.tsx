@@ -105,18 +105,18 @@ export function Navbar() {
 
           {/* Navigation Links with Anchor Smooth Scroll (Desktop) */}
           <div className="hidden md:flex items-center gap-6">
-            {/* TOOLS (Scroll to #tools + Dropdown toggle) */}
+            {/* Tools (Scroll to #tools + Dropdown toggle) */}
             <div className="relative flex items-center" ref={dropdownRef}>
               <Link
                 href="/#tools"
                 onClick={(e) => scrollToSection('tools', e)}
-                className={`font-mono text-[12px] uppercase tracking-[0.05em] transition-colors duration-150 ${
+                className={`text-[13px] font-medium transition-colors duration-150 ${
                   activeSection === 'tools'
                     ? 'text-[#FAFAF9]'
-                    : 'text-[#57534E] hover:text-[#A8A29E]'
+                    : 'text-[#A8A29E] hover:text-[#FAFAF9]'
                 }`}
               >
-                TOOLS
+                Tools
               </Link>
               <button
                 type="button"
@@ -132,7 +132,7 @@ export function Navbar() {
               {toolsOpen && (
                 <div className="absolute top-[calc(100%+12px)] left-0 w-64 bg-[#1C1917] border border-[#292524] rounded-[8px] p-2 z-50 font-sans shadow-none animate-in fade-in-0 zoom-in-95 duration-100">
                   {/* PDF Tools */}
-                  <div className="px-3 pt-2 pb-1.5 font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] font-medium">
+                  <div className="px-3 pt-2 pb-1.5 text-[11px] text-[#78716C] font-medium">
                     PDF Tools
                   </div>
                   <div className="flex flex-col space-y-0.5">
@@ -174,7 +174,7 @@ export function Navbar() {
                   </div>
 
                   {/* Image Tools */}
-                  <div className="border-t border-[#292524] mt-2 pt-2 px-3 pb-1.5 font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] font-medium">
+                  <div className="border-t border-[#292524] mt-2 pt-2 px-3 pb-1.5 text-[11px] text-[#78716C] font-medium">
                     Image Tools
                   </div>
                   <div className="flex flex-col space-y-0.5">
@@ -223,38 +223,38 @@ export function Navbar() {
               )}
             </div>
 
-            {/* MANIFESTO (#manifesto) */}
+            {/* Manifesto (#manifesto) */}
             <Link 
               href="/#manifesto"
               onClick={(e) => scrollToSection('manifesto', e)}
-              className={`font-mono text-[12px] uppercase tracking-[0.05em] transition-colors duration-150 ${
+              className={`text-[13px] font-medium transition-colors duration-150 ${
                 activeSection === 'manifesto'
                   ? 'text-[#FAFAF9]'
-                  : 'text-[#57534E] hover:text-[#A8A29E]'
+                  : 'text-[#A8A29E] hover:text-[#FAFAF9]'
               }`}
             >
-              MANIFESTO
+              Manifesto
             </Link>
 
-            {/* PROCESS (#process) */}
+            {/* Process (#process) */}
             <Link 
               href="/#process"
               onClick={(e) => scrollToSection('process', e)}
-              className={`font-mono text-[12px] uppercase tracking-[0.05em] transition-colors duration-150 ${
+              className={`text-[13px] font-medium transition-colors duration-150 ${
                 activeSection === 'process'
                   ? 'text-[#FAFAF9]'
-                  : 'text-[#57534E] hover:text-[#A8A29E]'
+                  : 'text-[#A8A29E] hover:text-[#FAFAF9]'
               }`}
             >
-              PROCESS
+              Process
             </Link>
 
-            {/* VAULT (/tools/vault) */}
+            {/* Vault (/tools/vault) */}
             <Link 
               href="/tools/vault" 
-              className="font-mono text-[12px] uppercase tracking-[0.05em] text-[#57534E] hover:text-[#A8A29E] transition-colors duration-150"
+              className="text-[13px] font-medium text-[#A8A29E] hover:text-[#FAFAF9] transition-colors duration-150"
             >
-              VAULT
+              Vault
             </Link>
           </div>
         </div>
@@ -285,17 +285,17 @@ export function Navbar() {
           {/* Login Link */}
           <Link
             href="/login"
-            className="font-mono text-[12px] uppercase tracking-[0.05em] text-[#57534E] hover:text-[#FAFAF9] px-2 py-1.5 transition-colors hidden sm:inline-block"
+            className="text-[13px] font-medium text-[#A8A29E] hover:text-[#FAFAF9] px-2 py-1.5 transition-colors hidden sm:inline-block"
           >
-            LOGIN
+            Log in
           </Link>
 
           {/* Sign Up / Primary Action Button */}
           <Link
             href="/signup"
-            className="h-8 md:h-9 px-3.5 md:px-4 bg-[#FAFAF9] text-[#0C0A09] font-mono text-[11px] md:text-[12px] font-medium uppercase tracking-[0.05em] rounded-[6px] hover:bg-[#D6D3D1] transition-colors flex items-center justify-center shrink-0"
+            className="h-8 md:h-9 px-3.5 md:px-4 bg-[#FAFAF9] text-[#0C0A09] text-[12px] md:text-[13px] font-medium rounded-[6px] hover:bg-[#D6D3D1] transition-colors flex items-center justify-center shrink-0"
           >
-            SIGN UP
+            Sign up
           </Link>
 
           {/* Mobile Menu Toggle Button */}
@@ -314,59 +314,59 @@ export function Navbar() {
       {mobileMenuOpen && (
         <div className="fixed inset-0 top-[56px] bg-[#0C0A09] z-40 md:hidden flex flex-col p-6 overflow-y-auto border-b border-[#292524] animate-in fade-in-0 slide-in-from-top-2 duration-150">
           <div className="flex flex-col space-y-4 pt-2">
-            <div className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] pb-1 border-b border-[#292524]">
-              NAVIGATION
+            <div className="text-[11px] font-mono text-[#78716C] pb-1 border-b border-[#292524]">
+              Navigation
             </div>
             <Link
               href="/#tools"
               onClick={(e) => scrollToSection('tools', e)}
-              className="font-mono text-[14px] uppercase tracking-[0.05em] text-[#FAFAF9] py-2 border-b border-[#292524]/60"
+              className="text-[15px] font-medium text-[#FAFAF9] py-2 border-b border-[#292524]/60"
             >
-              CORE TOOLS
+              Tools
             </Link>
             <Link
               href="/#process"
               onClick={(e) => scrollToSection('process', e)}
-              className="font-mono text-[14px] uppercase tracking-[0.05em] text-[#A8A29E] hover:text-[#FAFAF9] py-2 border-b border-[#292524]/60"
+              className="text-[15px] font-medium text-[#A8A29E] hover:text-[#FAFAF9] py-2 border-b border-[#292524]/60"
             >
-              HOW IT WORKS
+              How it works
             </Link>
             <Link
               href="/#manifesto"
               onClick={(e) => scrollToSection('manifesto', e)}
-              className="font-mono text-[14px] uppercase tracking-[0.05em] text-[#A8A29E] hover:text-[#FAFAF9] py-2 border-b border-[#292524]/60"
+              className="text-[15px] font-medium text-[#A8A29E] hover:text-[#FAFAF9] py-2 border-b border-[#292524]/60"
             >
-              PRIVACY MANIFESTO
+              Privacy manifesto
             </Link>
             <Link
               href="/tools/vault"
               onClick={() => setMobileMenuOpen(false)}
-              className="font-mono text-[14px] uppercase tracking-[0.05em] text-[#A8A29E] hover:text-[#FAFAF9] py-2 border-b border-[#292524]/60"
+              className="text-[15px] font-medium text-[#A8A29E] hover:text-[#FAFAF9] py-2 border-b border-[#292524]/60"
             >
-              LOCAL VAULT STORAGE
+              Encrypted vault
             </Link>
             <Link
               href="/tools"
               onClick={() => setMobileMenuOpen(false)}
-              className="font-mono text-[14px] uppercase tracking-[0.05em] text-[#A8A29E] hover:text-[#FAFAF9] py-2 border-b border-[#292524]/60"
+              className="text-[15px] font-medium text-[#A8A29E] hover:text-[#FAFAF9] py-2 border-b border-[#292524]/60"
             >
-              VIEW ALL 12 TOOLS →
+              View all 12 tools →
             </Link>
 
             <div className="pt-6 flex gap-3">
               <Link
                 href="/login"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex-1 h-10 bg-transparent text-[#FAFAF9] border border-[#292524] font-mono text-[12px] font-medium uppercase tracking-[0.05em] rounded-[6px] hover:bg-[#1C1917] flex items-center justify-center"
+                className="flex-1 h-10 bg-transparent text-[#FAFAF9] border border-[#292524] text-[13px] font-medium rounded-[6px] hover:bg-[#1C1917] flex items-center justify-center"
               >
-                LOGIN
+                Log in
               </Link>
               <Link
                 href="/signup"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex-1 h-10 bg-[#FAFAF9] text-[#0C0A09] font-mono text-[12px] font-medium uppercase tracking-[0.05em] rounded-[6px] hover:bg-[#D6D3D1] flex items-center justify-center"
+                className="flex-1 h-10 bg-[#FAFAF9] text-[#0C0A09] text-[13px] font-medium rounded-[6px] hover:bg-[#D6D3D1] flex items-center justify-center"
               >
-                SIGN UP
+                Sign up
               </Link>
             </div>
           </div>

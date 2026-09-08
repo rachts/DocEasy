@@ -24,12 +24,12 @@ export function Sidebar({ currentPath }: SidebarProps) {
   const supabase = createClient()
 
   const navItems = [
-    { label: 'DASHBOARD', href: '/dashboard', icon: LayoutDashboard },
-    { label: 'COMPRESS PDF', href: '/tools/compress', icon: Minimize2 },
-    { label: 'MERGE PDF', href: '/tools/merge', icon: Merge },
-    { label: 'CONVERT', href: '/tools/convert', icon: ArrowLeftRight },
-    { label: 'ANALYSIS', href: '/tools/analysis', icon: FileSearch },
-    { label: 'SETTINGS', href: '/settings', icon: Settings },
+    { label: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+    { label: 'PDF Compressor', href: '/tools/compress', icon: Minimize2 },
+    { label: 'PDF Merger', href: '/tools/merge', icon: Merge },
+    { label: 'Format Converter', href: '/tools/convert', icon: ArrowLeftRight },
+    { label: 'Structure Analyzer', href: '/tools/analysis', icon: FileSearch },
+    { label: 'Settings', href: '/settings', icon: Settings },
   ]
 
   const handleLogout = async () => {
@@ -62,8 +62,8 @@ export function Sidebar({ currentPath }: SidebarProps) {
             DocEasy
           </span>
         </Link>
-        <span className="text-[11px] font-mono uppercase tracking-[0.05em] text-[#57534E] block mt-1">
-          Editorial Toolkit
+        <span className="text-[12px] text-[#78716C] block mt-1">
+          Editorial toolkit
         </span>
       </div>
 
@@ -71,9 +71,9 @@ export function Sidebar({ currentPath }: SidebarProps) {
       <div className="px-3 mb-6">
         <Link 
           href="/tools" 
-          className="w-full h-10 bg-[#FAFAF9] text-[#0C0A09] text-[12px] font-mono font-medium uppercase tracking-[0.05em] rounded-[6px] hover:bg-[#D6D3D1] transition-colors duration-150 flex items-center justify-center text-center"
+          className="w-full h-10 bg-[#FAFAF9] text-[#0C0A09] text-[13px] font-medium rounded-[6px] hover:bg-[#D6D3D1] transition-colors duration-150 flex items-center justify-center text-center"
         >
-          ALL TOOLS
+          All tools
         </Link>
       </div>
 
@@ -85,13 +85,13 @@ export function Sidebar({ currentPath }: SidebarProps) {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-3 text-[12px] font-mono uppercase tracking-[0.05em] transition-colors duration-150 py-2.5 ${
+              className={`flex items-center gap-3 text-[13px] transition-colors duration-150 py-2.5 rounded-[4px] ${
                 active
                   ? 'border-l-2 border-[#D6D3D1] pl-3.5 bg-[#1C1917] text-[#FAFAF9]'
-                  : 'pl-[18px] text-[#57534E] hover:text-[#FAFAF9] hover:bg-[#141110]'
+                  : 'pl-[18px] text-[#A8A29E] hover:text-[#FAFAF9] hover:bg-[#141110]'
               }`}
             >
-              <item.icon className={`w-4 h-4 shrink-0 stroke-[1.5] ${active ? 'text-[#FAFAF9]' : 'text-[#57534E]'}`} />
+              <item.icon className={`w-4 h-4 shrink-0 stroke-[1.5] ${active ? 'text-[#FAFAF9]' : 'text-[#78716C]'}`} />
               <span className="truncate">{item.label}</span>
             </Link>
           )
@@ -102,17 +102,17 @@ export function Sidebar({ currentPath }: SidebarProps) {
       <div className="mt-auto border-t border-[#292524] pt-4 space-y-1">
         <Link
           href="/contact"
-          className="flex items-center gap-3 text-[12px] font-mono uppercase tracking-[0.05em] text-[#57534E] hover:text-[#FAFAF9] hover:bg-[#141110] pl-[18px] py-2 transition-colors duration-150"
+          className="flex items-center gap-3 text-[13px] text-[#A8A29E] hover:text-[#FAFAF9] hover:bg-[#141110] pl-[18px] py-2 rounded-[4px] transition-colors duration-150"
         >
-          <HelpCircle className="w-4 h-4 shrink-0 stroke-[1.5] text-[#57534E]" />
-          <span>HELP</span>
+          <HelpCircle className="w-4 h-4 shrink-0 stroke-[1.5] text-[#78716C]" />
+          <span>Help</span>
         </Link>
         <button
           onClick={handleLogout}
-          className="w-full flex items-center gap-3 text-[12px] font-mono uppercase tracking-[0.05em] text-[#57534E] hover:text-[#FAFAF9] hover:bg-[#141110] pl-[18px] py-2 transition-colors duration-150 text-left"
+          className="w-full flex items-center gap-3 text-[13px] text-[#A8A29E] hover:text-[#FAFAF9] hover:bg-[#141110] pl-[18px] py-2 rounded-[4px] transition-colors duration-150 text-left cursor-pointer"
         >
-          <LogOut className="w-4 h-4 shrink-0 stroke-[1.5] text-[#57534E]" />
-          <span>LOGOUT</span>
+          <LogOut className="w-4 h-4 shrink-0 stroke-[1.5] text-[#78716C]" />
+          <span>Log out</span>
         </button>
       </div>
     </aside>

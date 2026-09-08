@@ -147,16 +147,16 @@ export function LandingPage() {
             <div className="mt-10 flex flex-col sm:flex-row gap-4 items-start">
               <Link
                 href="/tools/compress"
-                className="h-10 px-6 bg-[#FAFAF9] text-[#0C0A09] font-mono text-[12px] font-medium uppercase tracking-[0.05em] rounded-[6px] hover:bg-[#D6D3D1] transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer"
+                className="h-10 px-6 bg-[#FAFAF9] text-[#0C0A09] text-[13px] font-medium rounded-[6px] hover:bg-[#D6D3D1] transition-colors duration-150 flex items-center justify-center gap-2 cursor-pointer"
               >
-                START PROCESSING
+                Start processing
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 href="/about"
-                className="h-10 px-6 bg-transparent text-[#FAFAF9] border border-[#292524] font-mono text-[12px] font-medium uppercase tracking-[0.05em] rounded-[6px] hover:bg-[#1C1917] hover:border-[#A8A29E] transition-colors duration-150 flex items-center justify-center cursor-pointer"
+                className="h-10 px-6 bg-transparent text-[#FAFAF9] border border-[#292524] text-[13px] font-medium rounded-[6px] hover:bg-[#1C1917] hover:border-[#A8A29E] transition-colors duration-150 flex items-center justify-center cursor-pointer"
               >
-                VIEW ARCHITECTURE
+                View architecture
               </Link>
             </div>
 
@@ -177,28 +177,33 @@ export function LandingPage() {
         <section id="tools" className="px-6 md:px-16 py-24 max-w-6xl mx-auto scroll-mt-20">
           <div className="border-b border-[#292524] pb-6 mb-8 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
-              <span className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] block mb-1">
-                ENGINE DIRECTORY
+              <span className="font-mono text-[11px] text-[#57534E] block mb-1">
+                All tools
               </span>
               <h2 className="text-3xl font-medium tracking-tight text-[#FAFAF9]">
-                Core Tooling Suites
+                Tools
               </h2>
             </div>
 
             {/* Category Filter Pills & Search */}
             <div className="flex flex-wrap items-center gap-2">
               <div className="flex items-center bg-[#141110] border border-[#292524] rounded-[6px] p-1 gap-1">
-                {(['ALL', 'PDF', 'IMAGE', 'INTELLIGENCE'] as const).map((cat) => (
+                {([
+                  { key: 'ALL', label: 'All' },
+                  { key: 'PDF', label: 'PDF' },
+                  { key: 'IMAGE', label: 'Image' },
+                  { key: 'INTELLIGENCE', label: 'Intelligence' }
+                ] as const).map(({ key, label }) => (
                   <button
-                    key={cat}
-                    onClick={() => setSelectedCategory(cat)}
-                    className={`font-mono text-[11px] uppercase tracking-[0.05em] px-3 py-1.5 rounded-[4px] transition-colors cursor-pointer ${
-                      selectedCategory === cat
+                    key={key}
+                    onClick={() => setSelectedCategory(key)}
+                    className={`font-mono text-[11px] px-3 py-1.5 rounded-[4px] transition-colors cursor-pointer ${
+                      selectedCategory === key
                         ? 'bg-[#1C1917] text-[#FAFAF9] border border-[#292524]'
                         : 'text-[#57534E] hover:text-[#A8A29E] border border-transparent'
                     }`}
                   >
-                    {cat}
+                    {label}
                   </button>
                 ))}
               </div>
@@ -207,10 +212,10 @@ export function LandingPage() {
                 <Search className="w-3.5 h-3.5 text-[#57534E] absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
-                  placeholder="FILTER TOOLS..."
+                  placeholder="Filter tools..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="bg-[#141110] border border-[#292524] focus:border-[#A8A29E] text-[#FAFAF9] placeholder:text-[#57534E] font-mono text-[11px] uppercase tracking-[0.05em] pl-8 pr-3 py-1.5 rounded-[6px] outline-none w-36 sm:w-44 transition-colors"
+                  className="bg-[#141110] border border-[#292524] focus:border-[#A8A29E] text-[#FAFAF9] placeholder:text-[#57534E] text-[13px] pl-8 pr-3 py-1.5 rounded-[6px] outline-none w-36 sm:w-44 transition-colors"
                 />
               </div>
             </div>
@@ -245,8 +250,8 @@ export function LandingPage() {
             ))}
 
             {filteredTools.length === 0 && (
-              <div className="text-center py-12 font-mono text-[12px] uppercase tracking-[0.05em] text-[#57534E]">
-                No tools matched &ldquo;{searchQuery}&rdquo; in {selectedCategory} category.
+              <div className="text-center py-12 text-[13px] text-[#78716C]">
+                No tools matched &ldquo;{searchQuery}&rdquo; in {selectedCategory.toLowerCase()} category.
               </div>
             )}
           </div>
@@ -285,7 +290,7 @@ export function LandingPage() {
               </h2>
             </div>
             
-            <div className="mt-8 font-mono text-[12px] uppercase tracking-[0.05em] text-[#57534E] flex flex-wrap items-center gap-3">
+            <div className="mt-8 text-[12px] text-[#78716C] flex flex-wrap items-center gap-3">
               <span>Last audited: 2024-08-30</span>
               <span className="text-[#292524]">·</span>
               <Link 

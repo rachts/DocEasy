@@ -118,10 +118,15 @@ export default function ImageCompressorPage() {
 
       <main className="w-full md:pl-[240px] flex flex-col min-h-screen">
         <header className="bg-[#141110] border-b border-[#292524] h-[56px] flex justify-between items-center px-8 md:px-16 sticky top-0 z-30">
-          <div className="flex items-center gap-2 font-mono text-[12px] uppercase tracking-[0.05em]">
-            <span className="text-[#57534E]">TOOLING</span>
-            <span className="text-[#292524]">/</span>
-            <span className="text-[#FAFAF9]">IMAGE COMPRESSOR</span>
+          <div className="flex items-center gap-2 text-[12px]">
+            <Link href="/tools" className="text-[#78716C] hover:text-[#FAFAF9] transition-colors">
+              Tools
+            </Link>
+            <span className="text-[#44403C]">/</span>
+            <span className="text-[#FAFAF9]">Image Compressor</span>
+          </div>
+          <div className="hidden md:flex text-[12px] text-[#78716C]">
+            Runs locally in your browser
           </div>
         </header>
 
