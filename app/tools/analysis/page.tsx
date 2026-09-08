@@ -11,7 +11,8 @@ import {
   RotateCcw, 
   X, 
   Check, 
-  AlertTriangle 
+  AlertTriangle,
+  AlertCircle
 } from 'lucide-react'
 
 export default function AnalysisPage() {
@@ -22,6 +23,10 @@ export default function AnalysisPage() {
   const [error, setError] = useState<string>('')
 
   const handleFileSelect = async (selectedFile: File) => {
+    if (selectedFile.size > 50 * 1024 * 1024) {
+      setError(`File "${selectedFile.name}" exceeds 50MB limit (${(selectedFile.size / (1024 * 1024)).toFixed(1)} MB). Please select a file under 50MB.`)
+      return
+    }
     setFile(selectedFile)
     setProcessing(true)
     setProgress(20)
@@ -97,8 +102,17 @@ export default function AnalysisPage() {
           </div>
 
           {error && (
-            <div className="p-4 bg-[#1C1917] border border-[#7F1D1D] rounded-[6px] text-[13px] text-[#FAFAF9]">
-              Error: {error}
+            <div className="p-4 bg-[#1C1917] border border-[#7F1D1D] rounded-[6px] text-[13px] text-[#FAFAF9] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex items-center gap-2.5">
+                <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
+                <span>{error}</span>
+              </div>
+              <button
+                onClick={() => { setFile(null); setError('') }}
+                className="px-3 py-1.5 bg-[#292524] hover:bg-[#44403C] text-[#FAFAF9] text-[12px] font-medium rounded-[4px] transition-colors shrink-0 cursor-pointer self-start sm:self-auto"
+              >
+                Try again
+              </button>
             </div>
           )}
 

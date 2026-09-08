@@ -16,7 +16,8 @@ import {
   AlertTriangle,
   HardDrive,
   Info,
-  CheckCircle2
+  CheckCircle2,
+  AlertCircle
 } from 'lucide-react'
 import {
   VaultFileSummary,
@@ -33,6 +34,7 @@ export default function VaultPage() {
   const [files, setFiles] = useState<VaultFileSummary[]>([])
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const [decryptingId, setDecryptingId] = useState<string | null>(null)
   const [dragActive, setDragActive] = useState(false)
   const [currentTime, setCurrentTime] = useState(Date.now())
@@ -73,17 +75,21 @@ export default function VaultPage() {
   const handleFiles = async (fileList: FileList | null) => {
     if (!fileList || fileList.length === 0) return
     setUploading(true)
+    setError(null)
 
     try {
       for (let i = 0; i < fileList.length; i++) {
         const file = fileList[i]
+        if (file.size > 50 * 1024 * 1024) {
+          throw new Error(`File "${file.name}" exceeds the 50MB limit (${(file.size / (1024 * 1024)).toFixed(1)} MB). Please select files under 50MB.`)
+        }
         await storeFileInVault(file)
       }
       await refreshFiles()
       showToast(`${fileList.length} file(s) encrypted & vaulted`)
     } catch (err: any) {
       console.error('Vault encryption failed:', err)
-      alert(err.message || 'Encryption failed')
+      setError(err.message || 'Encryption failed')
     } finally {
       setUploading(false)
       if (fileInputRef.current) {
@@ -249,6 +255,21 @@ export default function VaultPage() {
               </div>
             </div>
           </div>
+
+          {error && (
+            <div className="mb-6 p-4 bg-[#1C1917] border border-[#7F1D1D] rounded-[6px] text-[13px] text-[#FAFAF9] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div className="flex items-center gap-2.5">
+                <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
+                <span>{error}</span>
+              </div>
+              <button
+                onClick={() => setError(null)}
+                className="px-3 py-1.5 bg-[#292524] hover:bg-[#44403C] text-[#FAFAF9] text-[12px] font-medium rounded-[4px] transition-colors shrink-0 cursor-pointer self-start sm:self-auto"
+              >
+                Dismiss & retry
+              </button>
+            </div>
+          )}
 
           {/* Dropzone Upload */}
           <div

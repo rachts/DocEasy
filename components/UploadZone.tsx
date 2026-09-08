@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useRef, useState } from 'react'
-import { Upload } from 'lucide-react'
+import { Upload, AlertCircle, X } from 'lucide-react'
 
 interface UploadZoneProps {
   onFileSelect: (file: File) => void
@@ -23,7 +23,48 @@ export function UploadZone({
   className = ''
 }: UploadZoneProps) {
   const [isDragging, setIsDragging] = useState(false)
+  const [rejectionError, setRejectionError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const validateAndSelect = (file: File) => {
+    // 1. Check file size limit (50MB = 50 * 1024 * 1024 bytes)
+    const maxBytes = 50 * 1024 * 1024
+    if (file.size > maxBytes) {
+      const sizeMB = (file.size / (1024 * 1024)).toFixed(1)
+      setRejectionError(
+        `File "${file.name}" exceeds the 50MB limit (${sizeMB} MB). Please select a file under 50MB.`
+      )
+      return
+    }
+
+    // 2. Check file format against accept prop
+    if (accept && accept !== '*' && accept !== '*/*') {
+      const allowedPatterns = accept.split(',').map((item) => item.trim().toLowerCase())
+      const fileName = file.name.toLowerCase()
+      const fileType = (file.type || '').toLowerCase()
+
+      const isAllowed = allowedPatterns.some((pattern) => {
+        if (pattern.startsWith('.')) {
+          return fileName.endsWith(pattern)
+        }
+        if (pattern.endsWith('/*')) {
+          const typePrefix = pattern.slice(0, -1)
+          return fileType.startsWith(typePrefix)
+        }
+        return fileType === pattern
+      })
+
+      if (!isAllowed) {
+        setRejectionError(
+          `Invalid file format for "${file.name}". Supported formats: ${supportedFormats}.`
+        )
+        return
+      }
+    }
+
+    setRejectionError(null)
+    onFileSelect(file)
+  }
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault()
@@ -43,20 +84,23 @@ export function UploadZone({
     setIsDragging(false)
 
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      onFileSelect(e.dataTransfer.files[0])
+      validateAndSelect(e.dataTransfer.files[0])
     }
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      onFileSelect(e.target.files[0])
+      validateAndSelect(e.target.files[0])
     }
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault()
-      fileInputRef.current?.click()
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ''
+        fileInputRef.current.click()
+      }
     }
   }
 
@@ -83,6 +127,30 @@ export function UploadZone({
         onChange={handleInputChange}
         className="hidden"
       />
+
+      {rejectionError && (
+        <div 
+          onClick={(e) => e.stopPropagation()} 
+          className="mb-6 w-full max-w-md p-3.5 rounded-[6px] bg-[#1C1917] border border-amber-500/40 text-[13px] text-[#FAFAF9] flex items-start justify-between gap-3 text-left"
+        >
+          <div className="flex items-start gap-2.5">
+            <AlertCircle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+            <div>
+              <span className="font-medium text-amber-400 block mb-0.5 text-xs">File rejected</span>
+              <p className="text-[12px] text-[#FAFAF9] leading-relaxed">{rejectionError}</p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={() => setRejectionError(null)}
+            className="text-[#A8A29E] hover:text-[#FAFAF9] p-1 rounded transition-colors shrink-0 cursor-pointer"
+            title="Dismiss error"
+            aria-label="Dismiss error"
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      )}
 
       <div className={`w-12 h-12 rounded-[6px] border border-[#292524] bg-[#1C1917] flex items-center justify-center mb-4 group-hover:border-[#A8A29E] transition-all duration-150 ${
         isDragging ? 'scale-110 border-[#FAFAF9]' : ''

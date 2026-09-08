@@ -138,6 +138,10 @@ export default function PdfSummarizerPage() {
   const [copied, setCopied] = useState(false)
 
   const processFile = async (selectedFile: File, sentenceCount: number) => {
+    if (selectedFile.size > 50 * 1024 * 1024) {
+      setError(`File "${selectedFile.name}" exceeds 50MB limit (${(selectedFile.size / (1024 * 1024)).toFixed(1)} MB). Please select a PDF under 50MB.`)
+      return
+    }
     setFile(selectedFile)
     setProcessing(true)
     setProgress(15)

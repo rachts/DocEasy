@@ -57,6 +57,11 @@ export default function ImageConverterPage() {
   }
 
   const handleFileSelect = (selectedFile: File) => {
+    if (selectedFile.size > 50 * 1024 * 1024) {
+      setError(`File "${selectedFile.name}" exceeds 50MB limit (${(selectedFile.size / (1024 * 1024)).toFixed(1)} MB). Please provide an image under 50MB.`)
+      return
+    }
+
     if (!selectedFile.type.startsWith('image/') && !selectedFile.name.match(/\.(png|jpe?g|webp|avif|bmp|svg)$/i)) {
       setError('Please provide a valid image file (PNG, JPG, WebP, AVIF, BMP, SVG).')
       return
@@ -232,9 +237,17 @@ export default function ImageConverterPage() {
           </div>
 
           {error && (
-            <div className="mb-6 p-4 rounded-lg bg-rose-950/30 border border-rose-900/50 flex items-center gap-3 text-sm text-rose-300">
-              <AlertCircle className="w-5 h-5 shrink-0 text-rose-400" />
-              <span>{error}</span>
+            <div className="mb-6 p-4 rounded-lg bg-[#1C1917] border border-[#7F1D1D] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-[13px] text-[#FAFAF9]">
+              <div className="flex items-center gap-2.5">
+                <AlertCircle className="w-4 h-4 shrink-0 text-red-400" />
+                <span>{error}</span>
+              </div>
+              <button
+                onClick={() => { setFile(null); setError(null) }}
+                className="px-3 py-1.5 bg-[#292524] hover:bg-[#44403C] text-[#FAFAF9] text-[12px] font-medium rounded-[4px] transition-colors shrink-0 cursor-pointer self-start sm:self-auto"
+              >
+                Try again
+              </button>
             </div>
           )}
 
