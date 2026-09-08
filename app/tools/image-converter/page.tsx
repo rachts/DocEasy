@@ -345,7 +345,7 @@ export default function ImageConverterPage() {
                           {formatExtensions[fmt]}
                         </div>
                         <div className="text-[11px] text-[#78716C] mt-0.5">
-                          {fmt === 'image/png' ? 'Lossless RGB' : fmt === 'image/jpeg' ? 'Universal JPG' : fmt === 'image/webp' ? 'Next-Gen Web' : 'Ultra Compact'}
+                          {fmt === 'image/png' ? 'Lossless RGB' : fmt === 'image/jpeg' ? 'Standard JPG' : fmt === 'image/webp' ? 'WebP image' : 'AVIF image'}
                         </div>
                       </button>
                     ))}
@@ -355,7 +355,7 @@ export default function ImageConverterPage() {
                 {/* Quality Slider (for lossy formats) */}
                 <div className="py-6 border-b border-[#292524]">
                   <div className="flex items-center justify-between mb-2">
-                    <label className="text-xs font-mono text-[#A8A29E] uppercase tracking-wider flex items-center gap-1.5">
+                    <label className="text-xs text-[#A8A29E] flex items-center gap-1.5">
                       <Sliders className="w-3.5 h-3.5" />
                       Output Quality
                     </label>

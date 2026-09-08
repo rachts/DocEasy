@@ -26,84 +26,84 @@ export default function ToolsPage() {
   const tools = [
     {
       title: 'PDF Compressor',
-      description: 'Reduce PDF file size while maintaining quality via WebAssembly quantization.',
+      description: 'Compress PDFs locally in your browser with adjustable quality levels.',
       icon: Minimize2,
       href: '/tools/compress',
       category: 'PDF'
     },
     {
       title: 'Format Converter',
-      description: 'Convert Word, Excel, Images, and Text files into standard PDF format.',
+      description: 'Convert between PDF, DOCX, Markdown, and text formats directly in your browser.',
       icon: ArrowLeftRight,
       href: '/tools/convert',
       category: 'PDF'
     },
     {
       title: 'PDF Merger',
-      description: 'Combine multiple PDF files or raster images into one clean sequence.',
+      description: 'Merge multiple PDF documents and images into a single PDF file.',
       icon: Merge,
       href: '/tools/merge',
       category: 'PDF'
     },
     {
       title: 'PDF Maker',
-      description: 'Generate formatted documents from structured templates (Invoice, Certificate, CV).',
+      description: 'Generate structured PDFs from templates (Invoice, Certificate, Resume, CV).',
       icon: Award,
       href: '/tools/pdf-maker',
       category: 'PDF'
     },
     {
       title: 'PDF Extractor',
-      description: 'Extract raw text streams, table matrices, and embedded image assets.',
+      description: 'Extract raw text streams and document metadata from PDF files.',
       icon: FileSearch,
       href: '/tools/pdf-extractor',
       category: 'PDF'
     },
     {
       title: 'PDF Summarizer',
-      description: 'Extract key summaries and semantic insights from long document files.',
+      description: 'Extract key points and generate document summaries using client-side sentence ranking.',
       icon: Sparkles,
       href: '/tools/pdf-summarizer',
       category: 'INTELLIGENCE'
     },
     {
       title: 'Image Compressor',
-      description: 'Lossless & lossy raster compression for PNG, JPG, and WebP assets.',
+      description: 'Compress PNG, JPG, and WebP images with custom quality controls.',
       icon: Minimize2,
       href: '/tools/image-compressor',
       category: 'IMAGE'
     },
     {
       title: 'Image Converter',
-      description: 'Cross-convert between universal image format standards with ICC preservation.',
+      description: 'Convert images between PNG, JPG, WebP, and AVIF formats via HTML5 Canvas.',
       icon: ArrowLeftRight,
       href: '/tools/image-converter',
       category: 'IMAGE'
     },
     {
       title: 'Passport Photo Editor',
-      description: 'Standard biometric aspect presets, automatic cropping, and background clean.',
+      description: 'Format photos to standard passport dimensions with background and contrast adjustments.',
       icon: User,
       href: '/tools/passport-photo',
       category: 'IMAGE'
     },
     {
       title: 'Image Cropper',
-      description: 'Interactive canvas bounding, locked aspect scaling, and lossless downloads.',
+      description: 'Crop and rotate images with custom aspect ratio presets and instant preview.',
       icon: Crop,
       href: '/tools/cropper',
       category: 'IMAGE'
     },
     {
       title: 'Resume Analyzer',
-      description: 'Audit ATS parsing compatibility, score keyword density, and inspect structure.',
+      description: 'Analyze resumes for ATS formatting compliance, section completeness, and keyword density.',
       icon: FileText,
       href: '/tools/analysis',
       category: 'INTELLIGENCE'
     },
     {
       title: 'Encrypted Vault',
-      description: 'Private client-encrypted session history with automatic 2-hour TTL auto-purge.',
+      description: 'Client-side AES-GCM encrypted session storage with automatic 2-hour auto-purge.',
       icon: Lock,
       href: '/tools/vault',
       category: 'INTELLIGENCE'

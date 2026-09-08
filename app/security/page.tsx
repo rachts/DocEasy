@@ -22,8 +22,8 @@ export default function SecurityPage() {
     },
     {
       icon: ShieldCheck,
-      title: 'End-to-End TLS Encryption',
-      description: 'All communication with optional authenticated vault services utilizes TLS 1.3 encryption with strict HSTS headers and cryptographic payload signing.'
+      title: 'Client-Side Session Encryption',
+      description: 'The optional encrypted vault uses Web Crypto AES-GCM with 256-bit keys stored in sessionStorage. Encrypted files remain in browser memory, auto-purge after 2 hours, and never touch remote servers.'
     },
     {
       icon: Terminal,
@@ -39,8 +39,8 @@ export default function SecurityPage() {
       <main className="flex-1 pt-[56px]">
         <section className="px-6 md:px-16 pt-24 pb-20 max-w-4xl mx-auto">
           <div className="border-b border-[#292524] pb-6 mb-10">
-            <span className="font-mono text-[11px] uppercase tracking-[0.05em] text-[#57534E] block mb-2">
-              SECURITY AUDIT & PROTOCOL
+            <span className="text-[12px] font-medium text-[#78716C] block mb-2">
+              Security protocol
             </span>
             <h1 className="text-4xl md:text-5xl font-medium tracking-tight text-[#FAFAF9]">
               Security Architecture

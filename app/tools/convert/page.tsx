@@ -149,7 +149,7 @@ export default function ConvertPage() {
               Format Converter
             </h1>
             <p className="text-[15px] text-[#A8A29E] mt-2 max-w-2xl leading-relaxed">
-              Switch seamlessly between PDF, DOCX, Markdown, Text, and Image formats with precision layout reproduction.
+              Convert between PDF, DOCX, Markdown, Text, and Image formats locally in your browser.
             </p>
           </div>
 
