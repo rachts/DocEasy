@@ -6,6 +6,18 @@ import { ArrowLeft, ArrowRight, Github, Linkedin, Mail, ShieldCheck, Terminal, C
 export const metadata = {
   title: 'Architecture & Security Manifesto | DocEasy',
   description: 'Learn about the technical architecture and team behind DocEasy.',
+  openGraph: {
+    title: 'Architecture & Security Manifesto | DocEasy',
+    description: 'Learn about the technical architecture and team behind DocEasy. 100% client-side document processing.',
+    url: '/about',
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'DocEasy Architecture' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Architecture & Security Manifesto | DocEasy',
+    description: 'Learn about the technical architecture and team behind DocEasy. 100% client-side document processing.',
+    images: ['/og-image.png'],
+  },
 }
 
 export default function AboutPage() {

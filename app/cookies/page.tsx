@@ -5,6 +5,18 @@ import { Footer } from '@/components/footer'
 export const metadata = {
   title: 'Cookie Policy | DocEasy',
   description: 'DocEasy Cookie and Storage Policy.',
+  openGraph: {
+    title: 'Cookie Policy | DocEasy',
+    description: 'DocEasy Cookie and Storage Policy. Zero third-party cookies or telemetry.',
+    url: '/cookies',
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'DocEasy Cookie Policy' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Cookie Policy | DocEasy',
+    description: 'DocEasy Cookie and Storage Policy. Zero third-party cookies or telemetry.',
+    images: ['/og-image.png'],
+  },
 }
 
 export default function CookiePolicyPage() {

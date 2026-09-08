@@ -6,6 +6,18 @@ import { CheckCircle, Activity, Server, ShieldCheck } from 'lucide-react'
 export const metadata = {
   title: 'System Status | DocEasy',
   description: 'Real-time operational status of DocEasy services and WASM runtime.',
+  openGraph: {
+    title: 'System Status | DocEasy',
+    description: 'Real-time operational status of DocEasy services and WASM runtime. 100% client-side operation.',
+    url: '/status',
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'DocEasy System Status' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'System Status | DocEasy',
+    description: 'Real-time operational status of DocEasy services and WASM runtime. 100% client-side operation.',
+    images: ['/og-image.png'],
+  },
 }
 
 export default function StatusPage() {

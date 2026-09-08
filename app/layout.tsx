@@ -23,6 +23,7 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://doceasy.app'),
   title: {
     default: "DocEasy | Privacy-First Document & Image Tools",
     template: "%s | DocEasy"
@@ -33,6 +34,29 @@ export const metadata: Metadata = {
   creator: "DocEasy",
   publisher: "DocEasy",
   robots: "index, follow",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://doceasy.app",
+    siteName: "DocEasy",
+    title: "DocEasy | Privacy-First Document & Image Tools",
+    description: "Fast, privacy-focused document processing with zero server retention. Compress PDFs, convert formats, and edit documents locally in your browser.",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "DocEasy — 100% Client-Side WebAssembly Document Toolkit",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "DocEasy | Privacy-First Document & Image Tools",
+    description: "Fast, privacy-focused document processing with zero server retention. Compress PDFs, convert formats, and edit documents locally in your browser.",
+    images: ["/og-image.png"],
+    creator: "@doceasy",
+  },
 }
 
 export default function RootLayout({

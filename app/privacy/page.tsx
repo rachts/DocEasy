@@ -5,6 +5,18 @@ import { Footer } from '@/components/footer'
 export const metadata = {
   title: 'Privacy Protocol',
   description: 'DocEasy privacy protocol and data minimization guarantees.',
+  openGraph: {
+    title: 'Privacy Protocol | DocEasy',
+    description: 'DocEasy privacy protocol and data minimization guarantees. 100% client-side document processing.',
+    url: '/privacy',
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'DocEasy Privacy Protocol' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Privacy Protocol | DocEasy',
+    description: 'DocEasy privacy protocol and data minimization guarantees. 100% client-side document processing.',
+    images: ['/og-image.png'],
+  },
 }
 
 export default function PrivacyPolicyPage() {

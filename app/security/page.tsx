@@ -6,6 +6,18 @@ import { ShieldCheck, Cpu, Lock, Terminal } from 'lucide-react'
 export const metadata = {
   title: 'Security Architecture | DocEasy',
   description: 'DocEasy Security model and WebAssembly isolation overview.',
+  openGraph: {
+    title: 'Security Architecture | DocEasy',
+    description: 'DocEasy Security model and WebAssembly isolation overview. 100% client-side zero server uploads.',
+    url: '/security',
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'DocEasy Security' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Security Architecture | DocEasy',
+    description: 'DocEasy Security model and WebAssembly isolation overview. 100% client-side zero server uploads.',
+    images: ['/og-image.png'],
+  },
 }
 
 export default function SecurityPage() {
