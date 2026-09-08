@@ -14,7 +14,6 @@ const nextConfig = {
       { source: '/tools/compress-image', destination: '/tools/image-compressor', permanent: true },
       { source: '/tools/pdf-converter', destination: '/tools/convert', permanent: true },
       { source: '/tools/pdf-merger', destination: '/tools/merge', permanent: true },
-      { source: '/tools/pdf-summarizer', destination: '/tools/analysis', permanent: true },
       { source: '/tools/resume', destination: '/tools/analysis', permanent: true },
       { source: '/tools/resume-analyzer', destination: '/tools/analysis', permanent: true },
       { source: '/tools/passport', destination: '/tools/passport-photo', permanent: true },

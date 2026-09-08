@@ -68,7 +68,7 @@ export default function ToolsPage() {
       title: 'PDF Summarizer',
       description: 'Extract key summaries and semantic insights from long document files.',
       icon: Sparkles,
-      href: '/tools/analysis',
+      href: '/tools/pdf-summarizer',
       category: 'INTELLIGENCE',
       tag: 'WASM OCR'
     },

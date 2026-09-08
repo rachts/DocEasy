@@ -179,6 +179,16 @@ export function CommandMenu() {
 
           <Command.Group heading="INTELLIGENCE & STORAGE" className="text-[11px] font-mono uppercase tracking-[0.05em] text-[#57534E] px-2 py-1.5">
             <Command.Item 
+              onSelect={() => runCommand(() => router.push('/tools/pdf-summarizer'))}
+              className="flex items-center justify-between rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
+            >
+              <div className="flex items-center gap-3">
+                <Sparkles className="w-4 h-4 text-[#A8A29E]" />
+                <span>PDF Summarizer</span>
+              </div>
+              <span className="font-mono text-[10px] uppercase text-[#57534E]">KEYWORD RANK</span>
+            </Command.Item>
+            <Command.Item 
               onSelect={() => runCommand(() => router.push('/tools/analysis'))}
               className="flex items-center justify-between rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
             >

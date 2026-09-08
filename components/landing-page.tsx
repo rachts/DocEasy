@@ -67,7 +67,7 @@ export function LandingPage() {
     {
       name: 'PDF Summarizer',
       description: 'Summarize long documents and extract key insights directly in your browser.',
-      href: '/tools/analysis',
+      href: '/tools/pdf-summarizer',
       icon: Sparkles,
       category: 'INTELLIGENCE',
       tag: 'LOCAL OCR'
