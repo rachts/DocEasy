@@ -31,7 +31,7 @@ export default function AboutPage() {
             Security Architecture & Manifesto
           </h1>
           <p className="text-[16px] text-[#A8A29E] mt-4 max-w-3xl leading-relaxed">
-            DocEasy is engineered around a zero-trust, client-ephemeral computation model. All document parsing, compression, rasterization, and conversion pipelines execute inside memory-sandboxed WebAssembly binaries.
+            Everything runs locally in your browser. The optional vault uses client-side session memory, auto-purged after 2 hours. Nothing ever touches our servers.
           </p>
 
           <div className="mt-8 font-mono text-[12px] uppercase tracking-[0.05em] text-[#57534E] flex flex-wrap gap-4 border-y border-[#292524] py-4">

@@ -28,6 +28,9 @@ export default function PrivacyPolicyPage() {
           <h1 className="text-4xl md:text-5xl font-medium tracking-tight text-[#FAFAF9] leading-tight mb-4">
             Privacy Protocol & Guarantees
           </h1>
+          <p className="text-[16px] text-[#A8A29E] mb-6 max-w-3xl leading-relaxed">
+            Everything runs locally in your browser. The optional vault uses client-side session memory, auto-purged after 2 hours. Nothing ever touches our servers.
+          </p>
           <p className="font-mono text-[12px] uppercase tracking-[0.05em] text-[#57534E] mb-12 border-b border-[#292524] pb-4">
             EFFECTIVE REVISION: 2024.10 • STANDARD: ZERO PERMANENT LOGGING
           </p>

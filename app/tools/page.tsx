@@ -160,7 +160,7 @@ export default function ToolsPage() {
                 Document & Image Tools
               </h1>
               <p className="text-[16px] text-[#A8A29E] mt-2 max-w-2xl leading-relaxed">
-                Comprehensive toolkit for PDF and image processing. All computation executes locally inside your browser context.
+                Everything runs locally in your browser. The optional vault uses client-side session memory, auto-purged after 2 hours. Nothing ever touches our servers.
               </p>
             </div>
 

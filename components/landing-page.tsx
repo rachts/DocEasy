@@ -153,7 +153,7 @@ export function LandingPage() {
             </h1>
             
             <p className="text-[15px] md:text-[17px] text-[#A8A29E] mt-6 max-w-2xl leading-relaxed">
-              Powerful processing, zero server retention. Compress, convert, and edit your documents locally within your browser using state-of-the-art WebAssembly architecture.
+              Everything runs locally in your browser. The optional vault uses client-side session memory, auto-purged after 2 hours. Nothing ever touches our servers.
             </p>
 
             <div className="mt-10 flex flex-col sm:flex-row gap-4 items-start">
@@ -177,7 +177,7 @@ export function LandingPage() {
               <div className="font-mono text-[12px] uppercase tracking-[0.05em] text-[#A8A29E] flex flex-wrap items-center gap-3">
                 <span>2.4MB avg compression</span>
                 <span className="text-[#57534E]">•</span>
-                <span>0s server retention</span>
+                <span>Zero server uploads</span>
                 <span className="text-[#57534E]">•</span>
                 <span>{allTools.length} browser tools</span>
                 <span className="text-[#57534E]">•</span>
