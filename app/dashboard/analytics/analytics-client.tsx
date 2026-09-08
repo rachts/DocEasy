@@ -117,7 +117,7 @@ export function AnalyticsClient({ files }: AnalyticsClientProps) {
             <Activity className="w-3.5 h-3.5 text-[#A8A29E]" />
           </div>
           <div className="text-3xl font-medium tracking-tight text-[#FAFAF9]">{stats.pieData.length}</div>
-          <p className="font-mono text-[11px] text-[#57534E] mt-1">DIFFERENT ROUTINES</p>
+          <p className="font-mono text-[11px] text-[#57534E] mt-1">DIFFERENT TOOLS</p>
         </div>
       </div>
 

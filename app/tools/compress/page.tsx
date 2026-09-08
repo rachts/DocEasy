@@ -155,7 +155,7 @@ export default function CompressPDFPage() {
           {/* Header Title */}
           <div>
             <h1 className="text-4xl md:text-5xl font-medium tracking-tight text-[#FAFAF9]">
-              Compress PDF
+              PDF Compressor
             </h1>
             <p className="text-[15px] text-[#A8A29E] mt-2 max-w-2xl leading-relaxed">
               Reduce file size while optimizing for maximal quality and structural integrity. All processing executes securely in your browser.

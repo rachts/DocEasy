@@ -165,7 +165,7 @@ export default function VaultPage() {
                 Tools
               </Link>
               <span className="text-[#57534E]">/</span>
-              <span className="text-[#FAFAF9]">Encrypted File Vault</span>
+              <span className="text-[#FAFAF9]">Encrypted Vault</span>
             </div>
             <div className="flex items-center gap-2 text-xs font-mono text-[#A8A29E]">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
@@ -190,7 +190,7 @@ export default function VaultPage() {
                 Zero-Knowledge Local Storage
               </div>
               <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-[#FAFAF9]">
-                Encrypted File Vault
+                Encrypted Vault
               </h1>
               <p className="text-[#A8A29E] text-sm md:text-base mt-2 max-w-2xl leading-relaxed">
                 Client-side encrypted session storage. Files are encrypted with AES-GCM using a key in your session memory, stored locally in your browser, and auto-purged after 2 hours. Zero network calls.

@@ -13,7 +13,7 @@ export default function SecurityPage() {
     {
       icon: Cpu,
       title: 'WebAssembly Memory Isolation',
-      description: 'Document bytes are processed directly inside isolated browser WASM threads. Execution routines run with sandboxed memory constraints without touching external networks.'
+      description: 'Document bytes are processed directly inside isolated browser WASM threads. Execution operations run with sandboxed memory constraints without touching external networks.'
     },
     {
       icon: Lock,

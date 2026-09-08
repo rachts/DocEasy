@@ -141,7 +141,7 @@ export function Navbar() {
                       onClick={() => setToolsOpen(false)}
                       className="px-3 py-1.5 rounded-[4px] text-[13.5px] text-[#A8A29E] hover:text-[#FAFAF9] hover:bg-[#141110] transition-colors"
                     >
-                      PDF Converter
+                      Format Converter
                     </Link>
                     <Link
                       href="/tools/pdf-maker"
@@ -343,7 +343,7 @@ export function Navbar() {
               onClick={() => setMobileMenuOpen(false)}
               className="text-[15px] font-medium text-[#A8A29E] hover:text-[#FAFAF9] py-2 border-b border-[#292524]/60"
             >
-              Encrypted vault
+              Encrypted Vault
             </Link>
             <Link
               href="/tools"

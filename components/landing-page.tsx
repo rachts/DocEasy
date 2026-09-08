@@ -39,7 +39,7 @@ export function LandingPage() {
       category: 'PDF'
     },
     {
-      name: 'Document Merger',
+      name: 'PDF Merger',
       description: 'Combine multiple PDF or image documents into a unified sequence with zero upload delay.',
       href: '/tools/merge',
       icon: Merge,
@@ -88,21 +88,21 @@ export function LandingPage() {
       category: 'IMAGE'
     },
     {
-      name: 'Smart Image Cropper',
+      name: 'Image Cropper',
       description: 'Interactive canvas bounding, custom aspect ratio locks, and lossless exports.',
       href: '/tools/cropper',
       icon: Crop,
       category: 'IMAGE'
     },
     {
-      name: 'Resume & ATS Analyzer',
+      name: 'Resume Analyzer',
       description: 'Parse keyword density, formatting compliance, and structural ATS scores privately.',
       href: '/tools/analysis',
       icon: FileText,
       category: 'INTELLIGENCE'
     },
     {
-      name: 'Encrypted File Vault',
+      name: 'Encrypted Vault',
       description: 'Ephemeral client-encrypted session storage with automatic 2-hour TTL auto-purge.',
       href: '/tools/vault',
       icon: Lock,

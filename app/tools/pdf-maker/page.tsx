@@ -105,7 +105,7 @@ export default function PDFMakerPage() {
         <div className="p-8 md:p-16 max-w-6xl w-full mx-auto flex-1 flex flex-col gap-10">
           <div>
             <h1 className="text-4xl md:text-5xl font-medium tracking-tight text-[#FAFAF9]">
-              PDF Generator
+              PDF Maker
             </h1>
             <p className="text-[15px] text-[#A8A29E] mt-2 max-w-2xl leading-relaxed">
               Compile structured invoices, credentials certificates, and professional resumes directly into vectorized PDF outputs.

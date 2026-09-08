@@ -228,7 +228,7 @@ export default function MergePDFPage() {
         <div className="p-8 md:p-16 max-w-6xl w-full mx-auto flex-1 flex flex-col gap-10">
           <div>
             <h1 className="text-4xl md:text-5xl font-medium tracking-tight text-[#FAFAF9]">
-              Merge PDF & Image Documents
+              PDF Merger
             </h1>
             <p className="text-[15px] text-[#A8A29E] mt-2 max-w-2xl leading-relaxed">
               Combine multiple PDF files and images (PNG, JPG, WebP) into a single structured document. Reorder pages directly with local in-browser compilation.

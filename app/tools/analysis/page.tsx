@@ -79,7 +79,7 @@ export default function AnalysisPage() {
               Tools
             </Link>
             <span className="text-[#44403C]">/</span>
-            <span className="text-[#FAFAF9]">Structure Analyzer</span>
+            <span className="text-[#FAFAF9]">Resume Analyzer</span>
           </div>
           <div className="hidden md:flex text-[12px] text-[#78716C]">
             Runs locally in your browser
@@ -89,10 +89,10 @@ export default function AnalysisPage() {
         <div className="p-8 md:p-16 max-w-6xl w-full mx-auto flex-1 flex flex-col gap-10">
           <div>
             <h1 className="text-4xl md:text-5xl font-medium tracking-tight text-[#FAFAF9]">
-              Document Analysis
+              Resume Analyzer
             </h1>
             <p className="text-[15px] text-[#A8A29E] mt-2 max-w-2xl leading-relaxed">
-              Deep structural parsing, entity extraction, metadata security auditing, and document scoring with zero data exfiltration.
+              Audit ATS parsing compatibility, score keyword density, and inspect structure with zero data exfiltration.
             </p>
           </div>
 

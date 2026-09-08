@@ -32,7 +32,7 @@ export default function ToolsPage() {
       category: 'PDF'
     },
     {
-      title: 'PDF Converter',
+      title: 'Format Converter',
       description: 'Convert Word, Excel, Images, and Text files into standard PDF format.',
       icon: ArrowLeftRight,
       href: '/tools/convert',
@@ -88,21 +88,21 @@ export default function ToolsPage() {
       category: 'IMAGE'
     },
     {
-      title: 'Smart Image Cropper',
+      title: 'Image Cropper',
       description: 'Interactive canvas bounding, locked aspect scaling, and lossless downloads.',
       icon: Crop,
       href: '/tools/cropper',
       category: 'IMAGE'
     },
     {
-      title: 'Resume & ATS Analyzer',
+      title: 'Resume Analyzer',
       description: 'Audit ATS parsing compatibility, score keyword density, and inspect structure.',
       icon: FileText,
       href: '/tools/analysis',
       category: 'INTELLIGENCE'
     },
     {
-      title: 'Encrypted File Vault',
+      title: 'Encrypted Vault',
       description: 'Private client-encrypted session history with automatic 2-hour TTL auto-purge.',
       icon: Lock,
       href: '/tools/vault',

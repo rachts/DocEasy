@@ -28,7 +28,7 @@ export function Sidebar({ currentPath }: SidebarProps) {
     { label: 'PDF Compressor', href: '/tools/compress', icon: Minimize2 },
     { label: 'PDF Merger', href: '/tools/merge', icon: Merge },
     { label: 'Format Converter', href: '/tools/convert', icon: ArrowLeftRight },
-    { label: 'Structure Analyzer', href: '/tools/analysis', icon: FileSearch },
+    { label: 'Resume Analyzer', href: '/tools/analysis', icon: FileSearch },
     { label: 'Settings', href: '/settings', icon: Settings },
   ]
 
@@ -48,7 +48,7 @@ export function Sidebar({ currentPath }: SidebarProps) {
     if (href === '/tools/compress' && (pathname.startsWith('/tools/compress') || pathname === '/tools/compressor')) return true
     if (href === '/tools/merge' && (pathname.startsWith('/tools/merge') || pathname === '/tools/pdf-merger')) return true
     if (href === '/tools/convert' && (pathname.startsWith('/tools/convert') || pathname === '/tools/pdf-converter' || pathname === '/tools/image-converter' || pathname === '/tools/converter')) return true
-    if (href === '/tools/analysis' && (pathname.startsWith('/tools/analysis') || pathname === '/tools/resume-analyzer' || pathname === '/tools/pdf-summarizer')) return true
+    if (href === '/tools/analysis' && (pathname.startsWith('/tools/analysis') || pathname === '/tools/resume-analyzer')) return true
     if (href === '/settings' && (pathname === '/settings' || pathname === '/account')) return true
     return pathname === href
   }

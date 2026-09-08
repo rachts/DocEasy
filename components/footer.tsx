@@ -116,7 +116,7 @@ export function Footer() {
               </li>
               <li>
                 <Link href="/tools/passport-photo" className="text-[#A8A29E] hover:text-[#FAFAF9] transition-colors duration-150">
-                  Passport Photo
+                  Passport Photo Editor
                 </Link>
               </li>
               <li>
@@ -129,9 +129,14 @@ export function Footer() {
                   Resume Analyzer
                 </Link>
               </li>
+              <li>
+                <Link href="/tools/pdf-summarizer" className="text-[#A8A29E] hover:text-[#FAFAF9] transition-colors duration-150">
+                  PDF Summarizer
+                </Link>
+              </li>
               <li className="pt-1">
                 <Link href="/tools" className="group/link flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-widest text-[#57534E] hover:text-[#FAFAF9] transition-colors duration-150 whitespace-nowrap">
-                  <span>ALL 12 UTILITIES</span>
+                  <span>All 12 tools</span>
                   <ArrowRight className="w-3 h-3 transition-transform duration-150 group-hover/link:translate-x-1" />
                 </Link>
               </li>
@@ -160,8 +165,8 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/dashboard" className="text-[#A8A29E] hover:text-[#FAFAF9] transition-colors duration-150">
-                  Vault Storage
+                <Link href="/tools/vault" className="text-[#A8A29E] hover:text-[#FAFAF9] transition-colors duration-150">
+                  Encrypted Vault
                 </Link>
               </li>
             </ul>

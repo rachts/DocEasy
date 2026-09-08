@@ -77,47 +77,47 @@ export function CommandMenu() {
             No matching tooling protocols found.
           </Command.Empty>
           
-          <Command.Group heading="PDF UTILITIES" className="text-[11px] font-mono uppercase tracking-[0.05em] text-[#57534E] px-2 py-1.5">
+          <Command.Group heading="PDF Tools" className="text-[11px] font-mono uppercase tracking-[0.05em] text-[#57534E] px-2 py-1.5">
             <Command.Item 
               onSelect={() => runCommand(() => router.push('/tools/compress'))}
               className="flex items-center gap-3 rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
             >
               <Minimize2 className="w-4 h-4 text-[#A8A29E]" />
-              <span>Compress PDF Document</span>
+              <span>PDF Compressor</span>
             </Command.Item>
             <Command.Item 
               onSelect={() => runCommand(() => router.push('/tools/convert'))}
               className="flex items-center gap-3 rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
             >
               <ArrowLeftRight className="w-4 h-4 text-[#A8A29E]" />
-              <span>Format Matrix Converter</span>
+              <span>Format Converter</span>
             </Command.Item>
             <Command.Item 
               onSelect={() => runCommand(() => router.push('/tools/merge'))}
               className="flex items-center gap-3 rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
             >
               <Merge className="w-4 h-4 text-[#A8A29E]" />
-              <span>PDF Document Merger</span>
+              <span>PDF Merger</span>
             </Command.Item>
             <Command.Item 
               onSelect={() => runCommand(() => router.push('/tools/pdf-maker'))}
               className="flex items-center gap-3 rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
             >
               <Award className="w-4 h-4 text-[#A8A29E]" />
-              <span>PDF Template Maker</span>
+              <span>PDF Maker</span>
             </Command.Item>
             <Command.Item 
               onSelect={() => runCommand(() => router.push('/tools/pdf-extractor'))}
               className="flex items-center gap-3 rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
             >
               <FileSearch className="w-4 h-4 text-[#A8A29E]" />
-              <span>PDF Stream & Table Extractor</span>
+              <span>PDF Extractor</span>
             </Command.Item>
           </Command.Group>
 
           <Command.Separator className="h-px bg-[#292524] my-2" />
 
-          <Command.Group heading="IMAGE & RASTER UTILITIES" className="text-[11px] font-mono uppercase tracking-[0.05em] text-[#57534E] px-2 py-1.5">
+          <Command.Group heading="Image Tools" className="text-[11px] font-mono uppercase tracking-[0.05em] text-[#57534E] px-2 py-1.5">
             <Command.Item 
               onSelect={() => runCommand(() => router.push('/tools/image-compressor'))}
               className="flex items-center gap-3 rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
@@ -130,7 +130,7 @@ export function CommandMenu() {
               className="flex items-center gap-3 rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
             >
               <ArrowLeftRight className="w-4 h-4 text-[#A8A29E]" />
-              <span>Image Format Converter</span>
+              <span>Image Converter</span>
             </Command.Item>
             <Command.Item 
               onSelect={() => runCommand(() => router.push('/tools/passport-photo'))}
@@ -144,13 +144,13 @@ export function CommandMenu() {
               className="flex items-center gap-3 rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
             >
               <Crop className="w-4 h-4 text-[#A8A29E]" />
-              <span>Smart Image Cropper</span>
+              <span>Image Cropper</span>
             </Command.Item>
           </Command.Group>
 
           <Command.Separator className="h-px bg-[#292524] my-2" />
 
-          <Command.Group heading="INTELLIGENCE & STORAGE" className="text-[11px] font-mono uppercase tracking-[0.05em] text-[#57534E] px-2 py-1.5">
+          <Command.Group heading="Analysis & Vault" className="text-[11px] font-mono uppercase tracking-[0.05em] text-[#57534E] px-2 py-1.5">
             <Command.Item 
               onSelect={() => runCommand(() => router.push('/tools/pdf-summarizer'))}
               className="flex items-center gap-3 rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
@@ -163,14 +163,14 @@ export function CommandMenu() {
               className="flex items-center gap-3 rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
             >
               <FileText className="w-4 h-4 text-[#A8A29E]" />
-              <span>Resume & ATS Structure Analyzer</span>
+              <span>Resume Analyzer</span>
             </Command.Item>
             <Command.Item 
               onSelect={() => runCommand(() => router.push('/tools/vault'))}
               className="flex items-center gap-3 rounded-[4px] px-3 py-2 text-[13.5px] text-[#FAFAF9] cursor-pointer hover:bg-[#141110] transition-colors"
             >
               <Lock className="w-4 h-4 text-[#A8A29E]" />
-              <span>Local Session Vault</span>
+              <span>Encrypted Vault</span>
             </Command.Item>
           </Command.Group>
 

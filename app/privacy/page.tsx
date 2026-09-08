@@ -39,7 +39,7 @@ export default function PrivacyPolicyPage() {
             <div className="p-6 bg-[#1C1917] border border-[#292524] rounded-[8px] space-y-2">
               <h2 className="text-xl font-medium text-[#FAFAF9]">Client-side execution</h2>
               <p className="text-[15px] text-[#A8A29E] leading-relaxed">
-                All document parsing, formatting, rasterization, and compression routines run locally within your browser context via sandboxed WebAssembly execution threads. Byte buffers are never streamed to third parties.
+                All document parsing, formatting, rasterization, and compression operations run locally within your browser context via sandboxed WebAssembly execution threads. Byte buffers are never streamed to third parties.
               </p>
             </div>
 
