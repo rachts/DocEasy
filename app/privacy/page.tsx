@@ -44,7 +44,7 @@ export default function PrivacyPolicyPage() {
             DocEasy is built around data minimization. Core utilities run directly in your browser without transmitting your files. When heavy server-side processing is requested (such as Ghostscript/qpdf compression), files are processed in ephemeral containers and wiped immediately upon completion. If you choose to create an account, your cloud vault files are encrypted and protected by Supabase Postgres Row Level Security.
           </p>
           <p className="text-[13px] text-[#78716C] mb-12 border-b border-[#292524] pb-4">
-            Last updated: October 2024
+            Last updated: 2026
           </p>
 
           <div className="space-y-8">

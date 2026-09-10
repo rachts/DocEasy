@@ -41,7 +41,7 @@ export default function TermsOfServicePage() {
             Terms of Service
           </h1>
           <p className="text-[13px] text-[#78716C] mb-12 border-b border-[#292524] pb-4">
-            Last updated: October 2024
+            Last updated: 2026
           </p>
 
           <div className="space-y-8">

@@ -34,7 +34,7 @@ export default function CookiePolicyPage() {
               Cookie Policy
             </h1>
             <p className="font-mono text-[12px] text-[#57534E] mt-3">
-              LAST AUDITED: AUGUST 30, 2024
+              OPEN SOURCE & VERIFIABLE
             </p>
           </div>
 

@@ -345,14 +345,14 @@ export function LandingPage() {
             </p>
 
             <div className="mt-8 text-[12px] text-[#A8A29E] flex flex-wrap items-center gap-3">
-              <span>Last audited: 2024-08-30</span>
+              <span>Open source — verify it yourself in your browser's Network tab.</span>
               <span className="text-[#57534E]">·</span>
               <Link 
                 href="https://github.com/rachts/DocEasy" 
                 target="_blank"
                 className="text-[#FAFAF9] hover:text-[#A8A29E] transition-colors underline underline-offset-4"
               >
-                Open source on GitHub
+                Inspect source on GitHub
               </Link>
             </div>
           </div>
