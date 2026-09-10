@@ -49,7 +49,7 @@ export function Footer() {
                 <Linkedin className="w-4 h-4 stroke-[1.5]" aria-hidden="true" />
               </Link>
               <Link 
-                href="https://x.com/rachts" 
+                href="https://x.com/rachtss" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 aria-label="X (Twitter) profile"
