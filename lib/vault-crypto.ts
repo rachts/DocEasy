@@ -44,7 +44,7 @@ export async function getOrCreateVaultKey(): Promise<CryptoKey> {
     throw new Error('Web Crypto is only available in browser contexts.')
   }
 
-  let rawJwk = sessionStorage.getItem(SESSION_KEY_NAME)
+  const rawJwk = sessionStorage.getItem(SESSION_KEY_NAME)
 
   if (rawJwk) {
     try {

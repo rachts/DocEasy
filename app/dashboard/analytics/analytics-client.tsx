@@ -30,7 +30,7 @@ const MONO_COLORS = ['#FAFAF9', '#D6D3D1', '#A8A29E', '#78716C', '#57534E', '#44
 
 export function AnalyticsClient({ files }: AnalyticsClientProps) {
   const stats = useMemo(() => {
-    let totalFiles = files.length
+    const totalFiles = files.length
     let originalTotal = 0
     let processedTotal = 0
 
