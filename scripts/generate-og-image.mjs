@@ -168,7 +168,7 @@ const html = `<!DOCTYPE html>
       <div class="pill"><strong>0 Bytes</strong> Server Retention</div>
       <div class="pill"><strong>2-Hour</strong> TTL Vault</div>
     </div>
-    <div class="url">doceasy.app</div>
+    <div class="url">doceasy-official.vercel.app</div>
   </div>
 </body>
 </html>`

@@ -22,7 +22,7 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://doceasy.app'),
+  metadataBase: new URL('https://doceasy-official.vercel.app'),
   title: {
     default: "DocEasy | Privacy-First Document & Image Tools",
     template: "%s | DocEasy"
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://doceasy.app",
+    url: "https://doceasy-official.vercel.app",
     siteName: "DocEasy",
     title: "DocEasy | Privacy-First Document & Image Tools",
     description: "Fast, privacy-first document and image processing with a hybrid architecture. Client-side tools for instant local workflows, optional server acceleration, and an encrypted vault.",
@@ -66,7 +66,6 @@ export const metadata: Metadata = {
     title: "DocEasy | Privacy-First Document & Image Tools",
     description: "Fast, privacy-first document and image processing with a hybrid architecture. Client-side tools for instant local workflows, optional server acceleration, and an encrypted vault.",
     images: ["/og-image.png"],
-    creator: "@doceasy",
   },
 }
 

@@ -83,7 +83,7 @@ export default function SecurityPage() {
               Vulnerability Reporting
             </h2>
             <p className="text-[14px] text-[#A8A29E] leading-relaxed">
-              If you discover a security vulnerability or discrepancy in our client-side pipelines, please disclose it responsibly by contacting <a href="mailto:security@doceasy.app" className="text-[#FAFAF9] underline underline-offset-4">security@doceasy.app</a>. We acknowledge and reward verified responsible security disclosures.
+              If you discover a security vulnerability or discrepancy in our client-side pipelines, please disclose it responsibly by contacting <a href="mailto:tiwari.rachit@gmail.com" className="text-[#FAFAF9] underline underline-offset-4">tiwari.rachit@gmail.com</a>. We acknowledge and reward verified responsible security disclosures.
             </p>
           </div>
         </section>

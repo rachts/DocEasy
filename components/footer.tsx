@@ -61,7 +61,7 @@ export function Footer() {
                 </svg>
               </Link>
               <Link 
-                href="mailto:rachit@doceasy.app" 
+                href="mailto:tiwari.rachit@gmail.com" 
                 aria-label="Email support"
                 className="w-9 h-9 rounded-[6px] bg-[#141110] border border-[#292524] hover:border-[#57534E] flex items-center justify-center text-[#57534E] hover:text-[#FAFAF9] transition-colors duration-150"
                 title="Email"
