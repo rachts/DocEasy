@@ -11,8 +11,11 @@ Welcome to the new DocEasy! This platform has been completely migrated from Mong
    ```env
    NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
    NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-   SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
    ```
+
+> **SERVER-ONLY — never expose to the browser, never commit a real value**:
+> If an administrative server-side route requires `SUPABASE_SERVICE_ROLE_KEY`, keep it in `.env.local` only and never prefix with `NEXT_PUBLIC_`. Client workflows require only the anon key.
+
 
 ## 2. Authentication
 DocEasy now uses Supabase Auth with SSR support.
