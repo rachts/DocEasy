@@ -16,7 +16,7 @@ export interface FileMetadata {
 /**
  * Uploads a file (Blob/File) to Supabase Storage
  */
-export async function uploadFileToSupabase(file: Blob | File, fileName: string, toolUsed: string) {
+export async function uploadFileToSupabase(file: Blob | File, fileName: string, _toolUsed?: string) {
   const generateFallbackUrl = () => {
     if (typeof window !== 'undefined') {
       return { filePath: 'local-fallback', publicUrl: URL.createObjectURL(file) }
@@ -37,7 +37,7 @@ export async function uploadFileToSupabase(file: Blob | File, fileName: string, 
     const userFolder = user ? `users/${user.id}` : 'processed'
     const filePath = `${userFolder}/${timestamp}-${safeFileName}`
 
-    const { data, error } = await supabase.storage
+    const { error } = await supabase.storage
       .from("processed")
       .upload(filePath, file, {
         cacheControl: '3600',
@@ -57,7 +57,6 @@ export async function uploadFileToSupabase(file: Blob | File, fileName: string, 
     return { filePath, publicUrl }
   } catch (error: any) {
     console.error("Supabase Storage Error:", error)
-    await trackEvent("error", toolUsed).catch(() => {})
     
     // Graceful degradation: return a local browser URL so the user can still download their file
     return generateFallbackUrl()
@@ -92,24 +91,6 @@ export async function saveFileMetadata(metadata: FileMetadata) {
   }
 }
 
-export type EventType = "upload" | "download" | "error" | "compress" | "convert" | "merge" | "process" | string
-
-/**
- * Tracks events for analytics
- */
-export async function trackEvent(eventType: EventType, toolUsed: string) {
-  if (!supabase) return
-  try {
-    const { error } = await supabase
-      .from("events")
-      .insert([{ event_type: eventType, tool_used: toolUsed }])
-
-    if (error) throw error
-  } catch (error) {
-    console.error("Supabase Analytics Error:", error)
-    // Don't throw here to avoid blocking the main flow
-  }
-}
 
 /**
  * Add to local storage recent files

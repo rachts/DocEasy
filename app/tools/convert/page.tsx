@@ -6,7 +6,6 @@ import { Sidebar } from '@/components/Sidebar'
 import { ProgressBar } from '@/components/ProgressBar'
 import { UploadZone } from '@/components/UploadZone'
 import { 
-  ArrowLeftRight, 
   FileText, 
   Download, 
   RotateCcw, 
@@ -23,7 +22,7 @@ import {
   convertMarkdownToTXT,
   convertMarkdownToPNG
 } from '@/lib/pdf-converter-utils'
-import { uploadFileToSupabase, saveFileMetadata, trackEvent, addToRecentFiles } from '@/lib/supabase/helpers'
+import { uploadFileToSupabase, saveFileMetadata, addToRecentFiles } from '@/lib/supabase/helpers'
 
 export default function ConvertPage() {
   const [file, setFile] = useState<File | null>(null)
@@ -104,8 +103,6 @@ export default function ConvertPage() {
         tool: 'converter',
         timestamp: Date.now(),
       })
-
-      trackEvent('convert', 'format_converter')
 
       setDownloadUrl(publicUrl)
       setResultFileName(outName)

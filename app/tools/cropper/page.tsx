@@ -4,7 +4,7 @@ import React, { useState, useRef } from 'react'
 import Link from 'next/link'
 import { Sidebar } from '@/components/Sidebar'
 import { UploadZone } from '@/components/UploadZone'
-import { Crop, Download, RotateCcw, X, ArrowRight, AlertCircle } from 'lucide-react'
+import { Download, RotateCcw, X, ArrowRight, AlertCircle } from 'lucide-react'
 
 export default function CropperPage() {
   const [file, setFile] = useState<File | null>(null)

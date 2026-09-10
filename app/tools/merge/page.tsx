@@ -14,10 +14,9 @@ import {
   ArrowUp, 
   ArrowDown, 
   RotateCcw,
-  Plus,
   AlertCircle
 } from 'lucide-react'
-import { uploadFileToSupabase, saveFileMetadata, trackEvent, addToRecentFiles } from '@/lib/supabase/helpers'
+import { uploadFileToSupabase, saveFileMetadata, addToRecentFiles } from '@/lib/supabase/helpers'
 
 // Rasterize an image to a PDF page using an off-screen HTML canvas
 async function rasterizeImageToPdf(file: File, mergedPdf: any): Promise<void> {
@@ -183,7 +182,6 @@ export default function MergePDFPage() {
           tool: 'pdf-merger',
           timestamp: Date.now(),
         })
-        trackEvent('merge', 'pdf_merger')
       } catch (metaErr) {
         console.warn('Metadata save error:', metaErr)
       }

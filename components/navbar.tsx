@@ -14,6 +14,7 @@ import {
 import { CommandMenu } from '@/components/command-menu'
 import { createClient } from '@/utils/supabase/client'
 import type { User } from '@supabase/supabase-js'
+import { PDF_TOOLS, IMAGE_TOOLS } from '@/lib/tools-registry'
 
 export function Navbar() {
   const [toolsOpen, setToolsOpen] = useState(false)
@@ -163,41 +164,16 @@ export function Navbar() {
                     PDF Tools
                   </div>
                   <div className="flex flex-col space-y-0.5">
-                    <Link
-                      href="/tools/convert"
-                      onClick={() => setToolsOpen(false)}
-                      className="px-3 py-1.5 rounded-[4px] text-[13.5px] text-[#A8A29E] hover:text-[#FAFAF9] hover:bg-[#141110] transition-colors"
-                    >
-                      Format Converter
-                    </Link>
-                    <Link
-                      href="/tools/pdf-maker"
-                      onClick={() => setToolsOpen(false)}
-                      className="px-3 py-1.5 rounded-[4px] text-[13.5px] text-[#A8A29E] hover:text-[#FAFAF9] hover:bg-[#141110] transition-colors"
-                    >
-                      PDF Maker
-                    </Link>
-                    <Link
-                      href="/tools/merge"
-                      onClick={() => setToolsOpen(false)}
-                      className="px-3 py-1.5 rounded-[4px] text-[13.5px] text-[#A8A29E] hover:text-[#FAFAF9] hover:bg-[#141110] transition-colors"
-                    >
-                      PDF Merger
-                    </Link>
-                    <Link
-                      href="/tools/pdf-extractor"
-                      onClick={() => setToolsOpen(false)}
-                      className="px-3 py-1.5 rounded-[4px] text-[13.5px] text-[#A8A29E] hover:text-[#FAFAF9] hover:bg-[#141110] transition-colors"
-                    >
-                      PDF Extractor
-                    </Link>
-                    <Link
-                      href="/tools/compress"
-                      onClick={() => setToolsOpen(false)}
-                      className="px-3 py-1.5 rounded-[4px] text-[13.5px] text-[#A8A29E] hover:text-[#FAFAF9] hover:bg-[#141110] transition-colors"
-                    >
-                      PDF Compressor
-                    </Link>
+                    {PDF_TOOLS.map((tool) => (
+                      <Link
+                        key={tool.id}
+                        href={tool.href}
+                        onClick={() => setToolsOpen(false)}
+                        className="px-3 py-1.5 rounded-[4px] text-[13.5px] text-[#A8A29E] hover:text-[#FAFAF9] hover:bg-[#141110] transition-colors"
+                      >
+                        {tool.name}
+                      </Link>
+                    ))}
                   </div>
 
                   {/* Image Tools */}
@@ -205,34 +181,16 @@ export function Navbar() {
                     Image Tools
                   </div>
                   <div className="flex flex-col space-y-0.5">
-                    <Link
-                      href="/tools/image-compressor"
-                      onClick={() => setToolsOpen(false)}
-                      className="px-3 py-1.5 rounded-[4px] text-[13.5px] text-[#A8A29E] hover:text-[#FAFAF9] hover:bg-[#141110] transition-colors"
-                    >
-                      Image Compressor
-                    </Link>
-                    <Link
-                      href="/tools/image-converter"
-                      onClick={() => setToolsOpen(false)}
-                      className="px-3 py-1.5 rounded-[4px] text-[13.5px] text-[#A8A29E] hover:text-[#FAFAF9] hover:bg-[#141110] transition-colors"
-                    >
-                      Image Converter
-                    </Link>
-                    <Link
-                      href="/tools/passport-photo"
-                      onClick={() => setToolsOpen(false)}
-                      className="px-3 py-1.5 rounded-[4px] text-[13.5px] text-[#A8A29E] hover:text-[#FAFAF9] hover:bg-[#141110] transition-colors"
-                    >
-                      Passport Photo Editor
-                    </Link>
-                    <Link
-                      href="/tools/cropper"
-                      onClick={() => setToolsOpen(false)}
-                      className="px-3 py-1.5 rounded-[4px] text-[13.5px] text-[#A8A29E] hover:text-[#FAFAF9] hover:bg-[#141110] transition-colors"
-                    >
-                      Image Cropper
-                    </Link>
+                    {IMAGE_TOOLS.map((tool) => (
+                      <Link
+                        key={tool.id}
+                        href={tool.href}
+                        onClick={() => setToolsOpen(false)}
+                        className="px-3 py-1.5 rounded-[4px] text-[13.5px] text-[#A8A29E] hover:text-[#FAFAF9] hover:bg-[#141110] transition-colors"
+                      >
+                        {tool.name}
+                      </Link>
+                    ))}
                   </div>
 
                   {/* View All Tools */}

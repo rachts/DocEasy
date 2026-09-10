@@ -15,7 +15,8 @@ import {
   AlertCircle
 } from 'lucide-react'
 import { compressImageWithQuality } from '@/lib/image-compressor-utils'
-import { uploadFileToSupabase, saveFileMetadata, trackEvent, addToRecentFiles } from '@/lib/supabase/helpers'
+import { uploadFileToSupabase, saveFileMetadata, addToRecentFiles } from '@/lib/supabase/helpers'
+import { formatBytes } from '@/lib/utils'
 
 export default function ImageCompressorPage() {
   const [file, setFile] = useState<File | null>(null)
@@ -30,14 +31,6 @@ export default function ImageCompressorPage() {
     compressedSize: number
     reductionPercent: number
   } | null>(null)
-
-  const formatBytes = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes'
-    const k = 1024
-    const sizes = ['Bytes', 'KB', 'MB', 'GB']
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
-  }
 
   const handleFileSelect = (selectedFile: File) => {
     if (!selectedFile.type.startsWith('image/')) {
@@ -88,8 +81,6 @@ export default function ImageCompressorPage() {
         tool: 'image-compressor',
         timestamp: Date.now(),
       })
-
-      trackEvent('compress', 'image_compressor')
 
       const originalSize = file.size
       const compressedSize = compressed.size

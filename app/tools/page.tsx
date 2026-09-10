@@ -6,121 +6,22 @@ import { Navbar } from '@/components/navbar'
 import { Footer } from '@/components/footer'
 import { FormatMarquee } from '@/components/format-marquee'
 import { ToolsBentoGrid } from '@/components/tools-bento-grid'
-import { 
-  ArrowLeftRight, 
-  Award, 
-  Merge, 
-  FileSearch, 
-  Minimize2, 
-  User, 
-  Crop, 
-  ArrowRight,
-  FileText,
-  Lock,
-  Sparkles,
-  Search
-} from 'lucide-react'
+import { Search } from 'lucide-react'
+import { TOOLS } from '@/lib/tools-registry'
 
 export default function ToolsPage() {
   const [selectedCategory, setSelectedCategory] = useState<'ALL' | 'PDF' | 'IMAGE' | 'INTELLIGENCE'>('ALL')
   const [searchQuery, setSearchQuery] = useState('')
 
-  const tools = [
-    {
-      title: 'PDF Compressor',
-      description: 'Compress PDFs locally in your browser with adjustable quality levels.',
-      icon: Minimize2,
-      href: '/tools/compress',
-      category: 'PDF'
-    },
-    {
-      title: 'Format Converter',
-      description: 'Convert between PDF, DOCX, Markdown, and text formats directly in your browser.',
-      icon: ArrowLeftRight,
-      href: '/tools/convert',
-      category: 'PDF'
-    },
-    {
-      title: 'PDF Merger',
-      description: 'Merge multiple PDF documents and images into a single PDF file.',
-      icon: Merge,
-      href: '/tools/merge',
-      category: 'PDF'
-    },
-    {
-      title: 'PDF Maker',
-      description: 'Generate structured PDFs from templates (Invoice, Certificate, Resume, CV).',
-      icon: Award,
-      href: '/tools/pdf-maker',
-      category: 'PDF'
-    },
-    {
-      title: 'PDF Extractor',
-      description: 'Extract raw text streams and document metadata from PDF files.',
-      icon: FileSearch,
-      href: '/tools/pdf-extractor',
-      category: 'PDF'
-    },
-    {
-      title: 'PDF Summarizer',
-      description: 'Extract key points and generate document summaries using client-side sentence ranking.',
-      icon: Sparkles,
-      href: '/tools/pdf-summarizer',
-      category: 'INTELLIGENCE'
-    },
-    {
-      title: 'Image Compressor',
-      description: 'Compress PNG, JPG, and WebP images with custom quality controls.',
-      icon: Minimize2,
-      href: '/tools/image-compressor',
-      category: 'IMAGE'
-    },
-    {
-      title: 'Image Converter',
-      description: 'Convert images between PNG, JPG, WebP, and AVIF formats via HTML5 Canvas.',
-      icon: ArrowLeftRight,
-      href: '/tools/image-converter',
-      category: 'IMAGE'
-    },
-    {
-      title: 'Passport Photo Editor',
-      description: 'Format photos to standard passport dimensions with background and contrast adjustments.',
-      icon: User,
-      href: '/tools/passport-photo',
-      category: 'IMAGE'
-    },
-    {
-      title: 'Image Cropper',
-      description: 'Crop and rotate images with custom aspect ratio presets and instant preview.',
-      icon: Crop,
-      href: '/tools/cropper',
-      category: 'IMAGE'
-    },
-    {
-      title: 'Resume Analyzer',
-      description: 'Analyze resumes for ATS formatting compliance, section completeness, and keyword density.',
-      icon: FileText,
-      href: '/tools/analysis',
-      category: 'INTELLIGENCE'
-    },
-    {
-      title: 'Encrypted Vault',
-      description: 'Client-side AES-GCM encrypted session storage with automatic 2-hour auto-purge.',
-      icon: Lock,
-      href: '/tools/vault',
-      category: 'INTELLIGENCE'
-    },
-  ]
-
   const filteredTools = useMemo(() => {
-    return tools.filter((tool) => {
+    return TOOLS.filter((tool) => {
       const matchesCategory = selectedCategory === 'ALL' || tool.category === selectedCategory
       const matchesSearch = searchQuery === '' ||
         tool.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         tool.description.toLowerCase().includes(searchQuery.toLowerCase())
       return matchesCategory && matchesSearch
     })
-  }, [tools, selectedCategory, searchQuery])
+  }, [selectedCategory, searchQuery])
 
   return (
     <div className="min-h-screen bg-[#0C0A09] text-[#FAFAF9] font-sans flex flex-col selection:bg-[#292524] selection:text-[#FAFAF9]">

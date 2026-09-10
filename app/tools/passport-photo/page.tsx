@@ -14,14 +14,14 @@ import {
   AlertCircle 
 } from 'lucide-react'
 import { processPassportPhoto, PASSPORT_SIZES } from '@/lib/passport-photo-utils'
-import { uploadFileToSupabase, saveFileMetadata, trackEvent, addToRecentFiles } from '@/lib/supabase/helpers'
+import { uploadFileToSupabase, saveFileMetadata, addToRecentFiles } from '@/lib/supabase/helpers'
 
 export default function PassportPhotoPage() {
   const [file, setFile] = useState<File | null>(null)
   const [selectedSize, setSelectedSize] = useState<keyof typeof PASSPORT_SIZES>('US Passport')
   const [backgroundColor, setBackgroundColor] = useState('#ffffff')
-  const [brightness, setBrightness] = useState(100)
-  const [contrast, setContrast] = useState(100)
+  const [brightness] = useState(100)
+  const [contrast] = useState(100)
   const [processing, setProcessing] = useState(false)
   const [progress, setProgress] = useState(0)
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null)
@@ -76,8 +76,6 @@ export default function PassportPhotoPage() {
         tool: 'passport-photo',
         timestamp: Date.now(),
       })
-
-      trackEvent('process', 'passport_photo')
 
       setDownloadUrl(publicUrl)
       setResultFileName(fileName)

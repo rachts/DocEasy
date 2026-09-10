@@ -29,6 +29,7 @@ import {
   formatTimeRemaining,
   VAULT_TTL_MS
 } from '@/lib/vault-crypto'
+import { formatBytes } from '@/lib/utils'
 
 export default function VaultPage() {
   const [files, setFiles] = useState<VaultFileSummary[]>([])
@@ -144,14 +145,6 @@ export default function VaultPage() {
     } catch (err) {
       console.error('Failed to purge vault:', err)
     }
-  }
-
-  const formatBytes = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes'
-    const k = 1024
-    const sizes = ['Bytes', 'KB', 'MB', 'GB']
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
   }
 
   const totalVaultSize = files.reduce((acc, f) => acc + f.size, 0)

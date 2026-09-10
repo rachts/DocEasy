@@ -6,17 +6,16 @@ import { Navbar } from '@/components/navbar'
 import { Footer } from '@/components/footer'
 import { 
   ArrowLeftRight, 
-  Upload, 
   Download, 
   RotateCcw, 
   ImageIcon, 
   Sliders, 
   CheckCircle2, 
   AlertCircle,
-  FileImage,
   RefreshCw,
   Sparkles
 } from 'lucide-react'
+import { formatBytes } from '@/lib/utils'
 
 type SupportedFormat = 'image/png' | 'image/jpeg' | 'image/webp' | 'image/avif'
 
@@ -47,13 +46,6 @@ export default function ImageConverterPage() {
     'image/jpeg': 'jpg',
     'image/webp': 'webp',
     'image/avif': 'avif'
-  }
-
-  const formatLabels: Record<SupportedFormat, string> = {
-    'image/png': 'PNG (Lossless)',
-    'image/jpeg': 'JPG / JPEG',
-    'image/webp': 'WebP (Modern Web)',
-    'image/avif': 'AVIF (High Efficiency)'
   }
 
   const handleFileSelect = (selectedFile: File) => {
@@ -185,14 +177,6 @@ export default function ImageConverterPage() {
     setError(null)
     setProgress(0)
     if (fileInputRef.current) fileInputRef.current.value = ''
-  }
-
-  const formatBytes = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes'
-    const k = 1024
-    const sizes = ['Bytes', 'KB', 'MB', 'GB']
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
   }
 
   const sizeDeltaPercent = (file && result) 

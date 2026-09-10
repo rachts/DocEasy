@@ -2,20 +2,13 @@ import { describe, it, expect } from 'vitest'
 import path from 'path'
 import fs from 'fs'
 
-const TOOL_ROUTES = [
-  { name: 'PDF Compressor', path: 'app/tools/compress/page.tsx', route: '/tools/compress' },
-  { name: 'Document Converter', path: 'app/tools/convert/page.tsx', route: '/tools/convert' },
-  { name: 'PDF Merger', path: 'app/tools/merge/page.tsx', route: '/tools/merge' },
-  { name: 'PDF Maker', path: 'app/tools/pdf-maker/page.tsx', route: '/tools/pdf-maker' },
-  { name: 'PDF Extractor', path: 'app/tools/pdf-extractor/page.tsx', route: '/tools/pdf-extractor' },
-  { name: 'PDF Summarizer', path: 'app/tools/pdf-summarizer/page.tsx', route: '/tools/pdf-summarizer' },
-  { name: 'Image Compressor', path: 'app/tools/image-compressor/page.tsx', route: '/tools/image-compressor' },
-  { name: 'Image Converter', path: 'app/tools/image-converter/page.tsx', route: '/tools/image-converter' },
-  { name: 'Passport Photo Generator', path: 'app/tools/passport-photo/page.tsx', route: '/tools/passport-photo' },
-  { name: 'Image Cropper', path: 'app/tools/cropper/page.tsx', route: '/tools/cropper' },
-  { name: 'Document Analysis', path: 'app/tools/analysis/page.tsx', route: '/tools/analysis' },
-  { name: 'Encrypted Vault', path: 'app/tools/vault/page.tsx', route: '/tools/vault' },
-]
+import { TOOLS } from '../lib/tools-registry'
+
+const TOOL_ROUTES = TOOLS.map((t) => ({
+  name: t.name,
+  path: t.filePath,
+  route: t.href,
+}))
 
 describe('12 Verified Tools Smoke Tests', () => {
   it('should verify all 12 tool routes exist as valid Next.js App Router pages', () => {

@@ -6,12 +6,7 @@ import { Sidebar } from '@/components/Sidebar'
 import { ProgressBar } from '@/components/ProgressBar'
 import { UploadZone } from '@/components/UploadZone'
 import { 
-  FileSearch, 
   FileText, 
-  RotateCcw, 
-  X, 
-  Check, 
-  AlertTriangle,
   AlertCircle
 } from 'lucide-react'
 

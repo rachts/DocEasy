@@ -1,112 +1,11 @@
 import Link from 'next/link'
-import { 
-  FileText, 
-  Minimize2, 
-  Merge, 
-  ArrowLeftRight, 
-  FileSearch, 
-  FilePlus, 
-  FileSpreadsheet, 
-  Sparkles, 
-  ShieldCheck, 
-  Image as ImageIcon, 
-  UserCheck, 
-  Crop,
-  ArrowRight,
-  Home
-} from 'lucide-react'
+import { ArrowRight, Home } from 'lucide-react'
+import { TOOLS } from '@/lib/tools-registry'
 
 export const metadata = {
   title: '404 — Page Not Found',
   description: 'The requested page could not be found. Browse our suite of 12 private, client-side document and image tools.',
 }
-
-const allTools = [
-  {
-    name: 'PDF Compressor',
-    href: '/tools/compress',
-    desc: 'Compress documents locally with up to ~80% size reduction',
-    icon: Minimize2,
-    badge: 'PDF',
-  },
-  {
-    name: 'Format Converter',
-    href: '/tools/convert',
-    desc: 'Convert between PDF, DOCX, Markdown, Text, and images',
-    icon: ArrowLeftRight,
-    badge: 'PDF',
-  },
-  {
-    name: 'PDF Merger',
-    href: '/tools/merge',
-    desc: 'Combine multiple PDF and image files into a single document',
-    icon: Merge,
-    badge: 'PDF',
-  },
-  {
-    name: 'PDF Maker',
-    href: '/tools/pdf-maker',
-    desc: 'Create structured invoices, certificates, and resumes',
-    icon: FilePlus,
-    badge: 'PDF',
-  },
-  {
-    name: 'PDF Extractor',
-    href: '/tools/pdf-extractor',
-    desc: 'Extract specific page ranges into a separate document',
-    icon: FileSpreadsheet,
-    badge: 'PDF',
-  },
-  {
-    name: 'Image Compressor',
-    href: '/tools/image-compressor',
-    desc: 'Shrink PNG, JPG, and WebP assets with instant canvas preview',
-    icon: ImageIcon,
-    badge: 'Image',
-  },
-  {
-    name: 'Image Converter',
-    href: '/tools/image-converter',
-    desc: 'Transcode images between PNG, JPG, WebP, AVIF, and BMP',
-    icon: ImageIcon,
-    badge: 'Image',
-  },
-  {
-    name: 'Passport Photo Editor',
-    href: '/tools/passport-photo',
-    desc: 'Standardize ID and passport dimensions with compliance guides',
-    icon: UserCheck,
-    badge: 'Image',
-  },
-  {
-    name: 'Image Cropper',
-    href: '/tools/cropper',
-    desc: 'Crop, rotate, and aspect-ratio align images locally',
-    icon: Crop,
-    badge: 'Image',
-  },
-  {
-    name: 'Resume Analyzer',
-    href: '/tools/analysis',
-    desc: 'Screen resumes for ATS formatting, keywords, and density',
-    icon: FileSearch,
-    badge: 'Intelligence',
-  },
-  {
-    name: 'PDF Summarizer',
-    href: '/tools/pdf-summarizer',
-    desc: 'Extract key paragraphs, metrics, and takeaways with TF scoring',
-    icon: Sparkles,
-    badge: 'Intelligence',
-  },
-  {
-    name: 'Encrypted Vault',
-    href: '/tools/vault',
-    desc: 'Client-side AES-GCM encrypted temporary storage with auto-purge',
-    icon: ShieldCheck,
-    badge: 'Security',
-  },
-]
 
 export default function NotFound() {
   return (
@@ -177,7 +76,7 @@ export default function NotFound() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {allTools.map((tool) => {
+            {TOOLS.map((tool) => {
               const Icon = tool.icon
               return (
                 <Link

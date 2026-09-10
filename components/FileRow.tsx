@@ -1,6 +1,7 @@
 'use client'
 
 import { Download, Trash2 } from 'lucide-react'
+import { formatBytes } from '@/lib/utils'
 
 export interface FileRowProps {
   id?: string
@@ -28,7 +29,7 @@ export function FileRow({
 }: FileRowProps) {
   const displayType = type.replace('application/', '').toUpperCase()
   const displaySize = typeof size === 'number' 
-    ? (size > 1024 * 1024 ? `${(size / (1024 * 1024)).toFixed(1)}MB` : `${(size / 1024).toFixed(0)}KB`)
+    ? formatBytes(size)
     : (size || '1.2MB')
 
   return (
