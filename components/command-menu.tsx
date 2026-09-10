@@ -9,7 +9,6 @@ import {
   ArrowLeftRight, 
   User, 
   FileSearch, 
-  LayoutDashboard, 
   Settings, 
   Search, 
   X,

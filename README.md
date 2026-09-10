@@ -220,7 +220,7 @@ A **Next.js 16 (App Router)** frontend utilizing **WebAssembly**, **HTML5 Canvas
 ```
 
 - **Client Execution Layer** — Runs in-memory inside modern browser sandboxes via WebAssembly and Canvas APIs. No file leaves your machine for core tasks.
-- **Ephemeral Processing Pipeline** — Server-side API routes (`/api/compression`, `/api/convert/pdf`) provide heavyweight processing (Ghostscript/qpdf) with immediate post-process file unlinking.
+- **Ephemeral Processing Pipeline** — Server-side API route (`/api/compression`) provides heavyweight processing (Ghostscript/qpdf) with immediate post-process file unlinking.
 - **Authenticated Cloud Vault** — Protected storage powered by Supabase Auth and Postgres Row Level Security (RLS), giving authenticated users persistent access across devices.
 
 ---

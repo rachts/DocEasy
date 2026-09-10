@@ -1,9 +1,9 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { ShieldCheck, HardDrive, Cpu, Lock, Server, ArrowRight } from 'lucide-react'
+import { ShieldCheck, HardDrive, Cpu, Lock, Server } from 'lucide-react'
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger)
@@ -26,8 +26,6 @@ export default function PrivacyProofDesktop() {
   const shieldRef = useRef<HTMLDivElement | null>(null)
   const triggerRef = useRef<ScrollTrigger | null>(null)
   const rafRef = useRef<number | null>(null)
-
-  const [scrollProgress, setScrollProgress] = useState(0)
 
   useEffect(() => {
     const container = containerRef.current
@@ -57,8 +55,6 @@ export default function PrivacyProofDesktop() {
       const startY = h * 0.5
       const wasmX = w * 0.45
       const wasmY = h * 0.5
-      const outX = w * 0.45
-      const outY = h * 0.85
       const shieldX = w * 0.72
       const shieldY = h * 0.5
 
@@ -86,7 +82,6 @@ export default function PrivacyProofDesktop() {
       end: 'bottom 25%',
       scrub: 0.8,
       onUpdate: (self) => {
-        setScrollProgress(self.progress)
         if (shieldRef.current) {
           gsap.set(shieldRef.current, {
             boxShadow: `0 0 ${15 + self.progress * 30}px rgba(16, 185, 129, ${0.2 + self.progress * 0.4})`

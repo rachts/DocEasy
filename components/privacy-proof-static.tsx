@@ -1,7 +1,6 @@
 'use client'
 
-import React from 'react'
-import { ShieldCheck, Cpu, ArrowRight, HardDrive, Lock } from 'lucide-react'
+import { ShieldCheck, HardDrive, Lock } from 'lucide-react'
 
 export function PrivacyProofStatic() {
   return (

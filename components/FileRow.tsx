@@ -1,7 +1,6 @@
 'use client'
 
-import React from 'react'
-import { FileText, Download, Trash2, ArrowRight } from 'lucide-react'
+import { Download, Trash2 } from 'lucide-react'
 
 export interface FileRowProps {
   id?: string

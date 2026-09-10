@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState } from 'react'
-import Link from 'next/link'
 import { Sidebar } from '@/components/Sidebar'
 import { ProgressBar } from '@/components/ProgressBar'
 import { UploadZone } from '@/components/UploadZone'
@@ -12,7 +11,6 @@ import {
   Copy, 
   Check, 
   Download, 
-  Sliders, 
   AlertTriangle,
   FileCheck,
   ShieldCheck

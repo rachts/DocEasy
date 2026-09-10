@@ -9,9 +9,7 @@ import {
   ArrowRight,
   Globe,
   Menu,
-  X,
-  LogOut,
-  User as UserIcon
+  X
 } from 'lucide-react'
 import { CommandMenu } from '@/components/command-menu'
 import { createClient } from '@/utils/supabase/client'

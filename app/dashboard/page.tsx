@@ -2,8 +2,6 @@ import React from 'react'
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import { Sidebar } from '@/components/Sidebar'
-import { FileRow } from '@/components/FileRow'
-import { UploadZone } from '@/components/UploadZone'
 import { ProgressBar } from '@/components/ProgressBar'
 import { DashboardClient } from './dashboard-client'
 

@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence, useMotionValue, useSpring } from 'motion/react'
-import { FileText, ArrowDown, Sparkles, Check, X } from 'lucide-react'
+import { ArrowDown, Check } from 'lucide-react'
 import { useGlobalDrop } from './global-drop-context'
 import { setPendingDroppedFile } from '@/lib/global-file-stash'
 

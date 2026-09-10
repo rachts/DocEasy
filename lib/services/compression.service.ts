@@ -1,6 +1,5 @@
 import { execFile } from 'child_process';
 import { promisify } from 'util';
-import path from 'path';
 import { rm } from 'fs/promises';
 import os from 'os';
 import { APIError } from '../errors';
@@ -31,7 +30,7 @@ export class PDFCompressionService {
         await execFileAsync(bin, ['--version']);
         this.gsBinary = bin;
         break;
-      } catch (e) {
+      } catch {
         // Continue checking
       }
     }
@@ -41,7 +40,7 @@ export class PDFCompressionService {
         await execFileAsync(bin, ['--version']);
         this.qpdfBinary = bin;
         break;
-      } catch (e) {
+      } catch {
         // Continue checking
       }
     }
