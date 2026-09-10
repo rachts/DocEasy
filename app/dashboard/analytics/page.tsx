@@ -16,11 +16,13 @@ export default async function AnalyticsPage() {
     redirect('/login')
   }
 
-  // Fetch all user files to aggregate analytics
+  // Fetch user files to aggregate analytics (ordered and bounded)
   const { data: files } = await supabase
     .from('files')
     .select('created_at, tool_used, original_size, processed_size')
     .eq('user_id', user.id)
+    .order('created_at', { ascending: false })
+    .limit(500)
 
   return (
     <div className="min-h-screen bg-[#0C0A09] text-[#FAFAF9] font-sans flex antialiased">

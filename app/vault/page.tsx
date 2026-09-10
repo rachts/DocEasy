@@ -16,18 +16,21 @@ export default async function VaultPage() {
     redirect('/login')
   }
 
-  const { data: files } = await supabase
-    .from('files')
-    .select('*')
-    .eq('user_id', user.id)
-    .order('created_at', { ascending: false })
+  const [filesRes, favoritesRes] = await Promise.all([
+    supabase
+      .from('files')
+      .select('id, file_name, file_type, original_size, processed_size, storage_path, created_at, tool_used')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false })
+      .limit(100),
+    supabase
+      .from('favorites')
+      .select('file_id')
+      .eq('user_id', user.id)
+  ])
 
-  const { data: favoritesData } = await supabase
-    .from('favorites')
-    .select('file_id')
-    .eq('user_id', user.id)
-
-  const favoriteIds = new Set(favoritesData?.map(f => f.file_id) || [])
+  const files = filesRes.data || []
+  const favoriteIds = new Set(favoritesRes.data?.map(f => f.file_id) || [])
 
   return (
     <div className="min-h-screen bg-[#0C0A09] text-[#FAFAF9] font-sans flex antialiased">
