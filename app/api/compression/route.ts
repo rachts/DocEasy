@@ -3,7 +3,7 @@ import { readFile, rm, stat } from 'fs/promises';
 import { compressionService } from '@/lib/services/compression.service';
 import { uploadFileToSupabase } from '@/lib/supabase/helpers';
 import path from 'path';
-import crypto from 'crypto';
+import crypto from 'node:crypto';
 import os from 'os';
 import { APIError, formatErrorResponse } from '@/lib/errors';
 import { pipeline } from 'stream/promises';

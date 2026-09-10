@@ -244,7 +244,7 @@ DocEasy is engineered around verifiable privacy principles:
 ## ⚡ Quickstart
 
 ### Prerequisites
-- **Node.js**: 18.18+ / 20.x / 22.x+
+- **Node.js**: 20.9+ / 22.x+
 - **Package Manager**: `npm`, `pnpm`, or `yarn`
 
 ### 1. Clone & Install
