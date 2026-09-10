@@ -413,7 +413,7 @@ export async function convertMarkdownToDOCX(markdownText: string): Promise<Blob>
   zip.file("word/document.xml", documentXml)
 
   const docxBytes = await zip.generateAsync({ type: "uint8array" })
-  return new Blob([docxBytes], {
+  return new Blob([docxBytes as unknown as BlobPart], {
     type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
   })
 }

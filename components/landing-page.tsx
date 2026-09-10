@@ -121,7 +121,7 @@ export function LandingPage() {
       const matchesSearch = searchQuery === '' || 
         tool.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
         tool.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        tool.tag.toLowerCase().includes(searchQuery.toLowerCase())
+        tool.category.toLowerCase().includes(searchQuery.toLowerCase())
       return matchesCategory && matchesSearch
     })
   }, [allTools, selectedCategory, searchQuery])

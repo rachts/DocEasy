@@ -244,13 +244,11 @@ export default function PdfSummarizerPage() {
           <div className="space-y-6">
             <UploadZone
               onFileSelect={handleFileSelect}
-              accept={{
-                'application/pdf': ['.pdf'],
-                'text/plain': ['.txt'],
-              }}
-              maxSize={50 * 1024 * 1024}
-              label="Drop your PDF or document here"
-              sublabel="Client-side text parsing and keyword ranking directly in browser memory."
+              accept=".pdf,.txt"
+              supportedFormats="PDF, TXT"
+              maxSize="50MB"
+              title="Drop your PDF or document here"
+              subtitle="Client-side text parsing and keyword ranking directly in browser memory."
             />
 
             <div className="rounded-[6px] border border-[#292524] bg-[#141110] p-4 flex items-start gap-3">

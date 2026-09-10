@@ -92,10 +92,12 @@ export async function saveFileMetadata(metadata: FileMetadata) {
   }
 }
 
+export type EventType = "upload" | "download" | "error" | "compress" | "convert" | "merge" | "process" | string
+
 /**
  * Tracks events for analytics
  */
-export async function trackEvent(eventType: "upload" | "download" | "error", toolUsed: string) {
+export async function trackEvent(eventType: EventType, toolUsed: string) {
   if (!supabase) return
   try {
     const { error } = await supabase
