@@ -5,7 +5,8 @@ import Link from 'next/link'
 import { Sidebar } from '@/components/Sidebar'
 import { ProgressBar } from '@/components/ProgressBar'
 import { UploadZone } from '@/components/UploadZone'
-import { FileText, Copy, Check, X, ArrowRight, Download, AlertCircle } from 'lucide-react'
+import { FileText, Copy, Check, ArrowRight, AlertCircle } from 'lucide-react'
+import { extractTextFromPDF } from '@/lib/pdf-extractor-utils'
 
 export default function PDFExtractorPage() {
   const [file, setFile] = useState<File | null>(null)
@@ -35,23 +36,11 @@ export default function PDFExtractorPage() {
     setError('')
 
     try {
-      const formData = new FormData()
-      formData.append('file', file)
-
-      const response = await fetch('/api/pdf-extract', {
-        method: 'POST',
-        body: formData,
-      })
-
-      if (!response.ok) {
-        throw new Error('Extraction failed')
-      }
-
-      const data = await response.json()
-      setResultText(data.text || 'No text elements detected in this document.')
+      const extractedText = await extractTextFromPDF(file)
+      setResultText(extractedText || 'No selectable text elements detected in this document.')
     } catch (err: any) {
-      console.warn('API extractor fallback to local mock extraction')
-      setResultText(`[EXTRACTED METADATA]\nFile: ${file.name}\nSize: ${(file.size / 1024).toFixed(1)} KB\nPages: 1\n\n--- TEXT STREAM ---\nDocument parsed successfully via local WebAssembly extraction engine.`)
+      console.error('Text extraction failed:', err)
+      setError(err?.message || 'Failed to extract text from PDF')
     } finally {
       setExtracting(false)
     }
